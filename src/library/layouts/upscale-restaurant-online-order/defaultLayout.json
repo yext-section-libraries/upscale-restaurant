@@ -1,0 +1,1630 @@
+{
+  "root": {
+    "props": {
+      "title": {
+        "field": "name",
+        "constantValue": "Yext Upscale Restaurant Online Order Pages",
+        "constantValueEnabled": false
+      },
+      "version": 78,
+      "description": {
+        "field": "description",
+        "constantValue": "",
+        "constantValueEnabled": false
+      }
+    }
+  },
+  "zones": {},
+  "content": [
+    {
+      "type": "UpscaleRestaurantOnlineOrderHeaderSection",
+      "props": {
+        "id": "UpscaleRestaurantOnlineOrderHeaderSection-4c26bf97-9b38-4972-a906-a3df4df107b6",
+        "cta": {
+          "show": true,
+          "items": [
+            {
+              "cta": {
+                "data": {
+                  "cta": {
+                    "field": "",
+                    "selectedType": "textAndLink",
+                    "constantValue": {
+                      "link": {
+                        "defaultValue": "#"
+                      },
+                      "label": {
+                        "defaultValue": "CTA Label"
+                      },
+                      "ctaType": "textAndLink",
+                      "linkType": "URL"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "customId": "",
+                  "ariaLabel": {
+                    "defaultValue": "CTA Label"
+                  },
+                  "actionType": "link",
+                  "buttonText": {
+                    "defaultValue": "Button"
+                  },
+                  "customClass": "",
+                  "openInNewTab": false,
+                  "dataAttributes": []
+                },
+                "styles": {
+                  "link": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "includeCaret": "default",
+                    "letterSpacing": "default",
+                    "textTransform": "default"
+                  },
+                  "color": {
+                    "selectedColor": "palette-primary",
+                    "contrastingColor": "palette-primary-contrast"
+                  },
+                  "button": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "borderRadius": "default",
+                    "letterSpacing": "default",
+                    "textTransform": "default"
+                  },
+                  "variant": "primary"
+                }
+              }
+            }
+          ]
+        },
+        "section": {
+          "backgroundColor": {
+            "selectedColor": "white",
+            "contrastingColor": "black"
+          },
+          "visibleOnLivePage": true
+        },
+        "variant": "centerLogoSplitNav",
+        "logoImage": {
+          "url": {
+            "field": "",
+            "constantValue": {
+              "defaultValue": ""
+            },
+            "constantValueEnabled": true
+          },
+          "show": true,
+          "image": {
+            "field": "",
+            "constantValue": {
+              "url": "https://a.mktgcdn.com/p/OLT2KExDEKhKlCmIobyRRHN6MFUS77fVs5gIt_FTnBI/450x450.jpg",
+              "width": 450,
+              "height": 450
+            },
+            "constantValueEnabled": true
+          },
+          "styles": {
+            "borderRadius": "default"
+          },
+          "aspectRatio": 1,
+          "imageConstrain": "fixed"
+        },
+        "utilities": {
+          "show": true,
+          "items": [
+            {
+              "link": "#",
+              "label": "Item 1",
+              "linkType": "URL",
+              "iconImage": {
+                "image": {
+                  "field": "",
+                  "constantValue": {
+                    "url": "",
+                    "width": 0,
+                    "height": 0
+                  },
+                  "constantValueEnabled": false
+                },
+                "styles": {
+                  "borderRadius": "default"
+                },
+                "aspectRatio": 1,
+                "imageConstrain": "fixed"
+              },
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#",
+              "label": "Item 2",
+              "linkType": "URL",
+              "iconImage": {
+                "image": {
+                  "field": "",
+                  "constantValue": {
+                    "url": "",
+                    "width": 0,
+                    "height": 0
+                  },
+                  "constantValueEnabled": false
+                },
+                "styles": {
+                  "borderRadius": "default"
+                },
+                "aspectRatio": 1,
+                "imageConstrain": "fixed"
+              },
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#",
+              "label": "Item 3",
+              "linkType": "URL",
+              "iconImage": {
+                "image": {
+                  "field": "",
+                  "constantValue": {
+                    "url": "",
+                    "width": 0,
+                    "height": 0
+                  },
+                  "constantValueEnabled": false
+                },
+                "styles": {
+                  "borderRadius": "default"
+                },
+                "aspectRatio": 1,
+                "imageConstrain": "fixed"
+              },
+              "openInNewTab": false,
+              "normalizeLink": false
+            }
+          ]
+        },
+        "navigation": {
+          "show": true,
+          "links": [
+            {
+              "link": "#",
+              "label": "Link 1",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#",
+              "label": "Link 2",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            },
+            {
+              "link": "#",
+              "label": "Link 3",
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
+            }
+          ],
+          "styles": {
+            "fontSize": "default",
+            "fontStyle": "default",
+            "fontFamily": "default",
+            "fontWeight": "default",
+            "includeCaret": "default",
+            "letterSpacing": "default",
+            "textTransform": "default"
+          }
+        }
+      }
+    },
+    {
+      "type": "MainContent",
+      "props": {
+        "id": "MainContent-default",
+        "content": [
+          {
+            "type": "UpscaleRestaurantOnlineOrderBreadcrumbsSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderBreadcrumbsSection-919cf37e-6519-4c61-8e2e-af5827fe8db1",
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              },
+              "breadcrumbs": {
+                "rootLabel": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "All Locations",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "includeCurrentLocation": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderHeroSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderHeroSection-6b6666e1-498d-498d-b7bc-fad8b575397a",
+              "hero": {
+                "ctas": [
+                  {
+                    "cta": {
+                      "data": {
+                        "cta": {
+                          "field": "",
+                          "constantValue": {
+                            "link": "#",
+                            "label": "Order for Pickup",
+                            "openInNewTab": false,
+                            "normalizeLink": false
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "actionType": "link",
+                        "openInNewTab": false
+                      },
+                      "styles": {
+                        "variant": "primary"
+                      }
+                    }
+                  },
+                  {
+                    "cta": {
+                      "data": {
+                        "cta": {
+                          "field": "",
+                          "constantValue": {
+                            "link": "#",
+                            "label": "Order for Delivery",
+                            "openInNewTab": false,
+                            "normalizeLink": false
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "actionType": "link",
+                        "openInNewTab": false
+                      },
+                      "styles": {
+                        "variant": "secondary"
+                      }
+                    }
+                  },
+                  {
+                    "cta": {
+                      "data": {
+                        "cta": {
+                          "field": "",
+                          "constantValue": {
+                            "link": "#",
+                            "label": "View Menu",
+                            "openInNewTab": false,
+                            "normalizeLink": false
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "actionType": "link",
+                        "openInNewTab": false
+                      },
+                      "styles": {
+                        "variant": "link"
+                      }
+                    }
+                  }
+                ],
+                "image": {
+                  "image": {
+                    "field": "",
+                    "constantValue": {
+                      "url": "https://a.mktgcdn.com/p/vQqhmnexQfZueJGyh5M_j5W4EcTkTyZlW93eIoqjjvQ/1900x1267.jpg",
+                      "width": 1900,
+                      "height": 1267,
+                      "alternateText": "Hero image"
+                    },
+                    "constantValueEnabled": true
+                  }
+                },
+                "heading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Order Online from [[name]] - [[address.city]]",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "description": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] is an upscale burger restaurant located in [[address.city]], [[address.region]]. They offer dine-in, takeout, delivery, and curbside pickup options. The location serves lunch, dinner, and brunch, with happy hour available on weekdays.</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] is an upscale burger restaurant located in [[address.city]], [[address.region]]. They offer dine-in, takeout, delivery, and curbside pickup options. The location serves lunch, dinner, and brunch, with happy hour available on weekdays.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "hours": {
+                "field": "hours",
+                "constantValue": {},
+                "constantValueEnabled": false
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "palette-primary-dark",
+                  "contrastingColor": "white"
+                },
+                "visibleOnLivePage": true,
+                "cardBackgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                }
+              },
+              "hoursStyles": {
+                "timeFormat": "12h",
+                "dayOfWeekFormat": "short",
+                "showCurrentStatus": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderDeliveryPartnersSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderDeliveryPartnersSection-e6411552-5371-4316-83ff-c715a857be30",
+              "ctas": [
+                {
+                  "cta": {
+                    "data": {
+                      "cta": {
+                        "field": "",
+                        "constantValue": {
+                          "link": "#",
+                          "label": "Order on DoorDash",
+                          "ctaType": "presetImage",
+                          "openInNewTab": false,
+                          "normalizeLink": false
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "actionType": "link",
+                      "openInNewTab": false
+                    },
+                    "styles": {
+                      "color": {
+                        "selectedColor": "palette-primary",
+                        "contrastingColor": "palette-primary-contrast"
+                      },
+                      "variant": "primary",
+                      "presetImage": "grubhub"
+                    }
+                  }
+                },
+                {
+                  "cta": {
+                    "data": {
+                      "cta": {
+                        "field": "",
+                        "constantValue": {
+                          "link": "#",
+                          "label": "Order on Uber Eats",
+                          "ctaType": "presetImage",
+                          "openInNewTab": false,
+                          "normalizeLink": false
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "actionType": "link",
+                      "openInNewTab": false
+                    },
+                    "styles": {
+                      "color": {
+                        "selectedColor": "palette-secondary",
+                        "contrastingColor": "palette-secondary-contrast"
+                      },
+                      "variant": "secondary",
+                      "presetImage": "doordash"
+                    }
+                  }
+                },
+                {
+                  "cta": {
+                    "data": {
+                      "cta": {
+                        "field": "",
+                        "constantValue": {
+                          "link": "#",
+                          "label": "Order on Grubhub",
+                          "ctaType": "presetImage",
+                          "openInNewTab": false,
+                          "normalizeLink": false
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "actionType": "link",
+                      "openInNewTab": false
+                    },
+                    "styles": {
+                      "variant": "link",
+                      "presetImage": "doordash"
+                    }
+                  }
+                }
+              ],
+              "heading": {
+                "text": {
+                  "field": "",
+                  "constantValue": "Order delivery from our delivery partners",
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "textTransform": "default"
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "palette-tertiary",
+                  "contrastingColor": "palette-tertiary-contrast"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderDetailsSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderDetailsSection-c321a741-feb6-41b0-b63e-56d1d69db4c7",
+              "details": {
+                "hours": {
+                  "field": "hours",
+                  "constantValue": {},
+                  "constantValueEnabled": false
+                },
+                "links": [
+                  {
+                    "cta": {
+                      "data": {
+                        "cta": {
+                          "field": "",
+                          "constantValue": {
+                            "link": "#",
+                            "label": "Website",
+                            "ctaType": "textAndLink",
+                            "openInNewTab": false,
+                            "normalizeLink": false
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "actionType": "link",
+                        "openInNewTab": false
+                      },
+                      "styles": {
+                        "variant": "link"
+                      }
+                    }
+                  },
+                  {
+                    "cta": {
+                      "data": {
+                        "cta": {
+                          "field": "",
+                          "constantValue": {
+                            "link": "#",
+                            "label": "Get Directions",
+                            "ctaType": "getDirections",
+                            "openInNewTab": false,
+                            "normalizeLink": false
+                          },
+                          "constantValueEnabled": true
+                        },
+                        "actionType": "link",
+                        "openInNewTab": false
+                      },
+                      "styles": {
+                        "variant": "link"
+                      }
+                    }
+                  }
+                ],
+                "phones": {
+                  "items": [
+                    {
+                      "label": {
+                        "field": "",
+                        "constantValue": "",
+                        "constantValueEnabled": true
+                      },
+                      "number": {
+                        "field": "",
+                        "constantValue": "+1 (512) 555-0148",
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "phoneFormat": "domestic",
+                  "includeHyperlink": false
+                },
+                "address": {
+                  "field": "address",
+                  "constantValue": {
+                    "city": "",
+                    "line1": "",
+                    "line2": "",
+                    "region": "",
+                    "postalCode": "",
+                    "countryCode": ""
+                  },
+                  "constantValueEnabled": false
+                },
+                "heading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Restaurant Details",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "showRegion": true,
+                "hoursStyles": {
+                  "startOfWeek": "monday",
+                  "collapseDays": false,
+                  "showAdditionalHoursText": false
+                },
+                "showCountry": false,
+                "hoursHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Online Ordering Hours",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "phoneHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Phone",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "addressHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Address",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "showThirdColumn": true,
+                "thirdColumnDetails": {
+                  "text": {
+                    "field": "",
+                    "constantValue": [
+                      "Delivery, pickup, and curbside pickup are available",
+                      "Free delivery to zip codes 78613, 78617, 78620, 78628, 78641, 78645, 78652, 78701",
+                      "Typical delivery time: 25 min",
+                      "Typical pickup wait time: 15 min",
+                      "Minimum $30 order for delivery"
+                    ],
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "thirdColumnHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Order Online Details",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderFeaturedItemsSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderFeaturedItemsSection-e8add217-c6e8-4b69-a402-b093f10eb75e",
+              "heading": {
+                "text": {
+                  "field": "",
+                  "constantValue": "Featured Menu Items to Order from [[address.city]]",
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "textTransform": "default"
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "palette-quaternary"
+                },
+                "visibleOnLivePage": true,
+                "cardBackgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                }
+              },
+              "featuredItems": {
+                "data": {
+                  "field": "",
+                  "mappings": {
+                    "image": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "title": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "ctaLink": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "ctaLabel": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "description": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "openInNewTab": {
+                      "field": "",
+                      "constantValueEnabled": false
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Featured item image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": "Smokehouse Burger",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLink": {
+                        "field": "",
+                        "constantValue": "#",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLabel": {
+                        "field": "",
+                        "constantValue": "Learn More",
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>A wood-fired double smash burger topped with smoked cheddar, crispy onions, bourbon bacon jam, arugula, and house sauce on a toasted brioche bun. Served with hand-cut fries.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"A wood-fired double smash burger topped with smoked cheddar, crispy onions, bourbon bacon jam, arugula, and house sauce on a toasted brioche bun. Served with hand-cut fries.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "openInNewTab": {
+                        "field": "",
+                        "constantValue": false,
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Featured item image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": "Chicken Sandwich",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLink": {
+                        "field": "",
+                        "constantValue": "#",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLabel": {
+                        "field": "",
+                        "constantValue": "Learn More",
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Crispy buttermilk fried chicken layered with hot honey glaze, dill pickles, shredded lettuce, and chipotle aioli on a buttered potato bun. A local favorite during happy hour and weekend brunch.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Crispy buttermilk fried chicken layered with hot honey glaze, dill pickles, shredded lettuce, and chipotle aioli on a buttered potato bun. A local favorite during happy hour and weekend brunch.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "openInNewTab": {
+                        "field": "",
+                        "constantValue": false,
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Featured item image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": "Hill Country Steak Salad",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLink": {
+                        "field": "",
+                        "constantValue": "#",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLabel": {
+                        "field": "",
+                        "constantValue": "Learn More",
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Grilled skirt steak served over mixed greens with roasted corn, avocado, pickled red onions, cotija cheese, tortilla strips, and cilantro-lime vinaigrette. Fresh, hearty, and distinctly Texas-inspired.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Grilled skirt steak served over mixed greens with roasted corn, avocado, pickled red onions, cotija cheese, tortilla strips, and cilantro-lime vinaigrette. Fresh, hearty, and distinctly Texas-inspired.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "openInNewTab": {
+                        "field": "",
+                        "constantValue": false,
+                        "constantValueEnabled": true
+                      }
+                    },
+                    {
+                      "image": {
+                        "field": "",
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Featured item image"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "title": {
+                        "field": "",
+                        "constantValue": "Black Truffle Mac & Cheese",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLink": {
+                        "field": "",
+                        "constantValue": "#",
+                        "constantValueEnabled": true
+                      },
+                      "ctaLabel": {
+                        "field": "",
+                        "constantValue": "Learn More",
+                        "constantValueEnabled": true
+                      },
+                      "description": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Creamy cavatappi pasta tossed in a smoked gouda and white cheddar blend, finished with black truffle oil, toasted breadcrumbs, and fresh herbs. Add grilled chicken or brisket for extra flavor.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Creamy cavatappi pasta tossed in a smoked gouda and white cheddar blend, finished with black truffle oil, toasted breadcrumbs, and fresh herbs. Add grilled chicken or brisket for extra flavor.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
+                      },
+                      "openInNewTab": {
+                        "field": "",
+                        "constantValue": false,
+                        "constantValueEnabled": true
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "cta": {
+                    "variant": "link"
+                  },
+                  "image": {
+                    "styles": {
+                      "borderRadius": "8px"
+                    }
+                  },
+                  "title": {
+                    "styles": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "textTransform": "default"
+                    }
+                  },
+                  "description": {
+                    "styles": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "textTransform": "default"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderAboutSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderAboutSection-13fcc136-f2b5-4957-8c5d-e86b820da8f6",
+              "about": {
+                "image": {
+                  "image": {
+                    "field": "",
+                    "constantValue": {
+                      "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
+                      "width": 1267,
+                      "height": 1900,
+                      "alternateText": "About image"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "borderRadius": "default"
+                  },
+                  "aspectRatio": 1
+                },
+                "content": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>At [[name]], we believe great burgers start with great ingredients and a sense of place. Nestled in the heart of [[address.city]], our burger restaurant brings together wood-fired flavor, chef-driven comfort food, and the laid-back energy that makes [[address.region]] unforgettable. From locally sourced beef and scratch-made sauces to craft cocktails and rotating [[address.region]] drafts, every detail is designed for guests who appreciate elevated casual dining without the pretension.</span></p><p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Whether you're grabbing brunch before exploring [[address.city]], meeting friends for happy hour after work downtown, dining in with family, or ordering online for a night in [[address.city]], [[name]] makes it easy to enjoy your favorites wherever you are. Our streamlined online ordering platform offers convenient curbside pickup and fast delivery, so guests can order burgers, fries, shakes, cocktails, and weekend brunch directly from our website in just a few clicks.</span></p><p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Conveniently located at [[address.line1]] in [[geomodifier]] [[address.city]], [[name]] offers dine-in, online ordering, curbside pickup, delivery, catering, and private group accommodations for locals and visitors looking for one of the best upscale burger restaurants in [[address.city]], [[address.region]].</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"At [[name]], we believe great burgers start with great ingredients and a sense of place. Nestled in the heart of [[address.city]], our burger restaurant brings together wood-fired flavor, chef-driven comfort food, and the laid-back energy that makes [[address.region]] unforgettable. From locally sourced beef and scratch-made sauces to craft cocktails and rotating [[address.region]] drafts, every detail is designed for guests who appreciate elevated casual dining without the pretension.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Whether you're grabbing brunch before exploring [[address.city]], meeting friends for happy hour after work downtown, dining in with family, or ordering online for a night in [[address.city]], [[name]] makes it easy to enjoy your favorites wherever you are. Our streamlined online ordering platform offers convenient curbside pickup and fast delivery, so guests can order burgers, fries, shakes, cocktails, and weekend brunch directly from our website in just a few clicks.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1},{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Conveniently located at [[address.line1]] in [[geomodifier]] [[address.city]], [[name]] offers dine-in, online ordering, curbside pickup, delivery, catering, and private group accommodations for locals and visitors looking for one of the best upscale burger restaurants in [[address.city]], [[address.region]].\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "heading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "What is [[name]]?",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "palette-quaternary"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderFaqSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderFaqSection-b61c4244-df9a-4515-a5f4-49024f192e53",
+              "faqs": {
+                "items": {
+                  "field": "",
+                  "mappings": {
+                    "answer": {
+                      "text": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
+                    },
+                    "question": {
+                      "text": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
+                    }
+                  },
+                  "constantValue": [
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "Can I order [[name]] online?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "What delivery apps deliver [[name]]?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "How long does [[name]] delivery take?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "Does [[name]] offer free delivery?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "What is the minimum order for [[name]] delivery?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    },
+                    {
+                      "answer": {
+                        "text": {
+                          "field": "",
+                          "constantValue": {
+                            "defaultValue": {
+                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.</span></p>",
+                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                            },
+                            "hasLocalizedValue": "true"
+                          },
+                          "constantValueEnabled": true
+                        }
+                      },
+                      "question": {
+                        "text": {
+                          "field": "",
+                          "constantValue": "Can I order [[name]] for pickup?",
+                          "constantValueEnabled": true
+                        }
+                      }
+                    }
+                  ],
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "answer": {
+                    "styles": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "textTransform": "default"
+                    }
+                  },
+                  "question": {
+                    "styles": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "textTransform": "default"
+                    }
+                  }
+                }
+              },
+              "heading": {
+                "text": {
+                  "field": "",
+                  "constantValue": "FAQs about Ordering Online",
+                  "constantValueEnabled": true
+                },
+                "styles": {
+                  "fontSize": "default",
+                  "fontStyle": "default",
+                  "fontFamily": "default",
+                  "fontWeight": "default",
+                  "textTransform": "default"
+                }
+              },
+              "section": {
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                },
+                "visibleOnLivePage": true
+              }
+            }
+          },
+          {
+            "type": "UpscaleRestaurantOnlineOrderEventSection",
+            "props": {
+              "id": "UpscaleRestaurantOnlineOrderEventSection-6d793ea4-7031-4fe1-9477-02fe4595946f",
+              "event": {
+                "cta": {
+                  "data": {
+                    "cta": {
+                      "field": "",
+                      "constantValue": {
+                        "link": "#",
+                        "label": "Learn More",
+                        "openInNewTab": false,
+                        "normalizeLink": false
+                      },
+                      "constantValueEnabled": true
+                    },
+                    "actionType": "link",
+                    "openInNewTab": false
+                  },
+                  "styles": {
+                    "color": {
+                      "selectedColor": "palette-primary",
+                      "contrastingColor": "palette-primary-contrast"
+                    },
+                    "variant": "primary"
+                  }
+                },
+                "image": {
+                  "image": {
+                    "field": "",
+                    "constantValue": {
+                      "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                      "width": 1267,
+                      "height": 1900,
+                      "alternateText": "Event image"
+                    },
+                    "constantValueEnabled": true
+                  }
+                },
+                "heading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Catering available for groups of all sizes",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "description": {
+                  "text": {
+                    "field": "",
+                    "constantValue": {
+                      "defaultValue": {
+                        "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Bring the burger bar to your next event with our new catering service, stacked burgers, crispy fries, and crowd favorites made fresh for groups of any size. Whether it’s a corporate lunch, game day party, or late-night gathering, we handle the food so you can focus on your guests.</span></p>",
+                        "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Bring the burger bar to your next event with our new catering service, stacked burgers, crispy fries, and crowd favorites made fresh for groups of any size. Whether it’s a corporate lunch, game day party, or late-night gathering, we handle the food so you can focus on your guests.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                      },
+                      "hasLocalizedValue": "true"
+                    },
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
+              },
+              "section": {
+                "visibleOnLivePage": true
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "UpscaleRestaurantOnlineOrderFooterSection",
+      "props": {
+        "id": "UpscaleRestaurantOnlineOrderFooterSection-a037f9e2-daa8-41b8-9892-270a888e57d1",
+        "footer": {
+          "legalLinks": [
+            {
+              "link": {
+                "field": "",
+                "constantValue": "#",
+                "constantValueEnabled": true
+              },
+              "label": {
+                "field": "",
+                "constantValue": "Privacy",
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "link": {
+                "field": "",
+                "constantValue": "#",
+                "constantValueEnabled": true
+              },
+              "label": {
+                "field": "",
+                "constantValue": "Terms",
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "link": {
+                "field": "",
+                "constantValue": "#",
+                "constantValueEnabled": true
+              },
+              "label": {
+                "field": "",
+                "constantValue": "Accessibility",
+                "constantValueEnabled": true
+              }
+            }
+          ],
+          "linkStyles": {
+            "styles": {
+              "fontSize": "default",
+              "fontStyle": "default",
+              "fontFamily": "default",
+              "fontWeight": "default",
+              "textTransform": "default"
+            }
+          },
+          "quickLinks": [
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Menu",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Order Online",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Reservations",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Group Events",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Catering",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Careers",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Gift Cards",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            },
+            {
+              "cta": {
+                "field": "",
+                "selectedType": "textAndLink",
+                "constantValue": {
+                  "link": "#",
+                  "label": "Contact",
+                  "ctaType": "textAndLink",
+                  "openInNewTab": false,
+                  "normalizeLink": false
+                },
+                "constantValueEnabled": true
+              }
+            }
+          ],
+          "description": {
+            "text": {
+              "field": "",
+              "constantValue": {
+                "defaultValue": {
+                  "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Neighborhood burgers, cocktails, and brunch in [[address.city]].</span></p>",
+                  "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Neighborhood burgers, cocktails, and brunch in [[address.city]].\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                },
+                "hasLocalizedValue": "true"
+              },
+              "constantValueEnabled": true
+            },
+            "styles": {
+              "fontSize": "default",
+              "fontStyle": "default",
+              "fontFamily": "default",
+              "fontWeight": "default",
+              "textTransform": "default"
+            }
+          },
+          "copyrightText": {
+            "text": {
+              "field": "",
+              "constantValue": "© 2026 [[name]]. All rights reserved.",
+              "constantValueEnabled": true
+            },
+            "styles": {
+              "fontSize": "default",
+              "fontStyle": "default",
+              "fontFamily": "default",
+              "fontWeight": "default",
+              "textTransform": "default"
+            }
+          },
+          "quickLinksHeading": {
+            "text": {
+              "field": "",
+              "constantValue": "Quick links",
+              "constantValueEnabled": true
+            },
+            "styles": {
+              "fontSize": "default",
+              "fontStyle": "default",
+              "fontFamily": "default",
+              "fontWeight": "default",
+              "textTransform": "default"
+            }
+          }
+        },
+        "section": {
+          "backgroundColor": {
+            "selectedColor": "palette-primary",
+            "contrastingColor": "palette-primary-contrast"
+          },
+          "visibleOnLivePage": true
+        },
+        "brandName": {
+          "text": {
+            "field": "",
+            "constantValue": "[[name]]",
+            "constantValueEnabled": true
+          },
+          "styles": {
+            "fontSize": "default",
+            "fontStyle": "default",
+            "fontFamily": "default",
+            "fontWeight": "default",
+            "textTransform": "default"
+          }
+        },
+        "socialLinks": [
+          {
+            "icon": {
+              "image": {
+                "field": "",
+                "constantValue": {
+                  "url": "https://a.mktgcdn.com/p/7tT2mgF7Uz5xFTl-R7a6dQd9CvX7EzacDF6BlpTO71c/196x196.png",
+                  "width": 196,
+                  "height": 196,
+                  "alternateText": "Facebook"
+                },
+                "constantValueEnabled": true
+              }
+            },
+            "link": {
+              "field": "",
+              "constantValue": "#",
+              "constantValueEnabled": true
+            },
+            "label": {
+              "field": "",
+              "constantValue": "Facebook",
+              "constantValueEnabled": true
+            }
+          },
+          {
+            "icon": {
+              "image": {
+                "field": "",
+                "constantValue": {
+                  "url": "https://a.mktgcdn.com/p/yTPPH5E_uAQyzqBbeK3FqmsFtBJXzbz_zWKkkz3F3pg/196x196.png",
+                  "width": 196,
+                  "height": 196,
+                  "alternateText": "Instagram"
+                },
+                "constantValueEnabled": true
+              }
+            },
+            "link": {
+              "field": "",
+              "constantValue": "#",
+              "constantValueEnabled": true
+            },
+            "label": {
+              "field": "",
+              "constantValue": "Instagram",
+              "constantValueEnabled": true
+            }
+          },
+          {
+            "icon": {
+              "image": {
+                "field": "",
+                "constantValue": {
+                  "url": "https://a.mktgcdn.com/p/5somDf8PPy-sFAiMAtBBvW0k_MfdIluteCfmjQ42sgc/196x245.png",
+                  "width": 196,
+                  "height": 196,
+                  "alternateText": "Yelp"
+                },
+                "constantValueEnabled": true
+              }
+            },
+            "link": {
+              "field": "",
+              "constantValue": "#",
+              "constantValueEnabled": true
+            },
+            "label": {
+              "field": "",
+              "constantValue": "Yelp",
+              "constantValueEnabled": true
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

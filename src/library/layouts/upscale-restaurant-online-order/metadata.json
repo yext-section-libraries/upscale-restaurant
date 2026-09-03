@@ -1,0 +1,11 @@
+{
+  "id": "upscale-restaurant-online-order",
+  "displayName": "Upscale Restaurant (Online Ordering)",
+  "vertical": [
+    "FOOD_AND_DINING"
+  ],
+  "purpose": [
+    "CITATION"
+  ],
+  "pageSetType": "ENTITY"
+}
