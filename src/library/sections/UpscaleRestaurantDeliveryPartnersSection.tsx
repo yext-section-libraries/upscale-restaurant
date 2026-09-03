@@ -176,7 +176,7 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
   },
 };
 
-const UpscaleRestaurantOnlineOrderCss = `
+const UpscaleRestaurantCss = `
 .fb-page {
   font-family: var(--fontFamily-body-fontFamily);
   font-size: var(--fontSize-body-fontSize);
@@ -298,7 +298,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
         style={pageStyle}
         background={props.section.backgroundColor}
       >
-        <style>{UpscaleRestaurantOnlineOrderCss}</style>
+        <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section">
           <div className="fb-container">
             <EntityField
@@ -354,7 +354,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
   );
 };
 
-export const UpscaleRestaurantOnlineOrderDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
+export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
   {
     label: "Delivery Partners Section",
     fields: deliveryPartnersFields,
@@ -363,7 +363,7 @@ export const UpscaleRestaurantOnlineOrderDeliveryPartnersSection: YextComponentC
   };
 
 export const config: SectionConfig = {
-  id: "UpscaleRestaurantOnlineOrderDeliveryPartnersSection",
+  id: "UpscaleRestaurantDeliveryPartnersSection",
   displayName: "Delivery Partners Section",
   description: "Delivery Partners Section",
   pageSetTypes: ["ENTITY"],

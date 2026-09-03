@@ -17,9 +17,9 @@
   "zones": {},
   "content": [
     {
-      "type": "UpscaleRestaurantOnlineOrderHeaderSection",
+      "type": "UpscaleRestaurantHeaderSection",
       "props": {
-        "id": "UpscaleRestaurantOnlineOrderHeaderSection-4c26bf97-9b38-4972-a906-a3df4df107b6",
+        "id": "UpscaleRestaurantHeaderSection-4c26bf97-9b38-4972-a906-a3df4df107b6",
         "cta": {
           "show": true,
           "items": [
@@ -231,9 +231,9 @@
         "id": "MainContent-default",
         "content": [
           {
-            "type": "UpscaleRestaurantOnlineOrderBreadcrumbsSection",
+            "type": "UpscaleRestaurantBreadcrumbsSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderBreadcrumbsSection-919cf37e-6519-4c61-8e2e-af5827fe8db1",
+              "id": "UpscaleRestaurantBreadcrumbsSection-919cf37e-6519-4c61-8e2e-af5827fe8db1",
               "section": {
                 "backgroundColor": {
                   "selectedColor": "white",
@@ -256,14 +256,28 @@
                     "textTransform": "default"
                   }
                 },
-                "includeCurrentLocation": true
+                "includeCurrentPage": true,
+                "currentPage": {
+                  "text": {
+                    "field": "name",
+                    "constantValue": "",
+                    "constantValueEnabled": false
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                }
               }
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderHeroSection",
+            "type": "UpscaleRestaurantHeroSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderHeroSection-6b6666e1-498d-498d-b7bc-fad8b575397a",
+              "id": "UpscaleRestaurantHeroSection-6b6666e1-498d-498d-b7bc-fad8b575397a",
               "hero": {
                 "ctas": [
                   {
@@ -340,6 +354,9 @@
                       "alternateText": "Hero image"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "borderRadius": "default"
                   }
                 },
                 "heading": {
@@ -401,9 +418,9 @@
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderDeliveryPartnersSection",
+            "type": "UpscaleRestaurantDeliveryPartnersSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderDeliveryPartnersSection-e6411552-5371-4316-83ff-c715a857be30",
+              "id": "UpscaleRestaurantDeliveryPartnersSection-e6411552-5371-4316-83ff-c715a857be30",
               "ctas": [
                 {
                   "cta": {
@@ -507,9 +524,9 @@
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderDetailsSection",
+            "type": "UpscaleRestaurantDetailsSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderDetailsSection-c321a741-feb6-41b0-b63e-56d1d69db4c7",
+              "id": "UpscaleRestaurantDetailsSection-c321a741-feb6-41b0-b63e-56d1d69db4c7",
               "details": {
                 "hours": {
                   "field": "hours",
@@ -565,11 +582,7 @@
                 "phones": {
                   "items": [
                     {
-                      "label": {
-                        "field": "",
-                        "constantValue": "",
-                        "constantValueEnabled": true
-                      },
+                      "label": "",
                       "number": {
                         "field": "",
                         "constantValue": "+1 (512) 555-0148",
@@ -655,8 +668,22 @@
                     "textTransform": "default"
                   }
                 },
-                "showThirdColumn": true,
-                "thirdColumnDetails": {
+                "showOtherDetails": true,
+                "otherHeading": {
+                  "text": {
+                    "field": "",
+                    "constantValue": "Order Online Details",
+                    "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
+                  }
+                },
+                "otherDetails": {
                   "text": {
                     "field": "",
                     "constantValue": [
@@ -675,20 +702,6 @@
                     "fontWeight": "default",
                     "textTransform": "default"
                   }
-                },
-                "thirdColumnHeading": {
-                  "text": {
-                    "field": "",
-                    "constantValue": "Order Online Details",
-                    "constantValueEnabled": true
-                  },
-                  "styles": {
-                    "fontSize": "default",
-                    "fontStyle": "default",
-                    "fontFamily": "default",
-                    "fontWeight": "default",
-                    "textTransform": "default"
-                  }
                 }
               },
               "section": {
@@ -696,14 +709,18 @@
                   "selectedColor": "white",
                   "contrastingColor": "black"
                 },
-                "visibleOnLivePage": true
+                "visibleOnLivePage": true,
+                "cardBackgroundColor": {
+                  "selectedColor": "[#f6f4ef]",
+                  "contrastingColor": "black"
+                }
               }
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderFeaturedItemsSection",
+            "type": "UpscaleRestaurantFeaturedItemsSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderFeaturedItemsSection-e8add217-c6e8-4b69-a402-b093f10eb75e",
+              "id": "UpscaleRestaurantFeaturedItemsSection-e8add217-c6e8-4b69-a402-b093f10eb75e",
               "heading": {
                 "text": {
                   "field": "",
@@ -733,19 +750,7 @@
                 "data": {
                   "field": "",
                   "mappings": {
-                    "image": {
-                      "field": "",
-                      "constantValueEnabled": false
-                    },
                     "title": {
-                      "field": "",
-                      "constantValueEnabled": false
-                    },
-                    "ctaLink": {
-                      "field": "",
-                      "constantValueEnabled": false
-                    },
-                    "ctaLabel": {
                       "field": "",
                       "constantValueEnabled": false
                     },
@@ -753,36 +758,26 @@
                       "field": "",
                       "constantValueEnabled": false
                     },
-                    "openInNewTab": {
+                    "image": {
                       "field": "",
                       "constantValueEnabled": false
+                    },
+                    "cta": {
+                      "label": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      },
+                      "link": {
+                        "field": "",
+                        "constantValueEnabled": false
+                      }
                     }
                   },
                   "constantValue": [
                     {
-                      "image": {
-                        "field": "",
-                        "constantValue": {
-                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
-                          "width": 1267,
-                          "height": 1900,
-                          "alternateText": "Featured item image"
-                        },
-                        "constantValueEnabled": true
-                      },
                       "title": {
                         "field": "",
                         "constantValue": "Smokehouse Burger",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLink": {
-                        "field": "",
-                        "constantValue": "#",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLabel": {
-                        "field": "",
-                        "constantValue": "Learn More",
                         "constantValueEnabled": true
                       },
                       "description": {
@@ -796,36 +791,36 @@
                         },
                         "constantValueEnabled": true
                       },
-                      "openInNewTab": {
-                        "field": "",
-                        "constantValue": false,
-                        "constantValueEnabled": true
-                      }
-                    },
-                    {
                       "image": {
                         "field": "",
                         "constantValue": {
-                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "url": "https://a.mktgcdn.com/p/Qdlacb36DqN5Lt3q6V9jw-qSMmbPyl_AeMEI_CyDkHc/1267x1900.jpg",
                           "width": 1267,
                           "height": 1900,
                           "alternateText": "Featured item image"
                         },
                         "constantValueEnabled": true
                       },
+                      "cta": {
+                        "label": {
+                          "field": "",
+                          "constantValue": "Learn More",
+                          "constantValueEnabled": true
+                        },
+                        "link": {
+                          "field": "",
+                          "constantValue": "#",
+                          "constantValueEnabled": true
+                        },
+                        "linkType": "URL",
+                        "normalizeLink": false,
+                        "openInNewTab": false
+                      }
+                    },
+                    {
                       "title": {
                         "field": "",
                         "constantValue": "Chicken Sandwich",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLink": {
-                        "field": "",
-                        "constantValue": "#",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLabel": {
-                        "field": "",
-                        "constantValue": "Learn More",
                         "constantValueEnabled": true
                       },
                       "description": {
@@ -839,36 +834,36 @@
                         },
                         "constantValueEnabled": true
                       },
-                      "openInNewTab": {
-                        "field": "",
-                        "constantValue": false,
-                        "constantValueEnabled": true
-                      }
-                    },
-                    {
                       "image": {
                         "field": "",
                         "constantValue": {
-                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
                           "width": 1267,
                           "height": 1900,
                           "alternateText": "Featured item image"
                         },
                         "constantValueEnabled": true
                       },
+                      "cta": {
+                        "label": {
+                          "field": "",
+                          "constantValue": "Learn More",
+                          "constantValueEnabled": true
+                        },
+                        "link": {
+                          "field": "",
+                          "constantValue": "#",
+                          "constantValueEnabled": true
+                        },
+                        "linkType": "URL",
+                        "normalizeLink": false,
+                        "openInNewTab": false
+                      }
+                    },
+                    {
                       "title": {
                         "field": "",
                         "constantValue": "Hill Country Steak Salad",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLink": {
-                        "field": "",
-                        "constantValue": "#",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLabel": {
-                        "field": "",
-                        "constantValue": "Learn More",
                         "constantValueEnabled": true
                       },
                       "description": {
@@ -882,36 +877,36 @@
                         },
                         "constantValueEnabled": true
                       },
-                      "openInNewTab": {
-                        "field": "",
-                        "constantValue": false,
-                        "constantValueEnabled": true
-                      }
-                    },
-                    {
                       "image": {
                         "field": "",
                         "constantValue": {
-                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "url": "https://a.mktgcdn.com/p/fbSbItkZpsHpkc8qHH7GxvQkWzxsfm6mGc0k4Lmfl-A/1267x1900.jpg",
                           "width": 1267,
                           "height": 1900,
                           "alternateText": "Featured item image"
                         },
                         "constantValueEnabled": true
                       },
+                      "cta": {
+                        "label": {
+                          "field": "",
+                          "constantValue": "Learn More",
+                          "constantValueEnabled": true
+                        },
+                        "link": {
+                          "field": "",
+                          "constantValue": "#",
+                          "constantValueEnabled": true
+                        },
+                        "linkType": "URL",
+                        "normalizeLink": false,
+                        "openInNewTab": false
+                      }
+                    },
+                    {
                       "title": {
                         "field": "",
                         "constantValue": "Black Truffle Mac & Cheese",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLink": {
-                        "field": "",
-                        "constantValue": "#",
-                        "constantValueEnabled": true
-                      },
-                      "ctaLabel": {
-                        "field": "",
-                        "constantValue": "Learn More",
                         "constantValueEnabled": true
                       },
                       "description": {
@@ -925,10 +920,30 @@
                         },
                         "constantValueEnabled": true
                       },
-                      "openInNewTab": {
+                      "image": {
                         "field": "",
-                        "constantValue": false,
+                        "constantValue": {
+                          "url": "https://a.mktgcdn.com/p/UHR6VTEvcR-yDMqPSOS7LyK87Qt56EOrmfNbhLQxI08/1267x1900.jpg",
+                          "width": 1267,
+                          "height": 1900,
+                          "alternateText": "Featured item image"
+                        },
                         "constantValueEnabled": true
+                      },
+                      "cta": {
+                        "label": {
+                          "field": "",
+                          "constantValue": "Learn More",
+                          "constantValueEnabled": true
+                        },
+                        "link": {
+                          "field": "",
+                          "constantValue": "#",
+                          "constantValueEnabled": true
+                        },
+                        "linkType": "URL",
+                        "normalizeLink": false,
+                        "openInNewTab": false
                       }
                     }
                   ],
@@ -936,7 +951,16 @@
                 },
                 "styles": {
                   "cta": {
-                    "variant": "link"
+                    "variant": "link",
+                    "styles": {
+                      "fontSize": "default",
+                      "fontStyle": "default",
+                      "fontFamily": "default",
+                      "fontWeight": "default",
+                      "includeCaret": "default",
+                      "letterSpacing": "default",
+                      "textTransform": "default"
+                    }
                   },
                   "image": {
                     "styles": {
@@ -966,9 +990,9 @@
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderAboutSection",
+            "type": "UpscaleRestaurantAboutSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderAboutSection-13fcc136-f2b5-4957-8c5d-e86b820da8f6",
+              "id": "UpscaleRestaurantAboutSection-13fcc136-f2b5-4957-8c5d-e86b820da8f6",
               "about": {
                 "image": {
                   "image": {
@@ -1031,157 +1055,129 @@
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderFaqSection",
+            "type": "UpscaleRestaurantFaqSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderFaqSection-b61c4244-df9a-4515-a5f4-49024f192e53",
+              "id": "UpscaleRestaurantFaqSection-b61c4244-df9a-4515-a5f4-49024f192e53",
               "faqs": {
                 "items": {
                   "field": "",
                   "mappings": {
-                    "answer": {
-                      "text": {
-                        "field": "",
-                        "constantValueEnabled": false
-                      }
-                    },
                     "question": {
-                      "text": {
-                        "field": "",
-                        "constantValueEnabled": false
-                      }
+                      "field": "",
+                      "constantValueEnabled": false
+                    },
+                    "answer": {
+                      "field": "",
+                      "constantValueEnabled": false
                     }
                   },
                   "constantValue": [
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "Can I order [[name]] online?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "Can I order [[name]] online?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers online ordering for takeout, delivery, and curbside pickup from the [[address.city]] location, making it easy to place your order ahead for lunch, dinner, or weekend brunch.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     },
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "What delivery apps deliver [[name]]?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "What delivery apps deliver [[name]]?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] is available through popular third-party delivery platforms such as DoorDash, Uber Eats, and Postmates, though app availability can vary based on your address and service hours.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     },
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "How long does [[name]] delivery take?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "How long does [[name]] delivery take?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Delivery times for [[name]] from [[address.city]] usually depend on order size, traffic, and demand, but most orders arrive within about 30 to 60 minutes after they are confirmed by the restaurant and delivery partner.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     },
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "Does [[name]] offer free delivery?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "Does [[name]] offer free delivery?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"[[name]] at [[address.city]] may occasionally be included in free-delivery promotions through select delivery apps, but standard delivery fees and service charges typically depend on the platform you choose and your delivery address.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     },
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "What is the minimum order for [[name]] delivery?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "What is the minimum order for [[name]] delivery?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"The minimum order for [[name]] delivery from [[address.city]] can vary by delivery app and promotion, so the most accurate minimum subtotal will appear during checkout on the ordering platform you select.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     },
                     {
-                      "answer": {
-                        "text": {
-                          "field": "",
-                          "constantValue": {
-                            "defaultValue": {
-                              "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.</span></p>",
-                              "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
-                            },
-                            "hasLocalizedValue": "true"
-                          },
-                          "constantValueEnabled": true
-                        }
-                      },
                       "question": {
-                        "text": {
-                          "field": "",
-                          "constantValue": "Can I order [[name]] for pickup?",
-                          "constantValueEnabled": true
-                        }
+                        "field": "",
+                        "constantValue": "Can I order [[name]] for pickup?",
+                        "constantValueEnabled": true
+                      },
+                      "answer": {
+                        "field": "",
+                        "constantValue": {
+                          "defaultValue": {
+                            "html": "<p dir=\"ltr\" style=\"font-size: 14.67px; font-weight: 400; line-height: 18.67px; margin: 0; padding: 3px 2px 3px 2px; position: relative;\"><span>Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.</span></p>",
+                            "json": "{\"root\":{\"children\":[{\"children\":[{\"detail\":0,\"format\":0,\"mode\":\"normal\",\"style\":\"\",\"text\":\"Yes. [[name]] offers pickup ordering at the [[address.city]] location, including takeout and curbside pickup options for guests who want a faster, more convenient way to grab their meal.\",\"type\":\"text\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"paragraph\",\"version\":1}],\"direction\":\"ltr\",\"format\":\"\",\"indent\":0,\"type\":\"root\",\"version\":1}}"
+                          },
+                          "hasLocalizedValue": "true"
+                        },
+                        "constantValueEnabled": true
                       }
                     }
                   ],
@@ -1232,9 +1228,9 @@
             }
           },
           {
-            "type": "UpscaleRestaurantOnlineOrderEventSection",
+            "type": "UpscaleRestaurantEventSection",
             "props": {
-              "id": "UpscaleRestaurantOnlineOrderEventSection-6d793ea4-7031-4fe1-9477-02fe4595946f",
+              "id": "UpscaleRestaurantEventSection-6d793ea4-7031-4fe1-9477-02fe4595946f",
               "event": {
                 "cta": {
                   "data": {
@@ -1315,46 +1311,49 @@
       }
     },
     {
-      "type": "UpscaleRestaurantOnlineOrderFooterSection",
+      "type": "UpscaleRestaurantFooterSection",
       "props": {
-        "id": "UpscaleRestaurantOnlineOrderFooterSection-a037f9e2-daa8-41b8-9892-270a888e57d1",
+        "id": "UpscaleRestaurantFooterSection-a037f9e2-daa8-41b8-9892-270a888e57d1",
         "footer": {
           "legalLinks": [
             {
-              "link": {
-                "field": "",
-                "constantValue": "#",
-                "constantValueEnabled": true
-              },
               "label": {
-                "field": "",
-                "constantValue": "Privacy",
-                "constantValueEnabled": true
-              }
+                "defaultValue": "Privacy",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "link": {
-                "field": "",
-                "constantValue": "#",
-                "constantValueEnabled": true
-              },
               "label": {
-                "field": "",
-                "constantValue": "Terms",
-                "constantValueEnabled": true
-              }
+                "defaultValue": "Terms",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "link": {
-                "field": "",
-                "constantValue": "#",
-                "constantValueEnabled": true
-              },
               "label": {
-                "field": "",
-                "constantValue": "Accessibility",
-                "constantValueEnabled": true
-              }
+                "defaultValue": "Accessibility",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             }
           ],
           "linkStyles": {
@@ -1368,116 +1367,108 @@
           },
           "quickLinks": [
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Menu",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Menu",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Order Online",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Order Online",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Reservations",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Reservations",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Group Events",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Group Events",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Catering",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Catering",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Careers",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Careers",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Gift Cards",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Gift Cards",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             },
             {
-              "cta": {
-                "field": "",
-                "selectedType": "textAndLink",
-                "constantValue": {
-                  "link": "#",
-                  "label": "Contact",
-                  "ctaType": "textAndLink",
-                  "openInNewTab": false,
-                  "normalizeLink": false
-                },
-                "constantValueEnabled": true
-              }
+              "label": {
+                "defaultValue": "Contact",
+                "hasLocalizedValue": "true"
+              },
+              "link": {
+                "defaultValue": "#",
+                "hasLocalizedValue": "true"
+              },
+              "linkType": "URL",
+              "openInNewTab": false,
+              "normalizeLink": false
             }
           ],
           "description": {
@@ -1491,13 +1482,6 @@
                 "hasLocalizedValue": "true"
               },
               "constantValueEnabled": true
-            },
-            "styles": {
-              "fontSize": "default",
-              "fontStyle": "default",
-              "fontFamily": "default",
-              "fontWeight": "default",
-              "textTransform": "default"
             }
           },
           "copyrightText": {
@@ -1564,16 +1548,8 @@
                 "constantValueEnabled": true
               }
             },
-            "link": {
-              "field": "",
-              "constantValue": "#",
-              "constantValueEnabled": true
-            },
-            "label": {
-              "field": "",
-              "constantValue": "Facebook",
-              "constantValueEnabled": true
-            }
+            "link": "#",
+            "label": "Facebook"
           },
           {
             "icon": {
@@ -1588,16 +1564,8 @@
                 "constantValueEnabled": true
               }
             },
-            "link": {
-              "field": "",
-              "constantValue": "#",
-              "constantValueEnabled": true
-            },
-            "label": {
-              "field": "",
-              "constantValue": "Instagram",
-              "constantValueEnabled": true
-            }
+            "link": "#",
+            "label": "Instagram"
           },
           {
             "icon": {
@@ -1612,16 +1580,8 @@
                 "constantValueEnabled": true
               }
             },
-            "link": {
-              "field": "",
-              "constantValue": "#",
-              "constantValueEnabled": true
-            },
-            "label": {
-              "field": "",
-              "constantValue": "Yelp",
-              "constantValueEnabled": true
-            }
+            "link": "#",
+            "label": "Yelp"
           }
         ]
       }

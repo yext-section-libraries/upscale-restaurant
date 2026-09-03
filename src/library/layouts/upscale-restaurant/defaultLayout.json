@@ -384,6 +384,13 @@
                       "hasLocalizedValue": "true"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
                   }
                 }
               },
@@ -395,6 +402,10 @@
               "section": {
                 "visibleOnLivePage": true,
                 "cardBackgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                },
+                "backgroundColor": {
                   "selectedColor": "white",
                   "contrastingColor": "black"
                 }
@@ -582,7 +593,8 @@
                     "fontWeight": "default",
                     "textTransform": "default"
                   }
-                }
+                },
+                "showOtherDetails": true
               },
               "section": {
                 "backgroundColor": {
@@ -766,6 +778,13 @@
                       "hasLocalizedValue": "true"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
                   }
                 },
                 "heading": {
@@ -991,7 +1010,8 @@
                       "includeCaret": "default",
                       "letterSpacing": "default",
                       "textTransform": "default"
-                    }
+                    },
+                    "variant": "link"
                   },
                   "image": {
                     "styles": {
@@ -1132,6 +1152,13 @@
                       "hasLocalizedValue": "true"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
                   }
                 }
               },

@@ -42,6 +42,8 @@ type StyledTextStyleProps = {
 type StyledLinkStyleProps = {
   styles: StyledLinkValue;
   fontColor?: ThemeColor;
+  variant: "primary" | "secondary" | "link";
+  color?: ThemeColor;
 };
 
 type FeaturedItemCtaProps = {
@@ -359,6 +361,8 @@ const defaultProps: FeaturedItemsSectionProps = {
       cta: {
         styles: defaultLinkStyles,
         fontColor: undefined,
+        variant: "link",
+        color: undefined,
       },
     },
   },
@@ -471,6 +475,20 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
                 label: "Font Color",
                 type: "basicSelector",
                 options: "SITE_COLOR",
+              },
+              variant: {
+                label: "Variant",
+                type: "select",
+                options: [
+                  { label: "Primary", value: "primary" },
+                  { label: "Secondary", value: "secondary" },
+                  { label: "Link", value: "link" },
+                ],
+              },
+              color: {
+                label: "Color",
+                type: "basicSelector",
+                options: "BACKGROUND_COLOR",
               },
             },
           },
@@ -787,8 +805,10 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                             openInNewTab: item.cta.openInNewTab,
                           },
                           styles: {
-                            variant: "link",
-                            color: props.featuredItems.styles.cta.fontColor,
+                            variant: props.featuredItems.styles.cta.variant,
+                            color:
+                              props.featuredItems.styles.cta.color ??
+                              props.featuredItems.styles.cta.fontColor,
                             link: props.featuredItems.styles.cta.styles,
                           },
                         }

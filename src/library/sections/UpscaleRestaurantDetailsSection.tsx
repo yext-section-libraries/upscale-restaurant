@@ -72,6 +72,7 @@ type DetailsSectionProps = {
     showCountry: boolean;
     phoneHeading: StyledTextProps;
     phones: PhoneFieldProps;
+    showOtherDetails: boolean;
     otherHeading: StyledTextProps;
     otherDetails: TextListProps;
     links: LinkItemProps[];
@@ -223,6 +224,7 @@ const defaultProps: DetailsSectionProps = {
       phoneFormat: "domestic",
       includeHyperlink: false,
     },
+    showOtherDetails: true,
     otherHeading: makeText("Other Details"),
     otherDetails: makeTextList([
       "Price range: $$",
@@ -426,6 +428,14 @@ const detailsFields: YextFields<DetailsSectionProps> = {
             options: "SITE_COLOR",
           },
         },
+      },
+      showOtherDetails: {
+        label: "Show Other Details",
+        type: "radio",
+        options: [
+          { label: "Yes", value: true },
+          { label: "No", value: false },
+        ],
       },
       otherDetails: {
         label: "Other Details",
@@ -878,17 +888,19 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                     );
                   })}
                 </div>
-                <div className="fb-detail-group">
-                  <EntityField
-                    displayName="Other Heading"
-                    fieldId={props.details.otherHeading.text.field}
-                    constantValueEnabled={
-                      props.details.otherHeading.text.constantValueEnabled
-                    }
-                  >
-                    <h3 style={otherHeadingStyle}>{otherHeading}</h3>
-                  </EntityField>
-                </div>
+                {props.details.showOtherDetails ? (
+                  <div className="fb-detail-group">
+                    <EntityField
+                      displayName="Other Heading"
+                      fieldId={props.details.otherHeading.text.field}
+                      constantValueEnabled={
+                        props.details.otherHeading.text.constantValueEnabled
+                      }
+                    >
+                      <h3 style={otherHeadingStyle}>{otherHeading}</h3>
+                    </EntityField>
+                  </div>
+                ) : null}
                 <div className="fb-detail-links">
                   {props.details.links.map((link, index) => (
                     <EntityField
@@ -905,23 +917,25 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                     </EntityField>
                   ))}
                 </div>
-                <EntityField
-                  displayName="Other Details"
-                  fieldId={props.details.otherDetails.text.field}
-                  constantValueEnabled={
-                    props.details.otherDetails.text.constantValueEnabled
-                  }
-                >
-                  <div className="fb-detail-list">
-                    {otherDetails?.map((detail, index) => (
-                      <p key={`${index}`} style={otherDetailsStyle}>
-                        {typeof detail === "string"
-                          ? detail
-                          : (detail?.defaultValue ?? "")}
-                      </p>
-                    ))}
-                  </div>
-                </EntityField>
+                {props.details.showOtherDetails ? (
+                  <EntityField
+                    displayName="Other Details"
+                    fieldId={props.details.otherDetails.text.field}
+                    constantValueEnabled={
+                      props.details.otherDetails.text.constantValueEnabled
+                    }
+                  >
+                    <div className="fb-detail-list">
+                      {otherDetails?.map((detail, index) => (
+                        <p key={`${index}`} style={otherDetailsStyle}>
+                          {typeof detail === "string"
+                            ? detail
+                            : (detail?.defaultValue ?? "")}
+                        </p>
+                      ))}
+                    </div>
+                  </EntityField>
+                ) : null}
               </Background>
               <Background
                 background={props.section.cardBackgroundColor}

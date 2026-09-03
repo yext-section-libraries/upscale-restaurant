@@ -441,6 +441,13 @@
                       "hasLocalizedValue": "true"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
                   }
                 }
               },
@@ -450,7 +457,11 @@
                 "constantValueEnabled": false
               },
               "section": {
-                "visibleOnLivePage": true
+                "visibleOnLivePage": true,
+                "backgroundColor": {
+                  "selectedColor": "white",
+                  "contrastingColor": "black"
+                }
               },
               "hoursStyles": {
                 "timeFormat": "12h",
@@ -680,6 +691,13 @@
                       "hasLocalizedValue": "true"
                     },
                     "constantValueEnabled": true
+                  },
+                  "styles": {
+                    "fontSize": "default",
+                    "fontStyle": "default",
+                    "fontFamily": "default",
+                    "fontWeight": "default",
+                    "textTransform": "default"
                   }
                 }
               },
@@ -1024,7 +1042,8 @@
                       "includeCaret": "default",
                       "letterSpacing": "default",
                       "textTransform": "default"
-                    }
+                    },
+                    "variant": "link"
                   },
                   "image": {
                     "styles": {

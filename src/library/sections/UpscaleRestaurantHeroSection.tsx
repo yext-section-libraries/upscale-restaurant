@@ -37,6 +37,7 @@ type StyledTextProps = {
 
 type StyledRtfProps = {
   text: YextEntityField<TranslatableRichText>;
+  styles: StyledTextValue;
   fontColor?: ThemeColor;
 };
 
@@ -72,6 +73,7 @@ type HeroSectionProps = {
   };
   section: {
     visibleOnLivePage: boolean;
+    backgroundColor: ThemeColor;
     cardBackgroundColor: ThemeColor;
   };
   hero: {
@@ -117,6 +119,7 @@ const makeRtf = (text: string): StyledRtfProps => ({
     },
     constantValueEnabled: true,
   },
+  styles: defaultTextStyles,
   fontColor: undefined,
 });
 
@@ -218,6 +221,7 @@ const defaultSeparatorTemplate = (params: StatusParams): React.ReactNode => {
 const defaultProps: HeroSectionProps = {
   section: {
     visibleOnLivePage: true,
+    backgroundColor: makeThemeColor("palette-primary-dark", "white"),
     cardBackgroundColor: makeThemeColor("white", "black"),
   },
   hero: {
@@ -261,6 +265,11 @@ const heroFields: YextFields<HeroSectionProps> = {
           { label: "Yes", value: true },
           { label: "No", value: false },
         ],
+      },
+      backgroundColor: {
+        label: "Background Color",
+        type: "basicSelector",
+        options: "BACKGROUND_COLOR",
       },
       cardBackgroundColor: {
         label: "Card Background Color",
@@ -316,6 +325,10 @@ const heroFields: YextFields<HeroSectionProps> = {
             label: "Text",
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
+          },
+          styles: {
+            label: "Text Styles",
+            type: "styledText",
           },
           fontColor: {
             label: "Font Color",
@@ -576,6 +589,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
       getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
   };
   const descriptionStyles = {
+    ...props.hero.description.styles,
     color: getThemeColorCssValue(props.hero.description.fontColor),
   };
   const description = resolveComponentData(
@@ -606,7 +620,10 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
       liveVisibility={props.section.visibleOnLivePage}
       isEditing={props.puck?.isEditing ?? false}
     >
-      <div className="fb-hero-shell">
+      <Background
+        className="fb-hero-shell"
+        background={props.section.backgroundColor}
+      >
         <style>{UpscaleRestaurantCss}</style>
         <header className="fb-site-header">
           <section
@@ -744,7 +761,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
             </Background>
           </section>
         </header>
-      </div>
+      </Background>
     </VisibilityWrapper>
   );
 };

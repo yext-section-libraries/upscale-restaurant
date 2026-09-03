@@ -33,6 +33,7 @@ type StyledTextProps = {
 
 type StyledRtfProps = {
   text: YextEntityField<TranslatableRichText>;
+  styles: StyledTextValue;
   fontColor?: ThemeColor;
 };
 
@@ -118,6 +119,7 @@ const makeRtf = (text: string): StyledRtfProps => ({
     },
     constantValueEnabled: true,
   },
+  styles: defaultTextStyles,
   fontColor: undefined,
 });
 
@@ -244,6 +246,10 @@ const eventFields: YextFields<EventSectionProps> = {
             label: "Text",
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
+          },
+          styles: {
+            label: "Text Styles",
+            type: "styledText",
           },
           fontColor: {
             label: "Font Color",
@@ -413,6 +419,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
     color: headingColor,
   };
   const descriptionStyles = {
+    ...props.event.description.styles,
     color: resolveSelectedColor(props.event.description.fontColor),
   };
   const description = resolveComponentData(

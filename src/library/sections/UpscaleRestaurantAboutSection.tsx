@@ -33,6 +33,7 @@ type StyledTextProps = {
 
 type StyledRtfProps = {
   text: YextEntityField<TranslatableRichText>;
+  styles: StyledTextValue;
   fontColor?: ThemeColor;
 };
 
@@ -52,7 +53,6 @@ type AboutSectionProps = {
   };
 };
 
-type AboutStyle = React.CSSProperties & Record<`--${string}`, string>;
 type ResponsiveImageStyle = React.CSSProperties & {
   "--fb-mobile-image-width"?: string;
 };
@@ -96,6 +96,7 @@ const makeRtf = (text: string): StyledRtfProps => ({
     },
     constantValueEnabled: true,
   },
+  styles: defaultTextStyles,
   fontColor: undefined,
 });
 
@@ -234,6 +235,10 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
             label: "Text",
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
+          },
+          styles: {
+            label: "Text Styles",
+            type: "styledText",
           },
           fontColor: {
             label: "Font Color",
@@ -427,6 +432,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     color: getThemeColorCssValue(props.about.heading.fontColor),
   };
   const contentStyleOverrides = {
+    ...props.about.content.styles,
     color: getThemeColorCssValue(props.about.content.fontColor),
   };
   const content = resolveComponentData(
