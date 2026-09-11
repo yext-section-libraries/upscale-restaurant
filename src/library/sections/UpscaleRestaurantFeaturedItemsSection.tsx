@@ -7,12 +7,9 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
   createItemSource,
-  getDefaultRTF,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
@@ -27,12 +24,17 @@ import {
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  defaultTextStyles,
+  getTextStyle,
+  hasImageSource,
+  makeRtfField,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  resolveSelectedColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type StyledTextStyleProps = {
   styles: StyledTextValue;
@@ -81,14 +83,6 @@ type FeaturedItemsSectionProps = {
   };
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "8px",
 };
@@ -102,33 +96,6 @@ const defaultLinkStyles: StyledLinkValue = {
   letterSpacing: "default",
   includeCaret: "default",
 };
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeRtf = (text: string): YextEntityField<TranslatableRichText> => ({
-  field: "",
-  constantValue: {
-    defaultValue: getDefaultRTF(text),
-    hasLocalizedValue: "true",
-  },
-  constantValueEnabled: true,
-});
 
 const makeImage = (
   url: string,
@@ -162,44 +129,6 @@ const makeCta = (label: string, link: string): FeaturedItemCtaProps => ({
   openInNewTab: false,
 });
 
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
-};
-
-const makeTextStyle = (
-  styles?: Partial<StyledTextValue>,
-): React.CSSProperties => {
-  const resolvedStyles = { ...defaultTextStyles, ...styles };
-
-  return {
-    fontFamily:
-      resolvedStyles.fontFamily === "default"
-        ? undefined
-        : resolvedStyles.fontFamily,
-    fontSize:
-      resolvedStyles.fontSize === "default"
-        ? undefined
-        : resolvedStyles.fontSize,
-    fontWeight:
-      resolvedStyles.fontWeight === "default"
-        ? undefined
-        : resolvedStyles.fontWeight,
-    fontStyle:
-      resolvedStyles.fontStyle === "default"
-        ? undefined
-        : resolvedStyles.fontStyle,
-    textTransform:
-      resolvedStyles.textTransform === "default"
-        ? undefined
-        : resolvedStyles.textTransform,
-  };
-};
-
 const makeImageStyle = (
   styles?: Partial<StyledImageValue>,
 ): React.CSSProperties => {
@@ -212,14 +141,6 @@ const makeImageStyle = (
         : resolvedStyles.borderRadius,
     overflow: "hidden",
   };
-};
-
-const resolveSelectedColor = (color?: ThemeColor): string | undefined => {
-  if (!color?.selectedColor || color.selectedColor === "default") {
-    return undefined;
-  }
-
-  return getThemeColorCssValue(color);
 };
 
 const featuredItemsSource = createItemSource<FeaturedItemProps>({
@@ -289,7 +210,7 @@ const featuredItemsSource = createItemSource<FeaturedItemProps>({
         constantValue: "Smokehouse Burger",
         constantValueEnabled: true,
       },
-      description: makeRtf(
+      description: makeRtfField(
         "A wood-fired double smash burger topped with smoked cheddar, crispy onions, bourbon bacon jam, arugula, and house sauce on a toasted brioche bun. Served with hand-cut fries.",
       ),
       image: makeImage(
@@ -306,7 +227,7 @@ const featuredItemsSource = createItemSource<FeaturedItemProps>({
         constantValue: "Chicken Sandwich",
         constantValueEnabled: true,
       },
-      description: makeRtf(
+      description: makeRtfField(
         "Crispy buttermilk fried chicken layered with hot honey glaze, dill pickles, shredded lettuce, and chipotle aioli on a buttered potato bun. A local favorite during happy hour and weekend brunch.",
       ),
       image: makeImage(
@@ -323,7 +244,7 @@ const featuredItemsSource = createItemSource<FeaturedItemProps>({
         constantValue: "Craft Cocktails",
         constantValueEnabled: true,
       },
-      description: makeRtf(
+      description: makeRtfField(
         "Signature cocktails built with seasonal ingredients, small-batch spirits, and house syrups. Perfect for late-night bites, date nights, and celebratory dinners in downtown [[address.city]].",
       ),
       image: makeImage(
@@ -697,7 +618,7 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
     streamDocument,
   );
   const headingStyle: React.CSSProperties = {
-    ...makeTextStyle(props.heading.styles),
+    ...getTextStyle(props.heading.styles),
     margin: "0 0 28px",
     color: resolveSelectedColor(props.heading.fontColor),
   };
@@ -739,7 +660,7 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                     ? resolveComponentData(item.title, locale, streamDocument)
                     : "";
                   const titleStyle: React.CSSProperties = {
-                    ...makeTextStyle(props.featuredItems.styles.title.styles),
+                    ...getTextStyle(props.featuredItems.styles.title.styles),
                     color: resolveSelectedColor(
                       props.featuredItems.styles.title.fontColor,
                     ),
@@ -755,9 +676,6 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                         item.description,
                         locale,
                         streamDocument,
-                        {
-                          richTextStyleOverrides: descriptionStyles,
-                        },
                       )
                     : "";
                   const imageStyles = makeImageStyle(
@@ -840,14 +758,7 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                       >
                         <h3 style={titleStyle}>{title}</h3>
                         <div className="fb-feature-description">
-                          {typeof description === "string" ? (
-                            <MaybeRTF
-                              data={description}
-                              richTextStyleOverrides={descriptionStyles}
-                            />
-                          ) : (
-                            description
-                          )}
+                          {renderRichText(description, descriptionStyles)}
                         </div>
                         {ctaValue ? (
                           <div className="fb-feature-cta">

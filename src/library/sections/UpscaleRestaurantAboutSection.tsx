@@ -6,36 +6,29 @@ import {
   Background,
   EntityField,
   Image,
-  MaybeRTF,
-  ThemeOptions,
   VisibilityWrapper,
-  getDefaultRTF,
   getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledImageValue,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableRichText,
-  type TranslatableString,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  aspectRatioOptions,
+  getTextStyle,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type AboutSectionProps = {
   section: {
@@ -57,64 +50,9 @@ type ResponsiveImageStyle = React.CSSProperties & {
   "--fb-mobile-image-width"?: string;
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
 };
-
-const makeRtf = (text: string): StyledRtfProps => ({
-  text: {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(text),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-  color: getThemeColorCssValue(text.fontColor),
-});
 
 const makeImageStyle = (
   image: AboutSectionProps["about"]["image"],
@@ -145,15 +83,6 @@ const makeImageStyle = (
       objectPosition: "center",
     },
   };
-};
-
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
 };
 
 const defaultProps: AboutSectionProps = {
@@ -259,7 +188,7 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           aspectRatio: {
             type: "basicSelector",
             label: "Aspect Ratio",
-            options: ThemeOptions.ASPECT_RATIO,
+            options: aspectRatioOptions,
           },
           styles: {
             label: "Image Styles",
@@ -426,7 +355,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     streamDocument,
   );
   const headingStyle: React.CSSProperties = {
-    ...makeTextStyle(props.about.heading),
+    ...getTextStyle(props.about.heading.styles, props.about.heading.fontColor),
     textAlign: "left",
     marginBottom: "14px",
     color: getThemeColorCssValue(props.about.heading.fontColor),
@@ -439,11 +368,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     props.about.content.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: contentStyleOverrides,
-    },
   );
-  const contentIsElement = React.isValidElement(content);
   const image = resolveComponentData(
     props.about.image.image,
     locale,
@@ -489,14 +414,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
                   props.about.content.text.constantValueEnabled
                 }
               >
-                {contentIsElement ? (
-                  content
-                ) : typeof content === "string" ? (
-                  <MaybeRTF
-                    data={content}
-                    richTextStyleOverrides={contentStyleOverrides}
-                  />
-                ) : null}
+                {renderRichText(content, contentStyleOverrides)}
               </EntityField>
             </article>
             {hasImage ? (

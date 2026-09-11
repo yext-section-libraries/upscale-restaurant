@@ -34,9 +34,12 @@ import {
   normalizeLink,
   normalizeThemeColorToken,
   resolveComponentData,
-  ThemeOptions,
   useDocument,
 } from "@yext/visual-editor";
+import {
+  aspectRatioOptions,
+  hasImageSource,
+} from "../shared/sectionHelpers";
 
 type SharedHeaderVariant =
   | "centerLogoSplitNav"
@@ -240,31 +243,6 @@ const normalizeResolvedLink = ({
   return normalizeLink(link, linkType);
 };
 
-const hasImageSource = (
-  image: ImageType | ComplexImageType | TranslatableAssetImage | undefined,
-): boolean => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  if ("url" in image && typeof image.url === "string" && image.url.trim()) {
-    return true;
-  }
-
-  if (
-    "image" in image &&
-    image.image &&
-    typeof image.image === "object" &&
-    "url" in image.image &&
-    typeof image.image.url === "string" &&
-    image.image.url.trim()
-  ) {
-    return true;
-  }
-
-  return false;
-};
-
 const SharedHeaderDefaultUtilityIcon = () => (
   <svg
     fill="none"
@@ -415,7 +393,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
                 aspectRatio: {
                   label: "Aspect Ratio",
                   type: "basicSelector",
-                  options: ThemeOptions.ASPECT_RATIO,
+                  options: aspectRatioOptions,
                 },
                 imageConstrain: {
                   label: "Image Constrain",
@@ -565,7 +543,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
         aspectRatio: {
           label: "Aspect Ratio",
           type: "basicSelector",
-          options: ThemeOptions.ASPECT_RATIO,
+          options: aspectRatioOptions,
         },
         imageConstrain: {
           label: "Image Constrain",

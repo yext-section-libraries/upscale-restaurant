@@ -20,21 +20,18 @@ import {
   useNearbyLocations,
   useTemplateProps,
   mapboxStaticMapStyleOptions,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableString,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
   Background,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type NearbyLocationCardStyles = {
   cardBackgroundColor: string | ThemeColor;
@@ -81,32 +78,6 @@ type StreamDocumentWithLocation = {
   _env?: Record<string, any>;
   yextDisplayCoordinate?: { latitude?: number; longitude?: number };
 };
-
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
 
 const makeNearbyLocationCardStyles = (): NearbyLocationCardStyles => ({
   cardBackgroundColor: makeThemeColor("white", "black"),

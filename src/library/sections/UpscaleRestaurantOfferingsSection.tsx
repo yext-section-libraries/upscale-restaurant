@@ -6,7 +6,6 @@ import {
   Background,
   EntityField,
   Image,
-  ThemeOptions,
   VisibilityWrapper,
   createItemSource,
   getSurfaceColorStyle,
@@ -14,7 +13,6 @@ import {
   resolveComponentData,
   useDocument,
   type StyledImageValue,
-  type StyledTextValue,
   type ThemeColor,
   type TranslatableString,
   type YextComponentConfig,
@@ -22,12 +20,14 @@ import {
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  aspectRatioOptions,
+  getTextStyle,
+  hasImageSource,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
@@ -159,51 +159,9 @@ type ResponsiveImageStyle = React.CSSProperties & {
   "--fb-mobile-image-width"?: string;
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
 };
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-  color: getThemeColorCssValue(text.fontColor),
-});
 
 const makeImageStyle = (
   image: StyledImageProps,
@@ -234,15 +192,6 @@ const makeImageStyle = (
       objectPosition: "center",
     },
   };
-};
-
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
 };
 
 const makeImage = (
@@ -343,7 +292,7 @@ const offeringsFields: YextFields<OfferingsSectionProps> = {
           aspectRatio: {
             label: "Aspect Ratio",
             type: "basicSelector",
-            options: ThemeOptions.ASPECT_RATIO,
+            options: aspectRatioOptions,
           },
           styles: {
             label: "Image Styles",
@@ -509,7 +458,10 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
   );
   const headingColor = getThemeColorCssValue(props.offerings.heading.fontColor);
   const headingStyle: React.CSSProperties = {
-    ...makeTextStyle(props.offerings.heading),
+    ...getTextStyle(
+      props.offerings.heading.styles,
+      props.offerings.heading.fontColor,
+    ),
     margin: "0 0 32px",
     color: headingColor,
   };

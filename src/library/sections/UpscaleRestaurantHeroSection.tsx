@@ -12,34 +12,27 @@ import {
   ComprehensiveCTA,
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
-  getDefaultRTF,
   getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledImageValue,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableRichText,
-  type TranslatableString,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  getTextStyle,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
@@ -92,37 +85,6 @@ type HeroSectionProps = {
   };
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeText = (text: string, field = ""): StyledTextProps => ({
-  text: {
-    field,
-    constantValue: text,
-    constantValueEnabled: field === "",
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeRtf = (text: string): StyledRtfProps => ({
-  text: {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(text),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
 const makeImage = (
   url: string,
   width: number,
@@ -143,15 +105,6 @@ const makeImage = (
     borderRadius: "default",
   },
 });
-
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
-};
 
 const makeCta = (
   label: string,
@@ -176,14 +129,6 @@ const makeCta = (
     variant,
     color: undefined,
   },
-});
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
 });
 
 const isOpen24h = (params: StatusParams): boolean =>
@@ -564,30 +509,11 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const headingStyle: React.CSSProperties = {
-    fontFamily:
-      props.hero.heading.styles.fontFamily === "default"
-        ? undefined
-        : props.hero.heading.styles.fontFamily,
-    fontSize:
-      props.hero.heading.styles.fontSize === "default"
-        ? undefined
-        : props.hero.heading.styles.fontSize,
-    fontWeight:
-      props.hero.heading.styles.fontWeight === "default"
-        ? undefined
-        : props.hero.heading.styles.fontWeight,
-    fontStyle:
-      props.hero.heading.styles.fontStyle === "default"
-        ? undefined
-        : props.hero.heading.styles.fontStyle,
-    textTransform:
-      props.hero.heading.styles.textTransform === "default"
-        ? undefined
-        : props.hero.heading.styles.textTransform,
-    color:
-      getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
-  };
+  const headingStyle = getTextStyle(
+    props.hero.heading.styles,
+    props.hero.heading.fontColor,
+    "currentColor",
+  );
   const descriptionStyles = {
     ...props.hero.description.styles,
     color: getThemeColorCssValue(props.hero.description.fontColor),
@@ -596,12 +522,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
     props.hero.description.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: descriptionStyles,
-    },
   );
-  const descriptionText =
-    typeof description === "string" ? description : undefined;
   const image = resolveComponentData(
     props.hero.image.image,
     locale,
@@ -671,14 +592,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                 }
               >
                 <span className="fb-hero-description">
-                  {descriptionText ? (
-                    <MaybeRTF
-                      data={descriptionText}
-                      richTextStyleOverrides={descriptionStyles}
-                    />
-                  ) : React.isValidElement(description) ? (
-                    description
-                  ) : null}
+                  {renderRichText(description, descriptionStyles)}
                 </span>
               </EntityField>
               <EntityField

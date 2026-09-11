@@ -7,25 +7,21 @@ import {
   EntityField,
   VisibilityWrapper,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveBreadcrumbs,
   resolveComponentData,
   useDocument,
   useTemplateProps,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableString,
   type YextComponentConfig,
-  type YextEntityField,
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  getTextStyle,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type BreadcrumbsSectionProps = {
   puck?: {
@@ -59,14 +55,6 @@ type BreadcrumbsStyle = React.CSSProperties & {
   "--fb-breadcrumb-color"?: string;
   "--fb-breadcrumb-muted-color"?: string;
   "--fb-breadcrumb-border-color"?: string;
-};
-
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
 };
 
 const UpscaleRestaurantBreadcrumbsCss = `
@@ -153,46 +141,11 @@ const UpscaleRestaurantBreadcrumbsCss = `
 }
 `;
 
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (
-  text: string,
-  field = "",
-  constantValueEnabled = true,
-): StyledTextProps => ({
-  text: {
-    field,
-    constantValue: text,
-    constantValueEnabled,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
 const getTextStyles = (
   text: StyledTextProps,
   fallbackColor: string,
-): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-  color: getThemeColorCssValue(text.fontColor) ?? fallbackColor,
-});
+): React.CSSProperties =>
+  getTextStyle(text.styles, text.fontColor, fallbackColor);
 
 const resolveCurrentPageLabel = (
   currentPage: StyledTextProps["text"],

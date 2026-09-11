@@ -5,9 +5,7 @@ import { Link, type ImageType } from "@yext/pages-components";
 import {
   EntityField,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
-  getDefaultRTF,
   getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
@@ -25,6 +23,15 @@ import {
   Background,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
+import {
+  defaultTextStyles,
+  getTextStyle,
+  hasImageSource,
+  makeRtfField,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+} from "../shared/sectionHelpers";
 
 type StyledTextProps = {
   text: YextEntityField<TranslatableString>;
@@ -80,45 +87,10 @@ type FooterSectionProps = {
 
 type FooterStyle = React.CSSProperties & Record<`--${string}`, string>;
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string, field = ""): StyledTextProps => ({
-  text: {
-    field,
-    constantValue: text,
-    constantValueEnabled: field === "",
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
 const makeTextStyle = (): StyledTextStyleProps => ({
   styles: defaultTextStyles,
   fontColor: undefined,
 });
-
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
-};
 
 const linkTypeOptions = () => [
   { label: "URL", value: "URL" },
@@ -192,24 +164,8 @@ const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
 };
 
 const makeRtf = (text: string): StyledRtfProps => ({
-  text: {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(text),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  },
+  text: makeRtfField(text),
   fontColor: undefined,
-});
-
-const getCssTextStyle = (styles: StyledTextValue): React.CSSProperties => ({
-  fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-  fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-  fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-  fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-  textTransform:
-    styles.textTransform === "default" ? undefined : styles.textTransform,
 });
 
 const resolveTextColor = (color: ThemeColor | undefined): string =>
@@ -675,9 +631,6 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     props.footer.description.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: descriptionRichTextStyleOverrides,
-    },
   );
   const quickLinksHeading = resolveComponentData(
     props.footer.quickLinksHeading.text,
@@ -690,7 +643,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     streamDocument,
   );
   const footerLinkTextStyle: React.CSSProperties = {
-    ...getCssTextStyle(props.footer.linkStyles.styles),
+    ...getTextStyle(props.footer.linkStyles.styles),
   };
   const pageStyle: FooterStyle = {
     ...sectionSurfaceStyle,
@@ -702,15 +655,15 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     "--fb-footer-link-hover": "currentColor",
   };
   const brandNameStyle: React.CSSProperties = {
-    ...getCssTextStyle(props.brandName.styles),
+    ...getTextStyle(props.brandName.styles),
     color: resolveTextColor(props.brandName.fontColor),
   };
   const quickLinksHeadingStyle: React.CSSProperties = {
-    ...getCssTextStyle(props.footer.quickLinksHeading.styles),
+    ...getTextStyle(props.footer.quickLinksHeading.styles),
     color: resolveTextColor(props.footer.quickLinksHeading.fontColor),
   };
   const copyrightTextStyle: React.CSSProperties = {
-    ...getCssTextStyle(props.footer.copyrightText.styles),
+    ...getTextStyle(props.footer.copyrightText.styles),
     color: resolveTextColor(props.footer.copyrightText.fontColor),
   };
   const renderLink = (
@@ -778,14 +731,10 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
                   props.footer.description.text.constantValueEnabled
                 }
               >
-                {typeof description === "string" ? (
-                  <MaybeRTF
-                    data={description}
-                    richTextStyleOverrides={descriptionRichTextStyleOverrides}
-                  />
-                ) : React.isValidElement(description) ? (
-                  description
-                ) : null}
+                {renderRichText(
+                  description,
+                  descriptionRichTextStyleOverrides,
+                )}
               </EntityField>
               <div className="fb-footer-socials">
                 {props.socialLinks.map((link, index) => {

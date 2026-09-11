@@ -16,7 +16,6 @@ import {
   EntityField,
   VisibilityWrapper,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledTextValue,
@@ -27,12 +26,13 @@ import {
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  defaultTextStyles,
+  getTextStyle,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type LinkItemProps = {
   cta: ComprehensiveCTAValue;
@@ -97,32 +97,6 @@ type DayOfWeekNames = {
   today?: string;
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
 const makeTextList = (items: string[]): TextListProps => ({
   text: {
     field: "",
@@ -133,37 +107,11 @@ const makeTextList = (items: string[]): TextListProps => ({
   fontColor: undefined,
 });
 
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-  color: getThemeColorCssValue(text.fontColor),
-});
+const makeTextStyle = (text: StyledTextProps): React.CSSProperties =>
+  getTextStyle(text.styles, text.fontColor);
 
-const makeTextListStyle = (text: TextListProps): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-  color: getThemeColorCssValue(text.fontColor),
-});
+const makeTextListStyle = (text: TextListProps): React.CSSProperties =>
+  getTextStyle(text.styles, text.fontColor);
 
 const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
   data: {

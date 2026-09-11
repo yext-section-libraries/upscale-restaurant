@@ -4,10 +4,8 @@ import * as React from "react";
 import {
   Background,
   EntityField,
-  MaybeRTF,
   VisibilityWrapper,
   createItemSource,
-  getDefaultRTF,
   getSurfaceColorStyle,
   getThemeColorCssValue,
   resolveComponentData,
@@ -21,49 +19,22 @@ import {
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  defaultTextStyles,
+  getTextStyle,
+  makeRtfField,
+  makeText,
+  renderRichText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type FaqItemProps = {
   question: YextEntityField<TranslatableString>;
   answer: YextEntityField<TranslatableRichText>;
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
 const toCssColor = (color?: ThemeColor): string | undefined =>
   getThemeColorCssValue(color);
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeFaqAnswerText = (
-  text: string,
-): YextEntityField<TranslatableRichText> => ({
-  field: "",
-  constantValue: {
-    defaultValue: getDefaultRTF(text),
-    hasLocalizedValue: "true",
-  },
-  constantValueEnabled: true,
-});
 
 const faqItemsSource = createItemSource<FaqItemProps>({
   label: "FAQ Items",
@@ -90,7 +61,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Are your dining hours the same as your take-out hours?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+        answer: makeRtfField(
         "Not always. Our takeout and delivery service may remain available slightly later than dine-in seating, especially on weekends. For the most accurate hours, we recommend checking our online ordering page or giving our [[geomodifier]] location a quick call before placing your order.",
       ),
     },
@@ -100,7 +71,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Can I order online?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+        answer: makeRtfField(
         "[[name]] offers online ordering for takeout, curbside pickup, and delivery throughout [[geomodifier]] [[address.city]] and surrounding neighborhoods. Delivery is available through select third-party partners including DoorDash, Uber Eats, and Postmates.",
       ),
     },
@@ -110,7 +81,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Does this location take reservations?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+        answer: makeRtfField(
         "Yes. We accept reservations for parties of up to 6 guests based on availability. Larger groups, birthday dinners, and private dining inquiries can be arranged by contacting our group events coordinator directly. Weekend brunch reservations are highly recommended.",
       ),
     },
@@ -120,7 +91,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Do you have a kids menu?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+      answer: makeRtfField(
         "Absolutely. Our kids menu includes favorites like cheeseburgers, grilled chicken tenders, mac & cheese, and buttered pasta, all served with your choice of fries or fresh fruit and a fountain drink. We also offer kid-friendly dessert options during brunch and dinner service.",
       ),
     },
@@ -130,7 +101,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Do you offer vegetarian or gluten-free options?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+      answer: makeRtfField(
         "[[name]] offers several vegetarian-friendly menu items, including plant-based burgers, salads, and shareable appetizers. Gluten-free buns are available upon request, and our team is happy to help accommodate dietary preferences whenever possible.",
       ),
     },
@@ -140,7 +111,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Is there parking available?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+      answer: makeRtfField(
         "Complimentary parking is available onsite, with additional street parking nearby along [[address.line1]]. Ride-share drop-off is also convenient for guests visiting from [[address.city]].",
       ),
     },
@@ -150,7 +121,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Do you serve brunch?",
         constantValueEnabled: true,
       },
-      answer: makeFaqAnswerText(
+      answer: makeRtfField(
         "Brunch is served on weekends and features signature burgers, breakfast plates, cocktails, and coffee service. It’s a popular time for groups, so reservations are recommended when available.",
       ),
     },
@@ -402,26 +373,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
   );
   const headingColor = toCssColor(props.heading.fontColor);
   const headingStyle: React.CSSProperties = {
-    fontFamily:
-      props.heading.styles.fontFamily === "default"
-        ? undefined
-        : props.heading.styles.fontFamily,
-    fontSize:
-      props.heading.styles.fontSize === "default"
-        ? undefined
-        : props.heading.styles.fontSize,
-    fontWeight:
-      props.heading.styles.fontWeight === "default"
-        ? undefined
-        : props.heading.styles.fontWeight,
-    fontStyle:
-      props.heading.styles.fontStyle === "default"
-        ? undefined
-        : props.heading.styles.fontStyle,
-    textTransform:
-      props.heading.styles.textTransform === "default"
-        ? undefined
-        : props.heading.styles.textTransform,
+    ...getTextStyle(props.heading.styles),
     marginBottom: "28px",
     color: headingColor,
   };
@@ -430,26 +382,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
     streamDocument,
   );
   const questionStyle: React.CSSProperties = {
-    fontFamily:
-      props.faqs.styles.question.styles.fontFamily === "default"
-        ? undefined
-        : props.faqs.styles.question.styles.fontFamily,
-    fontSize:
-      props.faqs.styles.question.styles.fontSize === "default"
-        ? undefined
-        : props.faqs.styles.question.styles.fontSize,
-    fontWeight:
-      props.faqs.styles.question.styles.fontWeight === "default"
-        ? undefined
-        : props.faqs.styles.question.styles.fontWeight,
-    fontStyle:
-      props.faqs.styles.question.styles.fontStyle === "default"
-        ? undefined
-        : props.faqs.styles.question.styles.fontStyle,
-    textTransform:
-      props.faqs.styles.question.styles.textTransform === "default"
-        ? undefined
-        : props.faqs.styles.question.styles.textTransform,
+    ...getTextStyle(props.faqs.styles.question.styles),
     color: toCssColor(props.faqs.styles.question.fontColor),
   };
   const answerRichTextStyles = {
@@ -496,9 +429,6 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
                     item.answer,
                     locale,
                     streamDocument,
-                    {
-                      richTextStyleOverrides: answerRichTextStyles,
-                    },
                   );
 
                   return (
@@ -510,14 +440,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
                         <span style={questionStyle}>{question}</span>
                       </summary>
                       <div className="fb-faq-answer">
-                        {typeof answer === "string" ? (
-                          <MaybeRTF
-                            data={answer}
-                            richTextStyleOverrides={answerRichTextStyles}
-                          />
-                        ) : React.isValidElement(answer) ? (
-                          answer
-                        ) : null}
+                        {renderRichText(answer, answerRichTextStyles)}
                       </div>
                     </details>
                   );

@@ -6,36 +6,28 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  getDefaultRTF,
   getSurfaceColorStyle,
-  getThemeColorCssValue,
   Image,
-  MaybeRTF,
   VisibilityWrapper,
   resolveComponentData,
   useDocument,
   type ComprehensiveCTAValue,
-  type StyledTextValue,
-  type ThemeColor,
-  type TranslatableRichText,
-  type TranslatableString,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
-
-type StyledRtfProps = {
-  text: YextEntityField<TranslatableRichText>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  getTextStyle,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  resolveSelectedColor,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
@@ -56,72 +48,10 @@ type EventSectionProps = {
   };
 };
 
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
 const eventOverlayBackground = makeThemeColor(
   "palette-quaternary",
   "palette-quaternary-contrast",
 );
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties => ({
-  fontFamily:
-    text.styles.fontFamily === "default" ? undefined : text.styles.fontFamily,
-  fontSize:
-    text.styles.fontSize === "default" ? undefined : text.styles.fontSize,
-  fontWeight:
-    text.styles.fontWeight === "default" ? undefined : text.styles.fontWeight,
-  fontStyle:
-    text.styles.fontStyle === "default" ? undefined : text.styles.fontStyle,
-  textTransform:
-    text.styles.textTransform === "default"
-      ? undefined
-      : text.styles.textTransform,
-});
-
-const resolveSelectedColor = (color?: ThemeColor): string | undefined => {
-  if (!color?.selectedColor || color.selectedColor === "default") {
-    return undefined;
-  }
-
-  return getThemeColorCssValue(color);
-};
-
-const makeRtf = (text: string): StyledRtfProps => ({
-  text: {
-    field: "",
-    constantValue: {
-      defaultValue: getDefaultRTF(text),
-      hasLocalizedValue: "true",
-    },
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
 
 const makeImage = (
   url: string,
@@ -140,15 +70,6 @@ const makeImage = (
     constantValueEnabled: true,
   },
 });
-
-const hasImageSource = (image: unknown): image is ImageType => {
-  if (!image || typeof image !== "object") {
-    return false;
-  }
-
-  const url = (image as { url?: unknown }).url;
-  return typeof url === "string" && url.trim().length > 0;
-};
 
 const defaultProps: EventSectionProps = {
   section: {
@@ -415,7 +336,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
   const headingColor =
     resolveSelectedColor(props.event.heading.fontColor) ?? "currentColor";
   const headingStyle: React.CSSProperties = {
-    ...makeTextStyle(props.event.heading),
+    ...getTextStyle(props.event.heading.styles),
     color: headingColor,
   };
   const descriptionStyles = {
@@ -426,9 +347,6 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
     props.event.description.text,
     locale,
     streamDocument,
-    {
-      richTextStyleOverrides: descriptionStyles,
-    },
   );
   const image = resolveComponentData(
     props.event.image.image,
@@ -488,14 +406,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
               }
             >
               <div className="fb-event-description">
-                {typeof description === "string" ? (
-                  <MaybeRTF
-                    data={description}
-                    richTextStyleOverrides={descriptionStyles}
-                  />
-                ) : React.isValidElement(description) ? (
-                  description
-                ) : null}
+                {renderRichText(description, descriptionStyles)}
               </div>
             </EntityField>
             <div className="fb-event-cta">

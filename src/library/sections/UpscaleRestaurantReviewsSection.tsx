@@ -10,19 +10,15 @@ import {
   getThemeColorCssValue,
   resolveComponentData,
   useDocument,
-  type StyledTextValue,
   type ThemeColor,
-  type TranslatableString,
   type YextComponentConfig,
-  type YextEntityField,
   type YextFields,
 } from "@yext/visual-editor";
-
-type StyledTextProps = {
-  text: YextEntityField<TranslatableString>;
-  styles: StyledTextValue;
-  fontColor?: ThemeColor;
-};
+import {
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 
 type ReviewsSectionProps = {
   puck?: {
@@ -55,32 +51,6 @@ type StreamDocumentWithReviews = {
     }[];
   }[];
 };
-
-const defaultTextStyles: StyledTextValue = {
-  fontFamily: "default",
-  fontSize: "default",
-  fontWeight: "default",
-  fontStyle: "default",
-  textTransform: "default",
-};
-
-const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({
-  selectedColor,
-  contrastingColor,
-});
-
-const makeText = (text: string): StyledTextProps => ({
-  text: {
-    field: "",
-    constantValue: text,
-    constantValueEnabled: true,
-  },
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
 
 const defaultProps: ReviewsSectionProps = {
   section: {
