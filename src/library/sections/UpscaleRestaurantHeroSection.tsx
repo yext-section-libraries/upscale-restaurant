@@ -1,6 +1,8 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   HoursStatus,
   type HoursType,
@@ -139,18 +141,35 @@ const isIndefinitelyClosed = (params: StatusParams): boolean =>
 
 const hoursCurrentTemplateOverride = (
   params: StatusParams,
+  t: ReturnType<typeof useTranslation>["t"],
 ): React.ReactNode => {
+  if (params.comingSoon) {
+    return (
+      <span className="HoursStatus-current">
+        {t("comingSoon", "Coming Soon")}
+      </span>
+    );
+  }
+
   if (isOpen24h(params)) {
-    return <span className="HoursStatus-current">Open 24 Hours</span>;
+    return (
+      <span className="HoursStatus-current">
+        {t("open24Hours", "Open 24 Hours")}
+      </span>
+    );
   }
 
   if (isIndefinitelyClosed(params)) {
-    return <span className="HoursStatus-current">Temporarily Closed</span>;
+    return (
+      <span className="HoursStatus-current">
+        {t("temporarilyClosed", "Temporarily Closed")}
+      </span>
+    );
   }
 
   return (
     <span className="HoursStatus-current">
-      {params.isOpen ? "Open Now" : "Closed"}
+      {params.isOpen ? t("openNow", "Open Now") : t("closed", "Closed")}
     </span>
   );
 };
@@ -200,94 +219,94 @@ const defaultProps: HeroSectionProps = {
 
 const heroFields: YextFields<HeroSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       cardBackgroundColor: {
-        label: "Card Background Color",
+        label: msg("fields.cardBackgroundColor", "Card Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   hero: {
-    label: "Hero",
+    label: msg("fields.hero", "Hero"),
     type: "object",
     objectFields: {
       image: {
-        label: "Image",
+        label: msg("fields.image", "Image"),
         type: "object",
         objectFields: {
           image: {
-            label: "Image",
+            label: msg("fields.image", "Image"),
             type: "entityField",
             filter: { types: ["type.image"] },
           },
           styles: {
-            label: "Image Styles",
+            label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
           },
         },
       },
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       description: {
-        label: "Description",
+        label: msg("fields.description", "Description"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       ctas: {
-        label: "CTAs",
+        label: msg("fields.ctas", "CTAs"),
         type: "array",
         arrayFields: {
           cta: {
-            label: "Call To Action",
+            label: msg("fields.callToAction", "Call To Action"),
             type: "comprehensiveCTA",
           },
         },
@@ -299,37 +318,37 @@ const heroFields: YextFields<HeroSectionProps> = {
     },
   },
   hours: {
-    label: "Hours",
+    label: msg("fields.hours", "Hours"),
     type: "entityField",
     filter: { types: ["type.hours"] },
     disableConstantValueToggle: true,
   },
   hoursStyles: {
-    label: "Hours Styles",
+    label: msg("fields.hoursStyles", "Hours Styles"),
     type: "object",
     objectFields: {
       showCurrentStatus: {
-        label: "Show Current Status",
+        label: msg("fields.showCurrentStatus", "Show Current Status"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.options.yes", "Yes"), value: true },
+          { label: msg("fields.options.no", "No"), value: false },
         ],
       },
       timeFormat: {
-        label: "Time Format",
+        label: msg("fields.timeFormat", "Time Format"),
         type: "select",
         options: [
-          { label: "12 Hour", value: "12h" },
-          { label: "24 Hour", value: "24h" },
+          { label: msg("fields.options.hour12Label", "12 Hour"), value: "12h" },
+          { label: msg("fields.options.hour24Label", "24 Hour"), value: "24h" },
         ],
       },
       dayOfWeekFormat: {
-        label: "Day Of Week Format",
+        label: msg("fields.dayOfWeekFormatLabel", "Day Of Week Format"),
         type: "select",
         options: [
-          { label: "Short", value: "short" },
-          { label: "Long", value: "long" },
+          { label: msg("fields.options.short", "Short"), value: "short" },
+          { label: msg("fields.options.long", "Long"), value: "long" },
         ],
       },
     },
@@ -501,6 +520,7 @@ const UpscaleRestaurantCss = `
 `;
 
 const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
+  const { t } = useTranslation();
   const streamDocument = useDocument();
   const locale = streamDocument.locale ?? "en";
   const timezone = streamDocument.timezone ?? "UTC";
@@ -552,7 +572,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
           >
             {hasImageSource(image) ? (
               <EntityField
-                displayName="Image"
+                displayName={pt("image", "Image")}
                 fieldId={props.hero.image.image.field}
                 constantValueEnabled={
                   props.hero.image.image.constantValueEnabled
@@ -576,7 +596,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
               className="fb-hero-card"
             >
               <EntityField
-                displayName="Heading"
+                displayName={pt("heading", "Heading")}
                 fieldId={props.hero.heading.text.field}
                 constantValueEnabled={
                   props.hero.heading.text.constantValueEnabled
@@ -585,7 +605,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                 <h1 style={headingStyle}>{heading}</h1>
               </EntityField>
               <EntityField
-                displayName="Description"
+                displayName={pt("description", "Description")}
                 fieldId={props.hero.description.text.field}
                 constantValueEnabled={
                   props.hero.description.text.constantValueEnabled
@@ -596,7 +616,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                 </span>
               </EntityField>
               <EntityField
-                displayName="Hours"
+                displayName={pt("hours", "Hours")}
                 fieldId={props.hours.field}
                 constantValueEnabled={props.hours.constantValueEnabled}
               >
@@ -632,24 +652,34 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
 
                       let statusText = "";
                       if (!isOpen24h(params) && !isIndefinitelyClosed(params)) {
-                        statusText = params.isOpen
-                          ? dayOfWeek
-                            ? `Closes at ${time} ${dayOfWeek}`
-                            : `Closes at ${time}`
-                          : dayOfWeek
-                            ? `Opens at ${time} ${dayOfWeek}`
-                            : `Opens at ${time}`;
+                        if (params.isOpen) {
+                          statusText = dayOfWeek
+                            ? t(
+                                "closesAtTimeWeek",
+                                "Closes at {{time}} {{dayOfWeek}}",
+                                { time, dayOfWeek },
+                              )
+                            : t("closesAtTime", "Closes at {{time}}", { time });
+                        } else {
+                          statusText = dayOfWeek
+                            ? t(
+                                "opensAtTimeWeek",
+                                "Opens at {{time}} {{dayOfWeek}}",
+                                { time, dayOfWeek },
+                              )
+                            : t("opensAtTime", "Opens at {{time}}", { time });
+                        }
                       }
 
                       return (
                         <div>
-                          {props.hoursStyles.showCurrentStatus
-                            ? hoursCurrentTemplateOverride(params)
+                          {(props.hoursStyles.showCurrentStatus || params.comingSoon)
+                            ? hoursCurrentTemplateOverride(params, t)
                             : null}
-                          {props.hoursStyles.showCurrentStatus
+                          {!params.comingSoon && props.hoursStyles.showCurrentStatus
                             ? defaultSeparatorTemplate(params)
                             : null}
-                          {statusText ? (
+                          {!params.comingSoon && statusText ? (
                             <span className="HoursStatus-future">
                               {statusText}
                             </span>
@@ -664,7 +694,11 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                 {props.hero.ctas.map((cta, index) => (
                   <EntityField
                     key={index}
-                    displayName={`Call To Action ${index + 1}`}
+                    displayName={pt(
+                      "callToActionIndex",
+                      "Call To Action {{index}}",
+                      { index: index + 1 },
+                    )}
                     fieldId={cta.cta.data.cta.field}
                     constantValueEnabled={cta.cta.data.cta.constantValueEnabled}
                   >
@@ -682,7 +716,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
 
 export const UpscaleRestaurantHeroSection: YextComponentConfig<HeroSectionProps> =
   {
-    label: "Hero Section",
+    label: msg("components.heroSection", "Hero Section"),
     fields: heroFields,
     defaultProps,
     render: HeroSection,

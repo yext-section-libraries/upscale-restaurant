@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -114,84 +115,84 @@ const defaultProps: AboutSectionProps = {
 
 const aboutSectionFields: YextFields<AboutSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   about: {
-    label: "About",
+    label: msg("fields.about", "About"),
     type: "object",
     objectFields: {
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       content: {
-        label: "Content",
+        label: msg("fields.content", "Content"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       image: {
-        label: "Image",
+        label: msg("fields.image", "Image"),
         type: "object",
         objectFields: {
           image: {
-            label: "Image",
+            label: msg("fields.image", "Image"),
             type: "entityField",
             filter: { types: ["type.image"] },
           },
           aspectRatio: {
             type: "basicSelector",
-            label: "Aspect Ratio",
+            label: msg("fields.aspectRatio", "Aspect Ratio"),
             options: aspectRatioOptions,
           },
           styles: {
-            label: "Image Styles",
+            label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
           },
         },
@@ -399,7 +400,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
               style={hasImage ? undefined : { maxWidth: "none", width: "100%" }}
             >
               <EntityField
-                displayName="Heading"
+                displayName={pt("heading", "Heading")}
                 fieldId={props.about.heading.text.field}
                 constantValueEnabled={
                   props.about.heading.text.constantValueEnabled
@@ -408,7 +409,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
                 <h2 style={headingStyle}>{heading}</h2>
               </EntityField>
               <EntityField
-                displayName="Content"
+                displayName={pt("content", "Content")}
                 fieldId={props.about.content.text.field}
                 constantValueEnabled={
                   props.about.content.text.constantValueEnabled
@@ -420,7 +421,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
             {hasImage ? (
               <div className="fb-about-art">
                 <EntityField
-                  displayName="Image"
+                  displayName={pt("image", "Image")}
                   fieldId={props.about.image.image.field}
                   constantValueEnabled={
                     props.about.image.image.constantValueEnabled
@@ -441,7 +442,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
 
 export const UpscaleRestaurantAboutSection: YextComponentConfig<AboutSectionProps> =
   {
-    label: "About Section",
+    label: msg("components.aboutSection", "About Section"),
     fields: aboutSectionFields,
     defaultProps,
     render: AboutSection,

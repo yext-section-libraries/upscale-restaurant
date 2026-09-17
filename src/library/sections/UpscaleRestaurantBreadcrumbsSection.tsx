@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link } from "@yext/pages-components";
@@ -188,74 +189,74 @@ const defaultProps: BreadcrumbsSectionProps = {
 
 const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   breadcrumbs: {
-    label: "Breadcrumbs",
+    label: msg("fields.breadcrumbs", "Breadcrumbs"),
     type: "object",
     objectFields: {
       rootLabel: {
-        label: "Root Label",
+        label: msg("fields.rootLabel", "Root Label"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       currentPage: {
-        label: "Current Page",
+        label: msg("fields.currentPage", "Current Page"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       includeCurrentPage: {
-        label: "Include Current Location",
+        label: msg("fields.includeCurrentLocation", "Include Current Location"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
     },
@@ -283,8 +284,10 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
           padding: "18px 24px",
         }}
       >
-        No breadcrumbs available (section will be hidden on live page). Create a
-        directory to enable breadcrumbs.
+        {pt(
+          "noBreadcrumbsEditorOnly",
+          "No breadcrumbs available (section will be hidden on live page). Create a directory to enable breadcrumbs.",
+        )}
       </p>
     ) : (
       <></>
@@ -359,7 +362,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
                 if (isCurrentPage && !isRoot) {
                   crumbNode = (
                     <EntityField
-                      displayName="Current Page"
+                      displayName={pt("currentPage", "Current Page")}
                       fieldId={props.breadcrumbs.currentPage.text.field}
                       constantValueEnabled={
                         props.breadcrumbs.currentPage.text.constantValueEnabled
@@ -377,7 +380,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
                 } else if (isRoot) {
                   crumbNode = (
                     <EntityField
-                      displayName="Root Label"
+                      displayName={pt("rootLabel", "Root Label")}
                       fieldId={props.breadcrumbs.rootLabel.text.field}
                       constantValueEnabled={
                         props.breadcrumbs.rootLabel.text.constantValueEnabled
@@ -435,7 +438,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
 
 export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<BreadcrumbsSectionProps> =
   {
-    label: "Breadcrumbs Section",
+    label: msg("components.breadcrumbsSection", "Breadcrumbs Section"),
     fields: breadcrumbsFields,
     defaultProps,
     render: BreadcrumbsSection,

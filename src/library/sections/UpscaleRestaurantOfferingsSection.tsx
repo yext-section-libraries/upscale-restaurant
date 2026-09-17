@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -41,19 +42,19 @@ type OfferingsMenuItemProps = {
 };
 
 const offeringsItemSource = createItemSource<OfferingsMenuItemProps>({
-  label: "Items",
+  label: msg("fields.items", "Items"),
   mappingFields: {
     label: {
-      label: "Label",
+      label: msg("fields.label", "Label"),
       type: "entityField",
       filter: { types: ["type.string"] },
     },
     unavailable: {
-      label: "Unavailable",
+      label: msg("fields.unavailable", "Unavailable"),
       type: "radio",
       options: [
-        { label: "Yes", value: true },
-        { label: "No", value: false },
+        { label: msg("fields.yes", "Yes"), value: true },
+        { label: msg("fields.no", "No"), value: false },
       ],
     },
   },
@@ -238,70 +239,70 @@ const defaultProps: OfferingsSectionProps = {
 
 const offeringsFields: YextFields<OfferingsSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   offerings: {
-    label: "Offerings",
+    label: msg("fields.offerings", "Offerings"),
     type: "object",
     objectFields: {
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       image: {
-        label: "Image",
+        label: msg("fields.image", "Image"),
         type: "object",
         objectFields: {
           image: {
-            label: "Image",
+            label: msg("fields.image", "Image"),
             type: "entityField",
             filter: { types: ["type.image"] },
           },
           aspectRatio: {
-            label: "Aspect Ratio",
+            label: msg("fields.aspectRatio", "Aspect Ratio"),
             type: "basicSelector",
             options: aspectRatioOptions,
           },
           styles: {
-            label: "Image Styles",
+            label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
           },
         },
       },
       items: {
-        label: "Items",
+        label: msg("fields.items", "Items"),
         ...offeringsItemSource.field,
       },
     },
@@ -500,7 +501,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
           >
             {hasImage ? (
               <EntityField
-                displayName="Image"
+                displayName={pt("image", "Image")}
                 fieldId={props.offerings.image.image.field}
                 constantValueEnabled={
                   props.offerings.image.image.constantValueEnabled
@@ -517,7 +518,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
             ) : null}
             <article>
               <EntityField
-                displayName="Heading"
+                displayName={pt("heading", "Heading")}
                 fieldId={props.offerings.heading.text.field}
                 constantValueEnabled={
                   props.offerings.heading.text.constantValueEnabled
@@ -526,7 +527,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
                 <h2 style={headingStyle}>{heading}</h2>
               </EntityField>
               <EntityField
-                displayName="Items"
+                displayName={pt("items", "Items")}
                 fieldId={props.offerings.items.field}
                 constantValueEnabled={
                   props.offerings.items.constantValueEnabled
@@ -565,7 +566,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
 
 export const UpscaleRestaurantOfferingsSection: YextComponentConfig<OfferingsSectionProps> =
   {
-    label: "Offerings Section",
+    label: msg("components.offeringsSection", "Offerings Section"),
     fields: offeringsFields,
     defaultProps,
     render: OfferingsSection,

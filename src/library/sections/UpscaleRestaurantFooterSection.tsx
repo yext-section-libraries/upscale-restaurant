@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link, type ImageType } from "@yext/pages-components";
@@ -93,12 +94,18 @@ const makeTextStyle = (): StyledTextStyleProps => ({
 });
 
 const linkTypeOptions = () => [
-  { label: "URL", value: "URL" },
-  { label: "Email", value: "Email" },
-  { label: "Phone", value: "Phone" },
-  { label: "Driving Directions", value: "DRIVING_DIRECTIONS" },
-  { label: "Click To Website", value: "CLICK_TO_WEBSITE" },
-  { label: "Other", value: "OTHER" },
+  { label: msg("fields.options.url", "URL"), value: "URL" },
+  { label: msg("fields.options.email", "Email"), value: "Email" },
+  { label: msg("fields.options.phone", "Phone"), value: "Phone" },
+  {
+    label: msg("fields.options.drivingDirections", "Driving Directions"),
+    value: "DRIVING_DIRECTIONS",
+  },
+  {
+    label: msg("fields.options.clickToWebsite", "Click To Website"),
+    value: "CLICK_TO_WEBSITE",
+  },
+  { label: msg("fields.options.other", "Other"), value: "OTHER" },
 ];
 
 const createTranslatableString = (value: string): TranslatableString => ({
@@ -255,59 +262,62 @@ const defaultProps: FooterSectionProps = {
 
 const footerFields: YextFields<FooterSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   brandName: {
-    label: "Brand Name",
+    label: msg("fields.brandName", "Brand Name"),
     type: "object",
     objectFields: {
       text: {
         type: "entityField",
-        label: "Text",
+        label: msg("fields.text", "Text"),
         filter: {
           types: ["type.string"],
         },
       },
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector",
         options: "SITE_COLOR",
       },
     },
   },
   socialLinks: {
-    label: "Social Links",
+    label: msg("fields.socialLinks", "Social Links"),
     type: "array",
     arrayFields: {
-      label: { label: "Label", type: "translatableString" },
-      link: { label: "Link", type: "translatableString" },
+      label: {
+        label: msg("fields.label", "Label"),
+        type: "translatableString",
+      },
+      link: { label: msg("fields.link", "Link"), type: "translatableString" },
       icon: {
-        label: "Icon",
+        label: msg("fields.icon", "Icon"),
         type: "object",
         objectFields: {
           image: {
             type: "entityField",
-            label: "Image",
+            label: msg("fields.image", "Image"),
             filter: {
               types: ["type.image"],
             },
@@ -324,92 +334,92 @@ const footerFields: YextFields<FooterSectionProps> = {
       typeof item.label === "string" ? item.label : item.label.defaultValue,
   },
   footer: {
-    label: "Footer",
+    label: msg("fields.footer", "Footer"),
     type: "object",
     objectFields: {
       description: {
-        label: "Description",
+        label: msg("fields.description", "Description"),
         type: "object",
         objectFields: {
           text: {
             type: "entityField",
-            label: "Text",
+            label: msg("fields.text", "Text"),
             filter: {
               types: ["type.rich_text_v2"],
             },
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       quickLinksHeading: {
-        label: "Quick Links Heading",
+        label: msg("fields.quickLinksHeading", "Quick Links Heading"),
         type: "object",
         objectFields: {
           text: {
             type: "entityField",
-            label: "Text",
+            label: msg("fields.text", "Text"),
             filter: {
               types: ["type.string"],
             },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       linkStyles: {
-        label: "Link Styles",
+        label: msg("fields.linkStyles", "Link Styles"),
         type: "object",
         objectFields: {
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       quickLinks: {
-        label: "Quick Links",
+        label: msg("fields.quickLinks", "Quick Links"),
         ...linkFieldConfig,
       },
       copyrightText: {
-        label: "Copyright Text",
+        label: msg("fields.copyrightText", "Copyright Text"),
         type: "object",
         objectFields: {
           text: {
             type: "entityField",
-            label: "Text",
+            label: msg("fields.text", "Text"),
             filter: {
               types: ["type.string"],
             },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       legalLinks: {
-        label: "Legal Links",
+        label: msg("fields.legalLinks", "Legal Links"),
         ...linkFieldConfig,
       },
     },
@@ -716,7 +726,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
           <div className="fb-container fb-footer-grid">
             <section>
               <EntityField
-                displayName="Brand Name"
+                displayName={pt("brandName", "Brand Name")}
                 fieldId={props.brandName.text.field}
                 constantValueEnabled={props.brandName.text.constantValueEnabled}
               >
@@ -725,16 +735,13 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
                 </p>
               </EntityField>
               <EntityField
-                displayName="Description"
+                displayName={pt("description", "Description")}
                 fieldId={props.footer.description.text.field}
                 constantValueEnabled={
                   props.footer.description.text.constantValueEnabled
                 }
               >
-                {renderRichText(
-                  description,
-                  descriptionRichTextStyleOverrides,
-                )}
+                {renderRichText(description, descriptionRichTextStyleOverrides)}
               </EntityField>
               <div className="fb-footer-socials">
                 {props.socialLinks.map((link, index) => {
@@ -784,7 +791,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
             </section>
             <section>
               <EntityField
-                displayName="Quick Links Heading"
+                displayName={pt("quickLinksHeading", "Quick Links Heading")}
                 fieldId={props.footer.quickLinksHeading.text.field}
                 constantValueEnabled={
                   props.footer.quickLinksHeading.text.constantValueEnabled
@@ -801,7 +808,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
           </div>
           <div className="fb-container fb-footer-bottom">
             <EntityField
-              displayName="Copyright Text"
+              displayName={pt("copyrightText", "Copyright Text")}
               fieldId={props.footer.copyrightText.text.field}
               constantValueEnabled={
                 props.footer.copyrightText.text.constantValueEnabled
@@ -823,7 +830,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
 
 export const UpscaleRestaurantFooterSection: YextComponentConfig<FooterSectionProps> =
   {
-    label: "Footer Section",
+    label: msg("components.footerSection", "Footer Section"),
     fields: footerFields,
     defaultProps,
     render: FooterSection,

@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -37,18 +38,18 @@ const toCssColor = (color?: ThemeColor): string | undefined =>
   getThemeColorCssValue(color);
 
 const faqItemsSource = createItemSource<FaqItemProps>({
-  label: "FAQ Items",
+  label: msg("fields.faqItems", "FAQ Items"),
   mappingFields: {
     question: {
       type: "entityField",
-      label: "Question",
+      label: msg("fields.question", "Question"),
       filter: {
         types: ["type.string"],
       },
     },
     answer: {
       type: "entityField",
-      label: "Answer",
+      label: msg("fields.answer", "Answer"),
       filter: {
         types: ["type.rich_text_v2"],
       },
@@ -163,80 +164,80 @@ const defaultProps: FaqSectionProps = {
 
 const faqFields: YextFields<FaqSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   heading: {
-    label: "Heading",
+    label: msg("fields.heading", "Heading"),
     type: "object",
     objectFields: {
       text: {
         type: "entityField",
-        label: "Text",
+        label: msg("fields.text", "Text"),
         filter: {
           types: ["type.string"],
         },
       },
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector",
         options: "SITE_COLOR",
       },
     },
   },
   faqs: {
-    label: "FAQs",
+    label: msg("fields.faqs", "FAQs"),
     type: "object",
     objectFields: {
       items: faqItemsSource.field,
       styles: {
-        label: "Styles",
+        label: msg("fields.styles", "Styles"),
         type: "object",
         objectFields: {
           question: {
-            label: "Question",
+            label: msg("fields.question", "Question"),
             type: "object",
             objectFields: {
               styles: {
-                label: "Text Styles",
+                label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
               },
               fontColor: {
-                label: "Font Color",
+                label: msg("fields.fontColor", "Font Color"),
                 type: "basicSelector",
                 options: "SITE_COLOR",
               },
             },
           },
           answer: {
-            label: "Answer",
+            label: msg("fields.answer", "Answer"),
             type: "object",
             objectFields: {
               styles: {
-                label: "Text Styles",
+                label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
               },
               fontColor: {
-                label: "Font Color",
+                label: msg("fields.fontColor", "Font Color"),
                 type: "basicSelector",
                 options: "SITE_COLOR",
               },
@@ -404,14 +405,14 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
         <section className="fb-section">
           <div className="fb-container">
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.heading.text.field}
               constantValueEnabled={props.heading.text.constantValueEnabled}
             >
               <h2 style={headingStyle}>{resolvedHeading}</h2>
             </EntityField>
             <EntityField
-              displayName="FAQ Items"
+              displayName={pt("faqItems", "FAQ Items")}
               fieldId={props.faqs.items.field}
               constantValueEnabled={props.faqs.items.constantValueEnabled}
             >
@@ -456,7 +457,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
 
 export const UpscaleRestaurantFaqSection: YextComponentConfig<FaqSectionProps> =
   {
-    label: "FAQ Section",
+    label: msg("components.faqSection", "FAQ Section"),
     fields: faqFields,
     defaultProps,
     render: FaqSection,

@@ -1,6 +1,8 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   HoursStatus,
   type HoursType,
@@ -126,144 +128,144 @@ const defaultProps = {
 
 const findUsFields: YextFields<FindUsSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   findUs: {
-    label: "Where To Find Us",
+    label: msg("fields.whereToFindUs", "Where To Find Us"),
     type: "object",
     objectFields: {
       nearbyLocationCardStyles: {
-        label: "Nearby Location Card Styles",
+        label: msg("fields.nearbyLocationCardStyles", "Nearby Location Card Styles"),
         type: "object",
         objectFields: {
           cardBackgroundColor: {
-            label: "Card Background Color",
+            label: msg("fields.cardBackgroundColor", "Card Background Color"),
             type: "basicSelector",
             options: "BACKGROUND_COLOR",
           },
           cardTitleColor: {
-            label: "Card Title Color",
+            label: msg("fields.cardTitleColor", "Card Title Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
           showHours: {
-            label: "Show Hours",
+            label: msg("fields.showHours", "Show Hours"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
           showPhone: {
-            label: "Show Phone",
+            label: msg("fields.showPhone", "Show Phone"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
           showAddress: {
-            label: "Show Address",
+            label: msg("fields.showAddress", "Show Address"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
           hoursStyles: {
-            label: "Hours Styles",
+            label: msg("fields.hoursStyles", "Hours Styles"),
             type: "object",
             objectFields: {
               showCurrentStatus: {
-                label: "Show Current Status",
+                label: msg("fields.showCurrentStatus", "Show Current Status"),
                 type: "radio",
                 options: [
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
+                  { label: msg("fields.yes", "Yes"), value: true },
+                  { label: msg("fields.no", "No"), value: false },
                 ],
               },
               timeFormat: {
-                label: "Time Format",
+                label: msg("fields.timeFormat", "Time Format"),
                 type: "select",
                 options: [
-                  { label: "12 Hour", value: "12h" },
-                  { label: "24 Hour", value: "24h" },
+                  { label: msg("fields.hour12Label", "12 Hour"), value: "12h" },
+                  { label: msg("fields.hour24Label", "24 Hour"), value: "24h" },
                 ],
               },
               dayOfWeekFormat: {
-                label: "Day Of Week Format",
+                label: msg("fields.dayOfWeekFormatLabel", "Day Of Week Format"),
                 type: "select",
                 options: [
-                  { label: "Short", value: "short" },
-                  { label: "Long", value: "long" },
+                  { label: msg("fields.short", "Short"), value: "short" },
+                  { label: msg("fields.long", "Long"), value: "long" },
                 ],
               },
               showDayNames: {
-                label: "Show Day Names",
+                label: msg("fields.showDayNames", "Show Day Names"),
                 type: "radio",
                 options: [
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
+                  { label: msg("fields.yes", "Yes"), value: true },
+                  { label: msg("fields.no", "No"), value: false },
                 ],
               },
             },
           },
           phone: {
-            label: "Phone",
+            label: msg("fields.phone", "Phone"),
             type: "object",
             objectFields: {
               phoneFormat: {
-                label: "Phone Format",
+                label: msg("fields.phoneFormat", "Phone Format"),
                 type: "select",
                 options: [
-                  { label: "Domestic", value: "domestic" },
-                  { label: "International", value: "international" },
+                  { label: msg("fields.domestic", "Domestic"), value: "domestic" },
+                  { label: msg("fields.international", "International"), value: "international" },
                 ],
               },
               includeHyperlink: {
-                label: "Include Hyperlink",
+                label: msg("fields.includeHyperlink", "Include Hyperlink"),
                 type: "radio",
                 options: [
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
+                  { label: msg("fields.yes", "Yes"), value: true },
+                  { label: msg("fields.no", "No"), value: false },
                 ],
               },
             },
           },
           address: {
-            label: "Address",
+            label: msg("fields.address", "Address"),
             type: "object",
             objectFields: {
               showRegion: {
-                label: "Show Region",
+                label: msg("fields.showRegion", "Show Region"),
                 type: "radio",
                 options: [
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
+                  { label: msg("fields.yes", "Yes"), value: true },
+                  { label: msg("fields.no", "No"), value: false },
                 ],
               },
               showCountry: {
-                label: "Show Country",
+                label: msg("fields.showCountry", "Show Country"),
                 type: "radio",
                 options: [
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
+                  { label: msg("fields.yes", "Yes"), value: true },
+                  { label: msg("fields.no", "No"), value: false },
                 ],
               },
             },
@@ -271,45 +273,45 @@ const findUsFields: YextFields<FindUsSectionProps> = {
         },
       },
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
             type: "entityField",
-            label: "Text",
+            label: msg("fields.text", "Text"),
             filter: {
               types: ["type.string"],
             },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       map: {
-        label: "Map",
+        label: msg("fields.map", "Map"),
         type: "object",
         objectFields: {
           coordinate: {
-            label: "Coordinates",
+            label: msg("fields.coordinates", "Coordinates"),
             type: "entityField",
             filter: {
               types: ["type.coordinate"],
             },
           },
           mapStyle: {
-            label: "Mapbox Map Style",
+            label: msg("fields.mapboxMapStyle", "Mapbox Map Style"),
             type: "select",
             options: mapboxStaticMapStyleOptions,
           },
           zoom: {
-            label: "Zoom",
+            label: msg("fields.zoom", "Zoom"),
             type: "number",
             min: 0,
             max: 22,
@@ -525,18 +527,35 @@ const isIndefinitelyClosed = (params: StatusParams): boolean =>
 
 const hoursCurrentTemplateOverride = (
   params: StatusParams,
+  t: ReturnType<typeof useTranslation>["t"],
 ): React.ReactNode => {
+  if (params.comingSoon) {
+    return (
+      <span className="HoursStatus-current">
+        {t("comingSoon", "Coming Soon")}
+      </span>
+    );
+  }
+
   if (isOpen24h(params)) {
-    return <span className="HoursStatus-current">Open 24 Hours</span>;
+    return (
+      <span className="HoursStatus-current">
+        {t("open24Hours", "Open 24 Hours")}
+      </span>
+    );
   }
 
   if (isIndefinitelyClosed(params)) {
-    return <span className="HoursStatus-current">Temporarily Closed</span>;
+    return (
+      <span className="HoursStatus-current">
+        {t("temporarilyClosed", "Temporarily Closed")}
+      </span>
+    );
   }
 
   return (
     <span className="HoursStatus-current">
-      {params.isOpen ? "Open Now" : "Closed"}
+      {params.isOpen ? t("openNow", "Open Now") : t("closed", "Closed")}
     </span>
   );
 };
@@ -558,6 +577,7 @@ const renderHoursStatus = (
   timeFormat: "12h" | "24h",
   dayOfWeekFormat: "short" | "long",
   showDayNames: boolean,
+  t: ReturnType<typeof useTranslation>["t"],
 ): React.ReactNode => (
   <HoursStatus
     hours={hours}
@@ -583,20 +603,34 @@ const renderHoursStatus = (
         : "";
       let statusText = "";
       if (!isOpen24h(params) && !isIndefinitelyClosed(params)) {
-        statusText = params.isOpen
-          ? dayOfWeek
-            ? `Closes at ${time} ${dayOfWeek}`
-            : `Closes at ${time}`
-          : dayOfWeek
-            ? `Opens at ${time} ${dayOfWeek}`
-            : `Opens at ${time}`;
+        if (params.isOpen) {
+          statusText = dayOfWeek
+            ? t(
+                "closesAtTimeWeek",
+                "Closes at {{time}} {{dayOfWeek}}",
+                { time, dayOfWeek },
+              )
+            : t("closesAtTime", "Closes at {{time}}", { time });
+        } else {
+          statusText = dayOfWeek
+            ? t(
+                "opensAtTimeWeek",
+                "Opens at {{time}} {{dayOfWeek}}",
+                { time, dayOfWeek },
+              )
+            : t("opensAtTime", "Opens at {{time}}", { time });
+        }
       }
 
       return (
         <div>
-          {showCurrentStatus ? hoursCurrentTemplateOverride(params) : null}
-          {showCurrentStatus ? defaultSeparatorTemplate(params) : null}
-          {statusText ? (
+          {(showCurrentStatus || params.comingSoon)
+            ? hoursCurrentTemplateOverride(params, t)
+            : null}
+          {!params.comingSoon && showCurrentStatus
+            ? defaultSeparatorTemplate(params)
+            : null}
+          {!params.comingSoon && statusText ? (
             <span className="HoursStatus-future">{statusText}</span>
           ) : null}
         </div>
@@ -612,6 +646,7 @@ const renderNearbyLocationCard = (
   cardStyles: NearbyLocationCardStyles,
   relativePrefixToRoot: string,
   isEditing: boolean,
+  t: ReturnType<typeof useTranslation>["t"],
 ): React.ReactNode => {
   const resolvedUrl = resolveUrlTemplate(
     mergeMeta(locationData, streamDocument),
@@ -640,7 +675,7 @@ const renderNearbyLocationCard = (
         {cardStyles.showAddress ? (
           <p className="fb-location-address">
             {locationData.address?.line1 ??
-              (isEditing ? "Address will appear here" : "")}
+              (isEditing ? pt("addressWillAppearHere", "Address will appear here") : "")}
             {locationData.address?.line1 ? (
               <>
                 <br />
@@ -673,7 +708,9 @@ const renderNearbyLocationCard = (
               )}
             </p>
           ) : isEditing ? (
-            <p className="fb-location-phone">Phone number will appear here</p>
+            <p className="fb-location-phone">
+              {pt("phoneNumberWillAppearHere", "Phone number will appear here")}
+            </p>
           ) : null
         ) : null}
         {cardStyles.showHours ? (
@@ -688,15 +725,18 @@ const renderNearbyLocationCard = (
                 cardStyles.hoursStyles.timeFormat,
                 cardStyles.hoursStyles.dayOfWeekFormat,
                 cardStyles.hoursStyles.showDayNames,
+                t,
               )}
             </p>
           ) : isEditing ? (
-            <p className="fb-location-hours">Hours will appear here</p>
+            <p className="fb-location-hours">
+              {pt("hoursWillAppearHere", "Hours will appear here")}
+            </p>
           ) : null
         ) : null}
         <CTA
           link={resolvedUrl}
-          label="Learn More"
+          label={t("learnMore", "Learn More")}
           linkType="URL"
           normalizeLink={false}
           variant="link"
@@ -709,6 +749,7 @@ const renderNearbyLocationCard = (
 };
 
 const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
+  const { t } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithLocation>();
   const locale = streamDocument.locale ?? "en";
   const { relativePrefixToRoot } = useTemplateProps<{
@@ -770,7 +811,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
         <section className="fb-section fb-find-section">
           <div className="fb-container">
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.findUs.heading.text.field}
               constantValueEnabled={
                 props.findUs.heading.text.constantValueEnabled
@@ -787,7 +828,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
             </EntityField>
             {shouldShowMap ? (
               <EntityField
-                displayName="Map Coordinate"
+                displayName={pt("mapCoordinate", "Map Coordinate")}
                 fieldId={props.findUs.map.coordinate.field}
                 constantValueEnabled={
                   props.findUs.map.coordinate.constantValueEnabled
@@ -801,7 +842,12 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                       puck={props.puck}
                     />
                   ) : isEditing ? (
-                    <p>Choose coordinates to preview the map.</p>
+                    <p>
+                      {pt(
+                        "chooseCoordinatesToPreviewMap",
+                        "Choose coordinates to preview the map.",
+                      )}
+                    </p>
                   ) : null}
                 </div>
               </EntityField>
@@ -823,26 +869,29 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                             color: toCssColor(cardStyles.cardTitleColor),
                           }}
                         >
-                          Nearby location
+                          {pt("nearbyLocation", "Nearby location")}
                         </h3>
                         {cardStyles.showAddress ? (
                           <p className="fb-location-address">
-                            Address will appear here
+                            {pt("addressWillAppearHere", "Address will appear here")}
                           </p>
                         ) : null}
                         {cardStyles.showPhone ? (
                           <p className="fb-location-phone">
-                            Phone number will appear here
+                            {pt(
+                              "phoneNumberWillAppearHere",
+                              "Phone number will appear here",
+                            )}
                           </p>
                         ) : null}
                         {cardStyles.showHours ? (
                           <p className="fb-location-hours">
-                            Hours will appear here
+                            {pt("hoursWillAppearHere", "Hours will appear here")}
                           </p>
                         ) : null}
                         <CTA
                           link="#"
-                          label="Get directions"
+                          label={pt("getDirections", "Get directions")}
                           linkType="URL"
                           normalizeLink={false}
                           variant="link"
@@ -854,7 +903,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                   ))}
                 </div>
               ) : nearbyLocationsStatus === "pending" ? (
-                <p>Loading nearby locations</p>
+                <p>{t("loadingNearbyLocations", "Loading nearby locations")}</p>
               ) : nearbyLocations.length ? (
                 <div className="fb-location-grid">
                   {nearbyLocations.map((locationData, index) => {
@@ -865,6 +914,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                       cardStyles,
                       relativePrefixToRoot ?? "",
                       isEditing,
+                      t,
                     );
                   })}
                 </div>
@@ -879,7 +929,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
 
 export const UpscaleRestaurantFindUsSection: YextComponentConfig<FindUsSectionProps> =
   {
-    label: "Find Us Section",
+    label: msg("components.findUsSection", "Find Us Section"),
     fields: findUsFields,
     defaultProps,
     render: FindUsSection,
