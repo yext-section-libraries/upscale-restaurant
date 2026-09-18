@@ -6,8 +6,10 @@ import {
   Address,
   HoursTable,
   type AddressType,
+  type HoursTableIntervalTranslations,
   type HoursType,
 } from "@yext/pages-components";
+import { useTranslation } from "react-i18next";
 import {
   Background,
   CTA,
@@ -24,6 +26,8 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  msg,
+  pt,
 } from "@yext/visual-editor";
 import { PuckComponent } from "@puckeditor/core";
 import {
@@ -201,130 +205,130 @@ const defaultProps: DetailsSectionProps = {
 
 const detailsFields: YextFields<DetailsSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       cardBackgroundColor: {
-        label: "Card Background Color",
+        label: msg("fields.cardBackgroundColor", "Card Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   details: {
-    label: "Restaurant Details",
+    label: msg("fields.restaurantDetails", "Restaurant Details"),
     type: "object",
     objectFields: {
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       addressHeading: {
-        label: "Address Heading",
+        label: msg("fields.addressHeading", "Address Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       address: {
-        label: "Address",
+        label: msg("fields.address", "Address"),
         type: "entityField",
         filter: {
           types: ["type.address"],
         },
       },
       showRegion: {
-        label: "Show Region",
+        label: msg("fields.showRegion", "Show Region"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       showCountry: {
-        label: "Show Country",
+        label: msg("fields.showCountry", "Show Country"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       phoneHeading: {
-        label: "Phone Heading",
+        label: msg("fields.phoneHeading", "Phone Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       phones: {
-        label: "Phones",
+        label: msg("fields.phones", "Phones"),
         type: "object",
         objectFields: {
           items: {
-            label: "Items",
+            label: msg("fields.items", "Items"),
             type: "array",
             arrayFields: {
               number: {
-                label: "Number",
+                label: msg("fields.number", "Number"),
                 type: "entityField",
                 filter: { types: ["type.phone"] },
               },
-              label: { label: "Label", type: "translatableString" },
+              label: { label: msg("fields.label", "Label"), type: "translatableString" },
             },
             defaultItemProps: {
               number: {
@@ -340,57 +344,57 @@ const detailsFields: YextFields<DetailsSectionProps> = {
                 : item.label?.defaultValue || "Phone",
           },
           phoneFormat: {
-            label: "Phone Format",
+            label: msg("fields.phoneFormat", "Phone Format"),
             type: "radio",
             options: [
-              { label: "Domestic", value: "domestic" },
-              { label: "International", value: "international" },
+              { label: msg("fields.domestic", "Domestic"), value: "domestic" },
+              { label: msg("fields.international", "International"), value: "international" },
             ],
           },
           includeHyperlink: {
-            label: "Include Hyperlink",
+            label: msg("fields.includeHyperlink", "Include Hyperlink"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
         },
       },
       otherHeading: {
-        label: "Other Heading",
+        label: msg("fields.otherHeading", "Other Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       showOtherDetails: {
-        label: "Show Other Details",
+        label: msg("fields.showOtherDetails", "Show Other Details"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       otherDetails: {
-        label: "Other Details",
+        label: msg("fields.otherDetails", "Other Details"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text List",
+            label: msg("fields.textList", "Text List"),
             type: "entityField",
             filter: {
               types: ["type.string"],
@@ -398,22 +402,22 @@ const detailsFields: YextFields<DetailsSectionProps> = {
             },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       links: {
-        label: "Links",
+        label: msg("fields.links", "Links"),
         type: "array",
         arrayFields: {
           cta: {
-            label: "Call To Action",
+            label: msg("fields.callToAction", "Call To Action"),
             type: "comprehensiveCTA",
           },
         },
@@ -423,63 +427,63 @@ const detailsFields: YextFields<DetailsSectionProps> = {
         getItemSummary: () => "CTA",
       },
       hoursHeading: {
-        label: "Hours Heading",
+        label: msg("fields.hoursHeading", "Hours Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       hours: {
-        label: "Hours",
+        label: msg("fields.hours", "Hours"),
         type: "entityField",
         filter: { types: ["type.hours"] },
         disableConstantValueToggle: true,
       },
       hoursStyles: {
-        label: "Hours Styles",
+        label: msg("fields.hoursStyles", "Hours Styles"),
         type: "object",
         objectFields: {
           startOfWeek: {
-            label: "Start Of Week",
+            label: msg("fields.startOfWeek", "Start Of Week"),
             type: "select",
             options: [
-              { label: "Monday", value: "monday" },
-              { label: "Tuesday", value: "tuesday" },
-              { label: "Wednesday", value: "wednesday" },
-              { label: "Thursday", value: "thursday" },
-              { label: "Friday", value: "friday" },
-              { label: "Saturday", value: "saturday" },
-              { label: "Sunday", value: "sunday" },
-              { label: "Today", value: "today" },
+              { label: msg("fields.monday", "Monday"), value: "monday" },
+              { label: msg("fields.tuesday", "Tuesday"), value: "tuesday" },
+              { label: msg("fields.wednesday", "Wednesday"), value: "wednesday" },
+              { label: msg("fields.thursday", "Thursday"), value: "thursday" },
+              { label: msg("fields.friday", "Friday"), value: "friday" },
+              { label: msg("fields.saturday", "Saturday"), value: "saturday" },
+              { label: msg("fields.sunday", "Sunday"), value: "sunday" },
+              { label: msg("fields.today", "Today"), value: "today" },
             ],
           },
           collapseDays: {
-            label: "Collapse Days",
+            label: msg("fields.collapseDays", "Collapse Days"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
           showAdditionalHoursText: {
-            label: "Show Additional Hours Text",
+            label: msg("fields.showAdditionalHoursText", "Show Additional Hours Text"),
             type: "radio",
             options: [
-              { label: "Yes", value: true },
-              { label: "No", value: false },
+              { label: msg("fields.yes", "Yes"), value: true },
+              { label: msg("fields.no", "No"), value: false },
             ],
           },
         },
@@ -653,6 +657,31 @@ const formatPhoneForDisplay = (
 };
 
 const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
+  const { t, i18n } = useTranslation();
+  const dayOfWeekNames = React.useMemo<DayOfWeekNames>(() => {
+    const formatter = new Intl.DateTimeFormat(i18n.language, {
+      timeZone: "UTC",
+      weekday: "long",
+    });
+    const formatWeekday = (day: number) =>
+      formatter.format(new Date(Date.UTC(2024, 0, day)));
+
+    return {
+      sunday: formatWeekday(7),
+      monday: formatWeekday(8),
+      tuesday: formatWeekday(9),
+      wednesday: formatWeekday(10),
+      thursday: formatWeekday(11),
+      friday: formatWeekday(12),
+      saturday: formatWeekday(13),
+    };
+  }, [i18n.language]);
+  const intervalTranslations: HoursTableIntervalTranslations = {
+    isClosed: t("closed", "Closed"),
+    open24Hours: t("open24Hours", "Open 24 Hours"),
+    reopenDate: t("reopenDate", "Reopen Date"),
+    timeFormatLocale: i18n.language,
+  };
   const streamDocument = useDocument();
   const locale = streamDocument.locale ?? "en";
   const heading = resolveComponentData(
@@ -720,7 +749,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
         <section className="fb-section fb-details-section">
           <div className="fb-container">
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.details.heading.text.field}
               constantValueEnabled={
                 props.details.heading.text.constantValueEnabled
@@ -740,7 +769,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
               >
                 <div className="fb-detail-group">
                   <EntityField
-                    displayName="Address Heading"
+                    displayName={pt("addressHeading", "Address Heading")}
                     fieldId={props.details.addressHeading.text.field}
                     constantValueEnabled={
                       props.details.addressHeading.text.constantValueEnabled
@@ -749,7 +778,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                     <h3 style={addressHeadingStyle}>{addressHeading}</h3>
                   </EntityField>
                   <EntityField
-                    displayName="Address"
+                    displayName={pt("address", "Address")}
                     fieldId={props.details.address.field}
                     constantValueEnabled={
                       props.details.address.constantValueEnabled
@@ -766,7 +795,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                 </div>
                 <div className="fb-detail-group">
                   <EntityField
-                    displayName="Phone Heading"
+                    displayName={pt("phoneHeading", "Phone Heading")}
                     fieldId={props.details.phoneHeading.text.field}
                     constantValueEnabled={
                       props.details.phoneHeading.text.constantValueEnabled
@@ -800,7 +829,9 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                       return (
                         <EntityField
                           key={`${phoneText}-${index}`}
-                          displayName={`Phone ${index + 1}`}
+                          displayName={pt("phoneIndex", "Phone {{index}}", {
+                            index: index + 1,
+                          })}
                           fieldId={phone.number.field}
                           constantValueEnabled={
                             phone.number.constantValueEnabled
@@ -816,7 +847,9 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                     return (
                       <EntityField
                         key={`${phoneText}-${index}`}
-                        displayName={`Phone ${index + 1}`}
+                        displayName={pt("phoneIndex", "Phone {{index}}", {
+                          index: index + 1,
+                        })}
                         fieldId={phone.number.field}
                         constantValueEnabled={phone.number.constantValueEnabled}
                       >
@@ -839,7 +872,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                 {props.details.showOtherDetails ? (
                   <div className="fb-detail-group">
                     <EntityField
-                      displayName="Other Heading"
+                      displayName={pt("otherHeading", "Other Heading")}
                       fieldId={props.details.otherHeading.text.field}
                       constantValueEnabled={
                         props.details.otherHeading.text.constantValueEnabled
@@ -853,7 +886,9 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                   {props.details.links.map((link, index) => (
                     <EntityField
                       key={`${link.cta.data.cta.constantValue.label}-${index}`}
-                      displayName={`Link ${index + 1}`}
+                      displayName={pt("linkIndex", "Link {{index}}", {
+                        index: index + 1,
+                      })}
                       fieldId={link.cta.data.cta.field}
                       constantValueEnabled={
                         link.cta.data.cta.constantValueEnabled
@@ -867,7 +902,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                 </div>
                 {props.details.showOtherDetails ? (
                   <EntityField
-                    displayName="Other Details"
+                    displayName={pt("otherDetails", "Other Details")}
                     fieldId={props.details.otherDetails.text.field}
                     constantValueEnabled={
                       props.details.otherDetails.text.constantValueEnabled
@@ -890,7 +925,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                 className="fb-panel"
               >
                 <EntityField
-                  displayName="Hours Heading"
+                  displayName={pt("hoursHeading", "Hours Heading")}
                   fieldId={props.details.hoursHeading.text.field}
                   constantValueEnabled={
                     props.details.hoursHeading.text.constantValueEnabled
@@ -899,7 +934,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                   <h3 style={hoursHeadingStyle}>{hoursHeading}</h3>
                 </EntityField>
                 <EntityField
-                  displayName="Hours"
+                  displayName={pt("hours", "Hours")}
                   fieldId={props.details.hours.field}
                   constantValueEnabled={
                     props.details.hours.constantValueEnabled
@@ -913,8 +948,10 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                           resolvedHours ?? props.details.hours.constantValue
                         }
                         comingSoon={streamDocument.comingSoon}
+                        dayOfWeekNames={dayOfWeekNames}
                         startOfWeek={props.details.hoursStyles.startOfWeek}
                         collapseDays={props.details.hoursStyles.collapseDays}
+                        intervalTranslations={intervalTranslations}
                       />
                     </div>
                   </div>
@@ -930,7 +967,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
 
 export const UpscaleRestaurantDetailsSection: YextComponentConfig<DetailsSectionProps> =
   {
-    label: "Details Section",
+    label: msg("components.detailsSection", "Details Section"),
     fields: detailsFields,
     defaultProps,
     render: DetailsSectionComponent,

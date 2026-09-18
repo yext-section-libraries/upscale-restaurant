@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -92,50 +93,50 @@ const defaultProps: DeliveryPartnersSectionProps = {
 
 const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
     },
   },
   heading: {
-    label: "Heading",
+    label: msg("fields.heading", "Heading"),
     type: "object",
     objectFields: {
       text: {
-        label: "Text",
+        label: msg("fields.text", "Text"),
         type: "entityField",
         filter: { types: ["type.string"] },
       },
       styles: {
-        label: "Text Styles",
+        label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
       },
       fontColor: {
-        label: "Font Color",
+        label: msg("fields.fontColor", "Font Color"),
         type: "basicSelector",
         options: "SITE_COLOR",
       },
     },
   },
   ctas: {
-    label: "Call To Actions",
+    label: msg("fields.callToActions", "Call To Actions"),
     type: "array",
     arrayFields: {
       cta: {
-        label: "Call To Action",
+        label: msg("fields.callToAction", "Call To Action"),
         type: "comprehensiveCTA",
       },
     },
@@ -272,7 +273,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
         <section className="fb-section">
           <div className="fb-container">
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.heading.text.field}
               constantValueEnabled={props.heading.text.constantValueEnabled}
             >
@@ -326,7 +327,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
 
 export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
   {
-    label: "Delivery Partners Section",
+    label: msg("components.deliveryPartnersSection", "Delivery Partners Section"),
     fields: deliveryPartnersFields,
     defaultProps,
     render: DeliveryPartnersSection,

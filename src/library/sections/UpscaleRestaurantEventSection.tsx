@@ -1,4 +1,5 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -111,76 +112,76 @@ const defaultProps: EventSectionProps = {
 
 const eventFields: YextFields<EventSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
     },
   },
   event: {
-    label: "Event Banner",
+    label: msg("fields.eventBanner", "Event Banner"),
     type: "object",
     objectFields: {
       image: {
-        label: "Image",
+        label: msg("fields.image", "Image"),
         type: "object",
         objectFields: {
           image: {
-            label: "Image",
+            label: msg("fields.image", "Image"),
             type: "entityField",
             filter: { types: ["type.image"] },
           },
         },
       },
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       description: {
-        label: "Description",
+        label: msg("fields.description", "Description"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.rich_text_v2"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       cta: {
-        label: "Call To Action",
+        label: msg("fields.callToAction", "Call To Action"),
         type: "comprehensiveCTA",
       },
     },
@@ -372,7 +373,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
         <section className="fb-event-banner">
           {hasImageSource(image) ? (
             <EntityField
-              displayName="Image"
+              displayName={pt("image", "Image")}
               fieldId={props.event.image.image.field}
               constantValueEnabled={
                 props.event.image.image.constantValueEnabled
@@ -390,7 +391,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
             style={overlaySurfaceStyle}
           >
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.event.heading.text.field}
               constantValueEnabled={
                 props.event.heading.text.constantValueEnabled
@@ -399,7 +400,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
               <h2 style={headingStyle}>{heading}</h2>
             </EntityField>
             <EntityField
-              displayName="Description"
+              displayName={pt("description", "Description")}
               fieldId={props.event.description.text.field}
               constantValueEnabled={
                 props.event.description.text.constantValueEnabled
@@ -412,7 +413,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
             <div className="fb-event-cta">
               <Background background={eventOverlayBackground}>
                 <EntityField
-                  displayName="Call To Action"
+                  displayName={pt("callToAction", "Call To Action")}
                   fieldId={props.event.cta.data.cta.field}
                   constantValueEnabled={
                     props.event.cta.data.cta.constantValueEnabled
@@ -431,7 +432,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
 
 export const UpscaleRestaurantEventSection: YextComponentConfig<EventSectionProps> =
   {
-    label: "Event Section",
+    label: msg("components.eventSection", "Event Section"),
     fields: eventFields,
     defaultProps,
     render: EventSection,

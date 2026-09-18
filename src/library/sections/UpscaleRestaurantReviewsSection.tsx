@@ -1,6 +1,8 @@
 import type { SectionConfig } from "@yext/visual-editor";
+import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import {
   Background,
   EntityField,
@@ -69,68 +71,68 @@ const defaultProps: ReviewsSectionProps = {
 
 const reviewsFields: YextFields<ReviewsSectionProps> = {
   section: {
-    label: "Section",
+    label: msg("fields.section", "Section"),
     type: "object",
     objectFields: {
       visibleOnLivePage: {
-        label: "Visible on Live Page",
+        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
         type: "radio",
         options: [
-          { label: "Yes", value: true },
-          { label: "No", value: false },
+          { label: msg("fields.yes", "Yes"), value: true },
+          { label: msg("fields.no", "No"), value: false },
         ],
       },
       backgroundColor: {
-        label: "Background Color",
+        label: msg("fields.backgroundColor", "Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
       cardBackgroundColor: {
-        label: "Card Background Color",
+        label: msg("fields.cardBackgroundColor", "Card Background Color"),
         type: "basicSelector",
         options: "BACKGROUND_COLOR",
       },
     },
   },
   reviews: {
-    label: "Reviews",
+    label: msg("fields.reviews", "Reviews"),
     type: "object",
     objectFields: {
       heading: {
-        label: "Heading",
+        label: msg("fields.heading", "Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
         },
       },
       recentHeading: {
-        label: "Recent Heading",
+        label: msg("fields.recentHeading", "Recent Heading"),
         type: "object",
         objectFields: {
           text: {
-            label: "Text",
+            label: msg("fields.text", "Text"),
             type: "entityField",
             filter: { types: ["type.string"] },
           },
           styles: {
-            label: "Text Styles",
+            label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
           },
           fontColor: {
-            label: "Font Color",
+            label: msg("fields.fontColor", "Font Color"),
             type: "basicSelector",
             options: "SITE_COLOR",
           },
@@ -346,28 +348,36 @@ const editorFallbackReviews: NonNullable<
   StreamDocumentWithReviews["ref_reviewsAgg"]
 >[number]["topReviews"] = [
   {
-    authorName: "Jordan",
+    authorName: pt("sampleReviewAuthorJordan", "Jordan"),
     rating: 5,
     reviewDate: "2025-03-18",
-    content:
+    content: pt(
+      "sampleReviewContentBurger",
       "The burger was excellent and the service felt polished without being stiff.",
+    ),
     comments: [
       {
         commentDate: "2025-03-20",
-        content: "Thanks for stopping by. We hope to see you again soon.",
+        content: pt(
+          "sampleReviewOwnerResponse",
+          "Thanks for stopping by. We hope to see you again soon.",
+        ),
       },
     ],
   },
   {
-    authorName: "Avery",
+    authorName: pt("sampleReviewAuthorAvery", "Avery"),
     rating: 4.8,
     reviewDate: "2025-02-07",
-    content:
+    content: pt(
+      "sampleReviewContentCocktails",
       "Great cocktails, great fries, and a really comfortable room for a long dinner.",
+    ),
   },
 ];
 
 const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
+  const { t } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithReviews>();
   const locale = streamDocument.locale ?? "en";
   const heading = resolveComponentData(
@@ -419,7 +429,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
         <section className="fb-section fb-tint-section">
           <div className="fb-wide-container">
             <EntityField
-              displayName="Heading"
+              displayName={pt("heading", "Heading")}
               fieldId={props.reviews.heading.text.field}
               constantValueEnabled={
                 props.reviews.heading.text.constantValueEnabled
@@ -436,8 +446,10 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
             </EntityField>
             {showFallbackReviews && (
               <p>
-                No live reviews were found yet. These sample cards are
-                editor-only.
+                {pt(
+                  "noLiveReviewsEditorOnly",
+                  "No live reviews were found yet. These sample cards are editor-only.",
+                )}
               </p>
             )}
             {reviewCount > 0 && !showFallbackReviews && (
@@ -445,7 +457,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
                 {typeof averageRating === "number" ? (
                   <>
                     <span>{averageRating.toFixed(1)}</span>
-                    <span className="fb-stars">★★★★★</span>
+                    <span className="fb-stars">{"★".repeat(5)}</span>
                   </>
                 ) : (
                   <></>
@@ -455,12 +467,18 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
                 ) : (
                   <></>
                 )}
-                {reviewCount ? <span>{`${reviewCount} Reviews`}</span> : <></>}
+                {reviewCount ? (
+                  <span>
+                    {t("reviews", "{{count}} Reviews", { count: reviewCount })}
+                  </span>
+                ) : (
+                  <></>
+                )}
               </p>
             )}
             {reviewItems.length > 0 && (
               <EntityField
-                displayName="Recent Heading"
+                displayName={pt("recentHeading", "Recent Heading")}
                 fieldId={props.reviews.recentHeading.text.field}
                 constantValueEnabled={
                   props.reviews.recentHeading.text.constantValueEnabled
@@ -518,7 +536,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
                     {typeof review.rating === "number" ? (
                       <p className="fb-review-stars-line">
                         <span>{review.rating.toFixed(1)}</span>
-                        <span className="fb-stars">★★★★★</span>
+                        <span className="fb-stars">{"★".repeat(5)}</span>
                       </p>
                     ) : (
                       <></>
@@ -526,7 +544,9 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
                     {review.content ? <p>{review.content}</p> : <></>}
                     {review.comments?.[0]?.content ? (
                       <div className="fb-review-response">
-                        <strong>Response from the owner</strong>
+                        <strong>
+                          {t("responseFromTheOwner", "Response from the owner")}
+                        </strong>
                         {responseDate ? (
                           <time dateTime={review.comments[0].commentDate}>
                             {responseDate}
@@ -552,7 +572,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
 
 export const UpscaleRestaurantReviewsSection: YextComponentConfig<ReviewsSectionProps> =
   {
-    label: "Reviews Section",
+    label: msg("components.reviewsSection", "Reviews Section"),
     fields: reviewsFields,
     defaultProps,
     render: ReviewsSection,
