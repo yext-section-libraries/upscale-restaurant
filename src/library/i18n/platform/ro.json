@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Secțiunea Despre",
     "address": "Adresa",
-    "banner": "Banner",
+    "bannerSection": "Secțiune de banner",
     "breadcrumbs": "Pesmet",
     "breadcrumbsSection": "Secțiunea de navigare ierarhică",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Secțiunea Întrebări frecvente",
     "featuredItemsSection": "Secțiune cu elemente recomandate",
     "findUsSection": "Find Us Section",
-    "footerSection": "Secțiunea subsol",
+    "footer": "Subsol",
     "headingText": "Text de îndreptare",
     "heroSection": "Secțiunea principală",
     "hoursStatus": "Stare de ore",

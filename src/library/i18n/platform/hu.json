@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Névjegy szakasz",
     "address": "Cím",
-    "banner": "Szalag",
+    "bannerSection": "Szalaghirdetés szakasza",
     "breadcrumbs": "Zsemlemorzsa",
     "breadcrumbsSection": "Morzsamenü szakasz",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "GYIK szakasz",
     "featuredItemsSection": "Kiemelt elemek szakasz",
     "findUsSection": "Find Us Section",
-    "footerSection": "Láblécszakasz",
+    "footer": "Lábléc",
     "headingText": "Fejléc",
     "heroSection": "Kiemelt szakasz",
     "hoursStatus": "Órás állapot",

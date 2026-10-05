@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Om-sektion",
     "address": "Adresse",
-    "banner": "Banner",
+    "bannerSection": "Bannersektion",
     "breadcrumbs": "Brødkrummer",
     "breadcrumbsSection": "Brødkrummesektion",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Sektion med ofte stillede spørgsmål",
     "featuredItemsSection": "Sektion med fremhævede elementer",
     "findUsSection": "Find Us Section",
-    "footerSection": "Sidefodssektion",
+    "footer": "Sidefod",
     "headingText": "Overskriftstekst",
     "heroSection": "Hero-sektion",
     "hoursStatus": "Timer status",

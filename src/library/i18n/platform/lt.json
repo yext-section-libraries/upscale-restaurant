@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Skiltis „Apie“",
     "address": "Adresas",
-    "banner": "Reklamjuostė",
+    "bannerSection": "Reklamjuostės skiltis",
     "breadcrumbs": "Duonos kuprinės",
     "breadcrumbsSection": "Naršymo kelio skiltis",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "DUK skiltis",
     "featuredItemsSection": "Paryškintų elementų skiltis",
     "findUsSection": "Find Us Section",
-    "footerSection": "Poraštės skiltis",
+    "footer": "Poraštė",
     "headingText": "Antraštės tekstas",
     "heroSection": "Pagrindinė skiltis",
     "hoursStatus": "Valandų būsena",

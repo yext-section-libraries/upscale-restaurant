@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Om-sektion",
     "address": "Adress",
-    "banner": "Banderoll",
+    "bannerSection": "Bannersektion",
     "breadcrumbs": "Ströbröd",
     "breadcrumbsSection": "Brödsmulesektion",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Avsnitt med vanliga frågor",
     "featuredItemsSection": "Sektion med utvalda objekt",
     "findUsSection": "Find Us Section",
-    "footerSection": "Sidfotssektion",
+    "footer": "Sidfot",
     "headingText": "Rubriktext",
     "heroSection": "Hero-sektion",
     "hoursStatus": "Timmars Status",

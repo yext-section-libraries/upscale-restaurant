@@ -21,6 +21,7 @@ import {
   makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type DeliveryPartnersSectionProps = {
   puck?: {
@@ -237,7 +238,8 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
   props,
 ) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const heading = resolveComponentData(
     props.heading.text,
     locale,

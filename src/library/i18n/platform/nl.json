@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Sectie Over ons",
     "address": "Adres",
-    "banner": "Banner",
+    "bannerSection": "Bannersectie",
     "breadcrumbs": "Paneermeel",
     "breadcrumbsSection": "Broodkruimelsectie",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Sectie Veelgestelde vragen",
     "featuredItemsSection": "Sectie met uitgelichte items",
     "findUsSection": "Find Us Section",
-    "footerSection": "Voettekstsectie",
+    "footer": "Voettekst",
     "headingText": "Koptekst",
     "heroSection": "Hero-sectie",
     "hoursStatus": "Urenstatus",

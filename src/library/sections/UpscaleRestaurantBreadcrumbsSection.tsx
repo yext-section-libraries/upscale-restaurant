@@ -23,6 +23,7 @@ import {
   makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type BreadcrumbsSectionProps = {
   puck?: {
@@ -265,7 +266,8 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
 
 const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
   const streamDocument = useDocument<StreamDocumentWithBreadcrumbs>();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const { relativePrefixToRoot } = useTemplateProps<{
     relativePrefixToRoot?: string;
   }>();
@@ -273,8 +275,8 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
     []) as BreadcrumbItem[];
   const visibleBreadcrumbs =
     props.breadcrumbs.includeCurrentPage || breadcrumbs.length <= 1
-    ? breadcrumbs
-    : breadcrumbs.slice(0, -1);
+      ? breadcrumbs
+      : breadcrumbs.slice(0, -1);
 
   if (!visibleBreadcrumbs.length) {
     return props.puck.isEditing ? (

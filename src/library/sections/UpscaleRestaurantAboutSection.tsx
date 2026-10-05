@@ -30,6 +30,7 @@ import {
   type StyledRtfProps,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type AboutSectionProps = {
   section: {
@@ -345,7 +346,8 @@ const UpscaleRestaurantCss = `
 
 const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const heading = resolveComponentData(
     props.about.heading.text,
     locale,

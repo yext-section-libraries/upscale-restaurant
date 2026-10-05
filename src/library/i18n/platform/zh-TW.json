@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "關於區段",
     "address": "地址",
-    "banner": "橫幅",
+    "bannerSection": "橫幅區塊",
     "breadcrumbs": "麵包屑",
     "breadcrumbsSection": "麵包屑導覽區段",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "常見問題區段",
     "featuredItemsSection": "精選項目區段",
     "findUsSection": "Find Us Section",
-    "footerSection": "頁尾區段",
+    "footer": "頁尾",
     "headingText": "標題文字",
     "heroSection": "主視覺區段",
     "hoursStatus": "小時狀態",

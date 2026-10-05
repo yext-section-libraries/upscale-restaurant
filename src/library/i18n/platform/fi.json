@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Tietoja-osio",
     "address": "Osoite",
-    "banner": "Banneri",
+    "bannerSection": "Banneriosio",
     "breadcrumbs": "Leivänmurska",
     "breadcrumbsSection": "Navigointipolkuosio",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Usein kysytyt kysymykset -osio",
     "featuredItemsSection": "Esiteltyjen kohteiden osio",
     "findUsSection": "Find Us Section",
-    "footerSection": "Alatunnisteosio",
+    "footer": "Alatunniste",
     "headingText": "Testi",
     "heroSection": "Hero-osio",
     "hoursStatus": "Tuntien tila",

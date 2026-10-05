@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Odjeljak O nama",
     "address": "Adresa",
-    "banner": "Natpis",
+    "bannerSection": "Odjeljak bannera",
     "breadcrumbs": "Krušne mrvice",
     "breadcrumbsSection": "Odjeljak navigacijskih mrvica",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Odjeljak s čestim pitanjima",
     "featuredItemsSection": "Odjeljak istaknutih stavki",
     "findUsSection": "Find Us Section",
-    "footerSection": "Odjeljak podnožja",
+    "footer": "Podnožje",
     "headingText": "Tekst naslova",
     "heroSection": "Glavni odjeljak",
     "hoursStatus": "Status sati",

@@ -377,9 +377,9 @@ const editorFallbackReviews: NonNullable<
 ];
 
 const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithReviews>();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const heading = resolveComponentData(
     props.reviews.heading.text,
     locale,

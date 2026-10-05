@@ -1,3 +1,6 @@
+/* Editor CSS omits the RTF theme rules needed to override saved inline styles. */
+@import "@yext/visual-editor/style.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

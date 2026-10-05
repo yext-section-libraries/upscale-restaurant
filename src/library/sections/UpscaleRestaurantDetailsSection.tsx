@@ -328,7 +328,10 @@ const detailsFields: YextFields<DetailsSectionProps> = {
                 type: "entityField",
                 filter: { types: ["type.phone"] },
               },
-              label: { label: msg("fields.label", "Label"), type: "translatableString" },
+              label: {
+                label: msg("fields.label", "Label"),
+                type: "translatableString",
+              },
             },
             defaultItemProps: {
               number: {
@@ -348,7 +351,10 @@ const detailsFields: YextFields<DetailsSectionProps> = {
             type: "radio",
             options: [
               { label: msg("fields.domestic", "Domestic"), value: "domestic" },
-              { label: msg("fields.international", "International"), value: "international" },
+              {
+                label: msg("fields.international", "International"),
+                value: "international",
+              },
             ],
           },
           includeHyperlink: {
@@ -462,7 +468,10 @@ const detailsFields: YextFields<DetailsSectionProps> = {
             options: [
               { label: msg("fields.monday", "Monday"), value: "monday" },
               { label: msg("fields.tuesday", "Tuesday"), value: "tuesday" },
-              { label: msg("fields.wednesday", "Wednesday"), value: "wednesday" },
+              {
+                label: msg("fields.wednesday", "Wednesday"),
+                value: "wednesday",
+              },
               { label: msg("fields.thursday", "Thursday"), value: "thursday" },
               { label: msg("fields.friday", "Friday"), value: "friday" },
               { label: msg("fields.saturday", "Saturday"), value: "saturday" },
@@ -479,7 +488,10 @@ const detailsFields: YextFields<DetailsSectionProps> = {
             ],
           },
           showAdditionalHoursText: {
-            label: msg("fields.showAdditionalHoursText", "Show Additional Hours Text"),
+            label: msg(
+              "fields.showAdditionalHoursText",
+              "Show Additional Hours Text",
+            ),
             type: "radio",
             options: [
               { label: msg("fields.yes", "Yes"), value: true },
@@ -683,7 +695,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
     timeFormatLocale: i18n.language,
   };
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const heading = resolveComponentData(
     props.details.heading.text,
     locale,

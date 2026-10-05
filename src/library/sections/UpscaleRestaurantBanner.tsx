@@ -21,10 +21,7 @@ import {
   resolveYextEntityField,
   useDocument,
 } from "@yext/visual-editor";
-import {
-  isRichTextEmpty,
-  renderRichText,
-} from "../shared/sectionHelpers";
+import { isRichTextEmpty, renderRichText } from "../shared/sectionHelpers";
 
 type UpscaleRestaurantBannerProps = {
   data: {
@@ -41,71 +38,69 @@ type UpscaleRestaurantBannerProps = {
   };
 };
 
-const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> = {
-  data: {
-    label: msg("fields.bannerText", "Banner Text"),
-    type: "object",
-    objectFields: {
-      text: {
-        label: msg("fields.text", "Text"),
-        type: "entityField",
-        filter: {
-          types: ["type.rich_text_v2"],
+const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
+  {
+    data: {
+      label: msg("fields.bannerText", "Banner Text"),
+      type: "object",
+      objectFields: {
+        text: {
+          label: msg("fields.text", "Text"),
+          type: "entityField",
+          filter: {
+            types: ["type.rich_text_v2"],
+          },
+        },
+        styles: {
+          label: msg("fields.textStyles", "Text Styles"),
+          type: "styledText",
+        },
+        fontColor: {
+          label: msg("fields.textColor", "Text Color"),
+          type: "basicSelector",
+          options: "SITE_COLOR",
         },
       },
-      styles: {
-        label: msg("fields.textStyles", "Text Styles"),
-        type: "styledText",
-      },
-      fontColor: {
-        label: msg("fields.textColor", "Text Color"),
-        type: "basicSelector",
-        options: "SITE_COLOR",
+    },
+    styles: {
+      label: msg("fields.styles", "Styles"),
+      type: "object",
+      objectFields: {
+        textAlignment: {
+          label: msg("fields.textAlignment", "Text Alignment"),
+          type: "radio",
+          options: [
+            { label: msg("fields.left", "Left"), value: "left" },
+            { label: msg("fields.center", "Center"), value: "center" },
+            { label: msg("fields.right", "Right"), value: "right" },
+          ],
+        },
       },
     },
-  },
-  styles: {
-    label: msg("fields.styles", "Styles"),
-    type: "object",
-    objectFields: {
-      textAlignment: {
-        label: msg("fields.textAlignment", "Text Alignment"),
-        type: "radio",
-        options: [
-          { label: msg("fields.left", "Left"), value: "left" },
-          { label: msg("fields.center", "Center"), value: "center" },
-          { label: msg("fields.right", "Right"), value: "right" },
-        ],
+    section: {
+      label: msg("fields.section", "Section"),
+      type: "object",
+      objectFields: {
+        backgroundColor: {
+          label: msg("fields.backgroundColor", "Background Color"),
+          type: "basicSelector",
+          options: "BACKGROUND_COLOR",
+        },
+        visibleOnLivePage: {
+          label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
+          type: "radio",
+          options: [
+            { label: msg("fields.yes", "Yes"), value: true },
+            { label: msg("fields.no", "No"), value: false },
+          ],
+        },
       },
     },
-  },
-  section: {
-    label: msg("fields.section", "Section"),
-    type: "object",
-    objectFields: {
-      backgroundColor: {
-        label: msg("fields.backgroundColor", "Background Color"),
-        type: "basicSelector",
-        options: "BACKGROUND_COLOR",
-      },
-      visibleOnLivePage: {
-        label: msg("fields.visibleOnLivePage", "Visible on Live Page"),
-        type: "radio",
-        options: [
-          { label: msg("fields.yes", "Yes"), value: true },
-          { label: msg("fields.no", "No"), value: false },
-        ],
-      },
-    },
-  },
-};
+  };
 
-const UpscaleRestaurantBannerComponent: PuckComponent<UpscaleRestaurantBannerProps> = ({
-  data,
-  styles,
-  section,
-  puck,
-}) => {
+const UpscaleRestaurantBannerComponent: PuckComponent<
+  UpscaleRestaurantBannerProps
+> = ({ data, styles, section, puck }) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
   const isMappedField =
@@ -182,47 +177,48 @@ const UpscaleRestaurantBannerComponent: PuckComponent<UpscaleRestaurantBannerPro
 /**
  * Displays a full-width, editor-configurable rich-text banner.
  */
-export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBannerProps> = {
-  label: msg("components.banner", "Banner"),
-  fields: UpscaleRestaurantBannerFields,
-  defaultProps: {
-    data: {
-      text: {
-        field: "",
-        constantValue: {
-          defaultValue: getDefaultRTF("Banner Text"),
+export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBannerProps> =
+  {
+    label: msg("components.bannerSection", "Banner Section"),
+    fields: UpscaleRestaurantBannerFields,
+    defaultProps: {
+      data: {
+        text: {
+          field: "",
+          constantValue: {
+            defaultValue: getDefaultRTF("Banner Text"),
+          },
+          constantValueEnabled: true,
         },
-        constantValueEnabled: true,
+        styles: {
+          fontFamily: "default",
+          fontSize: "default",
+          fontWeight: "default",
+          fontStyle: "default",
+          textTransform: "default",
+        },
       },
       styles: {
-        fontFamily: "default",
-        fontSize: "default",
-        fontWeight: "default",
-        fontStyle: "default",
-        textTransform: "default",
+        textAlignment: "center",
+      },
+      section: {
+        backgroundColor: backgroundColors.color1.value,
+        visibleOnLivePage: true,
       },
     },
-    styles: {
-      textAlignment: "center",
-    },
-    section: {
-      backgroundColor: backgroundColors.color1.value,
-      visibleOnLivePage: true,
-    },
-  },
-  render: (props) => (
-    <VisibilityWrapper
-      isEditing={props.puck.isEditing}
-      liveVisibility={props.section.visibleOnLivePage}
-    >
-      <UpscaleRestaurantBannerComponent {...props} />
-    </VisibilityWrapper>
-  ),
-};
+    render: (props) => (
+      <VisibilityWrapper
+        isEditing={props.puck.isEditing}
+        liveVisibility={props.section.visibleOnLivePage}
+      >
+        <UpscaleRestaurantBannerComponent {...props} />
+      </VisibilityWrapper>
+    ),
+  };
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBanner",
-  displayName: "Banner",
+  displayName: "Banner Section",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

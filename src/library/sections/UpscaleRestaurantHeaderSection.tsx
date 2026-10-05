@@ -575,10 +575,10 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
 const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
   UpscaleRestaurantHeaderSectionProps
 > = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const analytics = useAnalytics();
   const streamDocument = useDocument<StreamDocument>();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const [menuOpen, setMenuOpen] = React.useState(false);
 
   const resolvedLogoImage = resolveComponentData(
