@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "About Section",
     "address": "Address",
-    "banner": "Banner",
+    "bannerSection": "Banner Section",
     "breadcrumbs": "Breadcrumbs",
     "breadcrumbsSection": "Breadcrumbs Section",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "FAQ Section",
     "featuredItemsSection": "Featured Items Section",
     "findUsSection": "Find Us Section",
-    "footerSection": "Footer Section",
+    "footer": "Footer",
     "headingText": "Heading Text",
     "heroSection": "Hero Section",
     "hoursStatus": "Hours Status",

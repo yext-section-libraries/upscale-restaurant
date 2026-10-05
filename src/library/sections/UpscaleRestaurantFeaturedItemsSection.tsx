@@ -36,6 +36,7 @@ import {
   resolveSelectedColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type StyledTextStyleProps = {
   styles: StyledTextValue;
@@ -403,7 +404,10 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
                 type: "select",
                 options: [
                   { label: msg("fields.primary", "Primary"), value: "primary" },
-                  { label: msg("fields.secondary", "Secondary"), value: "secondary" },
+                  {
+                    label: msg("fields.secondary", "Secondary"),
+                    value: "secondary",
+                  },
                   { label: msg("fields.link", "Link"), value: "link" },
                 ],
               },
@@ -608,7 +612,8 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
   props,
 ) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const sectionSurfaceStyle = getSurfaceColorStyle(
     props.section.backgroundColor,
     streamDocument,

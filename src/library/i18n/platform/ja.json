@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "概要セクション",
     "address": "住所",
-    "banner": "バナー",
+    "bannerSection": "バナーセクション",
     "breadcrumbs": "パン粉",
     "breadcrumbsSection": "パンくずリストセクション",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "よくある質問セクション",
     "featuredItemsSection": "注目アイテムセクション",
     "findUsSection": "Find Us Section",
-    "footerSection": "フッターセクション",
+    "footer": "フッター",
     "headingText": "見出しテキスト",
     "heroSection": "ヒーローセクション",
     "hoursStatus": "時間ステータス",

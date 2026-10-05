@@ -33,6 +33,7 @@ import {
   makeThemeColor,
   renderRichText,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type StyledTextProps = {
   text: YextEntityField<TranslatableString>;
@@ -624,7 +625,8 @@ const UpscaleRestaurantCss = `
 
 const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const sectionSurfaceStyle = getSurfaceColorStyle(
     props.section.backgroundColor,
     streamDocument,
@@ -830,7 +832,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
 
 export const UpscaleRestaurantFooterSection: YextComponentConfig<FooterSectionProps> =
   {
-    label: msg("components.footerSection", "Footer Section"),
+    label: msg("components.footer", "Footer"),
     fields: footerFields,
     defaultProps,
     render: FooterSection,
@@ -838,7 +840,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<FooterSectionPr
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFooterSection",
-  displayName: "Footer Section",
+  displayName: "Footer",
   description: "Footer Section",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

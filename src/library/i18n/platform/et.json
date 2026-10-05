@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Meist-jaotis",
     "address": "Aadress",
-    "banner": "Bänner",
+    "bannerSection": "Bänneri jaotis",
     "breadcrumbs": "Riivsai",
     "breadcrumbsSection": "Lingiraja jaotis",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "KKK jaotis",
     "featuredItemsSection": "Esiletõstetud üksuste jaotis",
     "findUsSection": "Find Us Section",
-    "footerSection": "Jaluse jaotis",
+    "footer": "Jalus",
     "headingText": "Pealkiri",
     "heroSection": "Esiletõstetud jaotis",
     "hoursStatus": "Töötundide olek",

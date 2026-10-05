@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Abschnitt „Über uns“",
     "address": "Adresse",
-    "banner": "Banner",
+    "bannerSection": "Bannerbereich",
     "breadcrumbs": "Breadcrumbs",
     "breadcrumbsSection": "Breadcrumb-Abschnitt",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "FAQ-Abschnitt",
     "featuredItemsSection": "Bereich für hervorgehobene Elemente",
     "findUsSection": "Find Us Section",
-    "footerSection": "Fußzeilenabschnitt",
+    "footer": "Fußzeile",
     "headingText": "Überschriftstext",
     "heroSection": "Hero-Abschnitt",
     "hoursStatus": "Öffnungszeiten-Status",

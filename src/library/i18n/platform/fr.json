@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Section À propos",
     "address": "Adresse",
-    "banner": "Bannière",
+    "bannerSection": "Section de bannière",
     "breadcrumbs": "Chapelure",
     "breadcrumbsSection": "Section Fil d’Ariane",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Section FAQ",
     "featuredItemsSection": "Section des éléments en vedette",
     "findUsSection": "Find Us Section",
-    "footerSection": "Section Pied de page",
+    "footer": "Pied de page",
     "headingText": "Texte de tête",
     "heroSection": "Section principale",
     "hoursStatus": "Statut d'heures",

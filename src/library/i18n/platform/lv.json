@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Sadaļa Par mums",
     "address": "Adrese",
-    "banner": "Reklāmkarogs",
+    "bannerSection": "Reklāmkaroga sadaļa",
     "breadcrumbs": "Rīvmaize",
     "breadcrumbsSection": "Atpakaļceļa sadaļa",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "BUJ sadaļa",
     "featuredItemsSection": "Izcelto vienumu sadaļa",
     "findUsSection": "Find Us Section",
-    "footerSection": "Kājenes sadaļa",
+    "footer": "Kājene",
     "headingText": "Virsraksts",
     "heroSection": "Galvenā sadaļa",
     "hoursStatus": "Stundu statuss",

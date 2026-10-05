@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Sekce O nás",
     "address": "Adresa",
-    "banner": "Banner",
+    "bannerSection": "Sekce banneru",
     "breadcrumbs": "Strouhanka",
     "breadcrumbsSection": "Sekce drobečkové navigace",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "Sekce Časté dotazy",
     "featuredItemsSection": "Sekce doporučených položek",
     "findUsSection": "Find Us Section",
-    "footerSection": "Sekce zápatí",
+    "footer": "Zápatí",
     "headingText": "Text nadpisu",
     "heroSection": "Úvodní sekce",
     "hoursStatus": "Stav hodin",

@@ -9,7 +9,10 @@ import { useDocument } from "@yext/visual-editor/section-library-support";
 import { YextEntityField } from "@yext/visual-editor/section-library-support";
 import { msg, pt } from "@yext/visual-editor/section-library-support";
 import { Body } from "@yext/visual-editor/section-library-support";
-import { YextComponentConfig, YextFields } from "@yext/visual-editor/section-library-support";
+import {
+  YextComponentConfig,
+  YextFields,
+} from "@yext/visual-editor/section-library-support";
 
 /** Props for the HoursTable component. */
 export interface HoursTableProps {
@@ -62,7 +65,7 @@ export const HoursTableStyleFields: YextFields<HoursTableStyleFieldProps> = {
   showAdditionalHoursText: {
     label: msg(
       "fields.options.showAdditionalHoursText",
-      "Show Additional Hours Text"
+      "Show Additional Hours Text",
     ),
     type: "radio",
     options: [

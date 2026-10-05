@@ -29,6 +29,7 @@ import {
   type StyledRtfProps,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
@@ -328,7 +329,8 @@ const UpscaleRestaurantCss = `
 
 const EventSection: PuckComponent<EventSectionProps> = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const heading = resolveComponentData(
     props.event.heading.text,
     locale,

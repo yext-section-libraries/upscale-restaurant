@@ -141,17 +141,26 @@ export const renderRichText = (
       className?: string;
       style?: React.CSSProperties;
     }>;
-    const color = getThemeColorCssValue(richTextStyleOverrides?.color);
-    const { color: _color, ...styleOverrides } = richTextStyleOverrides ?? {};
+    const { color, ...typography } = richTextStyleOverrides ?? {};
+    const styleOverrides = getTextStyle(
+      { ...defaultTextStyles, ...typography },
+      color,
+    );
+    const typographyVariables = Object.fromEntries(
+      Object.entries(styleOverrides)
+        .filter(([property, setting]) => property !== "color" && setting !== undefined)
+        .map(([property, setting]) => [`--${property}-body-${property}`, setting]),
+    );
 
+    // RTF descendants read typography variables rather than inheriting styles.
+    // Leave default variables unset so the current theme remains authoritative.
     return React.cloneElement(element, {
       className:
-        [element.props.className, className].filter(Boolean).join(" ") ||
-        undefined,
+        [element.props.className, className].filter(Boolean).join(" ") || undefined,
       style: {
         ...element.props.style,
         ...styleOverrides,
-        ...(color ? { color } : {}),
+        ...typographyVariables,
       },
     });
   }

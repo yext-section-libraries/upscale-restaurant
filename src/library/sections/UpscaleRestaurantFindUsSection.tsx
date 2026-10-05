@@ -151,7 +151,10 @@ const findUsFields: YextFields<FindUsSectionProps> = {
     type: "object",
     objectFields: {
       nearbyLocationCardStyles: {
-        label: msg("fields.nearbyLocationCardStyles", "Nearby Location Card Styles"),
+        label: msg(
+          "fields.nearbyLocationCardStyles",
+          "Nearby Location Card Styles",
+        ),
         type: "object",
         objectFields: {
           cardBackgroundColor: {
@@ -234,8 +237,14 @@ const findUsFields: YextFields<FindUsSectionProps> = {
                 label: msg("fields.phoneFormat", "Phone Format"),
                 type: "select",
                 options: [
-                  { label: msg("fields.domestic", "Domestic"), value: "domestic" },
-                  { label: msg("fields.international", "International"), value: "international" },
+                  {
+                    label: msg("fields.domestic", "Domestic"),
+                    value: "domestic",
+                  },
+                  {
+                    label: msg("fields.international", "International"),
+                    value: "international",
+                  },
                 ],
               },
               includeHyperlink: {
@@ -605,26 +614,24 @@ const renderHoursStatus = (
       if (!isOpen24h(params) && !isIndefinitelyClosed(params)) {
         if (params.isOpen) {
           statusText = dayOfWeek
-            ? t(
-                "closesAtTimeWeek",
-                "Closes at {{time}} {{dayOfWeek}}",
-                { time, dayOfWeek },
-              )
+            ? t("closesAtTimeWeek", "Closes at {{time}} {{dayOfWeek}}", {
+                time,
+                dayOfWeek,
+              })
             : t("closesAtTime", "Closes at {{time}}", { time });
         } else {
           statusText = dayOfWeek
-            ? t(
-                "opensAtTimeWeek",
-                "Opens at {{time}} {{dayOfWeek}}",
-                { time, dayOfWeek },
-              )
+            ? t("opensAtTimeWeek", "Opens at {{time}} {{dayOfWeek}}", {
+                time,
+                dayOfWeek,
+              })
             : t("opensAtTime", "Opens at {{time}}", { time });
         }
       }
 
       return (
         <div>
-          {(showCurrentStatus || params.comingSoon)
+          {showCurrentStatus || params.comingSoon
             ? hoursCurrentTemplateOverride(params, t)
             : null}
           {!params.comingSoon && showCurrentStatus
@@ -675,7 +682,9 @@ const renderNearbyLocationCard = (
         {cardStyles.showAddress ? (
           <p className="fb-location-address">
             {locationData.address?.line1 ??
-              (isEditing ? pt("addressWillAppearHere", "Address will appear here") : "")}
+              (isEditing
+                ? pt("addressWillAppearHere", "Address will appear here")
+                : "")}
             {locationData.address?.line1 ? (
               <>
                 <br />
@@ -749,9 +758,9 @@ const renderNearbyLocationCard = (
 };
 
 const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithLocation>();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const { relativePrefixToRoot } = useTemplateProps<{
     relativePrefixToRoot?: string;
   }>();
@@ -873,7 +882,10 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                         </h3>
                         {cardStyles.showAddress ? (
                           <p className="fb-location-address">
-                            {pt("addressWillAppearHere", "Address will appear here")}
+                            {pt(
+                              "addressWillAppearHere",
+                              "Address will appear here",
+                            )}
                           </p>
                         ) : null}
                         {cardStyles.showPhone ? (
@@ -886,7 +898,10 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
                         ) : null}
                         {cardStyles.showHours ? (
                           <p className="fb-location-hours">
-                            {pt("hoursWillAppearHere", "Hours will appear here")}
+                            {pt(
+                              "hoursWillAppearHere",
+                              "Hours will appear here",
+                            )}
                           </p>
                         ) : null}
                         <CTA

@@ -28,6 +28,7 @@ import {
   renderRichText,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
+import { useTranslation } from "react-i18next";
 
 type FaqItemProps = {
   question: YextEntityField<TranslatableString>;
@@ -62,7 +63,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Are your dining hours the same as your take-out hours?",
         constantValueEnabled: true,
       },
-        answer: makeRtfField(
+      answer: makeRtfField(
         "Not always. Our takeout and delivery service may remain available slightly later than dine-in seating, especially on weekends. For the most accurate hours, we recommend checking our online ordering page or giving our [[geomodifier]] location a quick call before placing your order.",
       ),
     },
@@ -72,7 +73,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Can I order online?",
         constantValueEnabled: true,
       },
-        answer: makeRtfField(
+      answer: makeRtfField(
         "[[name]] offers online ordering for takeout, curbside pickup, and delivery throughout [[geomodifier]] [[address.city]] and surrounding neighborhoods. Delivery is available through select third-party partners including DoorDash, Uber Eats, and Postmates.",
       ),
     },
@@ -82,7 +83,7 @@ const faqItemsSource = createItemSource<FaqItemProps>({
         constantValue: "Does this location take reservations?",
         constantValueEnabled: true,
       },
-        answer: makeRtfField(
+      answer: makeRtfField(
         "Yes. We accept reservations for parties of up to 6 guests based on availability. Larger groups, birthday dinners, and private dining inquiries can be arranged by contacting our group events coordinator directly. Weekend brunch reservations are highly recommended.",
       ),
     },
@@ -362,7 +363,8 @@ const UpscaleRestaurantCss = `
 
 const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const { i18n } = useTranslation();
+  const locale = i18n.language;
   const sectionSurfaceStyle = getSurfaceColorStyle(
     props.section.backgroundColor,
     streamDocument,

@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "关于部分",
     "address": "地址",
-    "banner": "横幅",
+    "bannerSection": "横幅部分",
     "breadcrumbs": "面包屑",
     "breadcrumbsSection": "面包屑导航部分",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "常见问题部分",
     "featuredItemsSection": "精选项目区段",
     "findUsSection": "Find Us Section",
-    "footerSection": "页脚部分",
+    "footer": "页脚",
     "headingText": "标题文字",
     "heroSection": "首屏部分",
     "hoursStatus": "小时状态",

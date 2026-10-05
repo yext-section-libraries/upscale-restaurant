@@ -19,7 +19,7 @@
   "components": {
     "aboutSection": "Hakkında Bölümü",
     "address": "Adres",
-    "banner": "Afiş",
+    "bannerSection": "Banner Bölümü",
     "breadcrumbs": "Ekmek kırıntıları",
     "breadcrumbsSection": "İçerik Haritası Bölümü",
     "deliveryPartnersSection": "Delivery Partners Section",
@@ -31,7 +31,7 @@
     "faqSection": "SSS Bölümü",
     "featuredItemsSection": "Öne çıkan öğeler bölümü",
     "findUsSection": "Find Us Section",
-    "footerSection": "Altbilgi Bölümü",
+    "footer": "Alt Bilgi",
     "headingText": "Başlık metni",
     "heroSection": "Ana Görsel Bölümü",
     "hoursStatus": "Saat Durumu",

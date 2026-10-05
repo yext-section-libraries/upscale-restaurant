@@ -520,9 +520,9 @@ const UpscaleRestaurantCss = `
 `;
 
 const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const streamDocument = useDocument();
-  const locale = streamDocument.locale ?? "en";
+  const locale = i18n.language;
   const timezone = streamDocument.timezone ?? "UTC";
   const heading = resolveComponentData(
     props.hero.heading.text,
@@ -620,7 +620,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                 fieldId={props.hours.field}
                 constantValueEnabled={props.hours.constantValueEnabled}
               >
-                <p className="fb-hero-meta">
+                <div className="fb-hero-meta">
                   <HoursStatus
                     hours={displayHours}
                     timezone={timezone}
@@ -673,10 +673,12 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
 
                       return (
                         <div>
-                          {(props.hoursStyles.showCurrentStatus || params.comingSoon)
+                          {props.hoursStyles.showCurrentStatus ||
+                          params.comingSoon
                             ? hoursCurrentTemplateOverride(params, t)
                             : null}
-                          {!params.comingSoon && props.hoursStyles.showCurrentStatus
+                          {!params.comingSoon &&
+                          props.hoursStyles.showCurrentStatus
                             ? defaultSeparatorTemplate(params)
                             : null}
                           {!params.comingSoon && statusText ? (
@@ -688,7 +690,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                       );
                     }}
                   />
-                </p>
+                </div>
               </EntityField>
               <div className="fb-hero-actions">
                 {props.hero.ctas.map((cta, index) => (
