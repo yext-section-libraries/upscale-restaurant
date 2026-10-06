@@ -434,7 +434,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
 
 export const UpscaleRestaurantEventSection: YextComponentConfig<EventSectionProps> =
   {
-    label: msg("components.eventSection", "Event Section"),
+    label: msg("components.eventLabel", "Event"),
     fields: eventFields,
     defaultProps,
     render: EventSection,
@@ -442,7 +442,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<EventSectionProp
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantEventSection",
-  displayName: "Event Section",
+  displayName: "Event",
   description: "Event Section",
   pageSetTypes: ["ENTITY"],
 };

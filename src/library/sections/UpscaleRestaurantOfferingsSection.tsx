@@ -568,7 +568,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
 
 export const UpscaleRestaurantOfferingsSection: YextComponentConfig<OfferingsSectionProps> =
   {
-    label: msg("components.offeringsSection", "Offerings Section"),
+    label: msg("components.offeringsLabel", "Offerings"),
     fields: offeringsFields,
     defaultProps,
     render: OfferingsSection,
@@ -576,7 +576,7 @@ export const UpscaleRestaurantOfferingsSection: YextComponentConfig<OfferingsSec
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantOfferingsSection",
-  displayName: "Offerings Section",
+  displayName: "Offerings",
   description: "Offerings Section",
   pageSetTypes: ["ENTITY"],
 };

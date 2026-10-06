@@ -329,7 +329,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
 
 export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
   {
-    label: msg("components.deliveryPartnersSection", "Delivery Partners Section"),
+    label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
     fields: deliveryPartnersFields,
     defaultProps,
     render: DeliveryPartnersSection,
@@ -337,7 +337,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<Deliv
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantDeliveryPartnersSection",
-  displayName: "Delivery Partners Section",
+  displayName: "Delivery Partners",
   description: "Delivery Partners Section",
   pageSetTypes: ["ENTITY"],
 };

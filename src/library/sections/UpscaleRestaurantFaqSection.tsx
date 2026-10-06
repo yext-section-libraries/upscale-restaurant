@@ -459,7 +459,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
 
 export const UpscaleRestaurantFaqSection: YextComponentConfig<FaqSectionProps> =
   {
-    label: msg("components.faqSection", "FAQ Section"),
+    label: msg("components.faqLabel", "FAQ"),
     fields: faqFields,
     defaultProps,
     render: FaqSection,
@@ -467,7 +467,7 @@ export const UpscaleRestaurantFaqSection: YextComponentConfig<FaqSectionProps> =
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFaqSection",
-  displayName: "FAQ Section",
+  displayName: "FAQ",
   description: "FAQ Section",
   pageSetTypes: ["ENTITY"],
 };

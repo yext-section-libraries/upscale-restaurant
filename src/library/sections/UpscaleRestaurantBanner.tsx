@@ -179,7 +179,7 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
  */
 export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBannerProps> =
   {
-    label: msg("components.bannerSection", "Banner Section"),
+    label: msg("components.bannerLabel", "Banner"),
     fields: UpscaleRestaurantBannerFields,
     defaultProps: {
       data: {
@@ -218,7 +218,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBanne
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBanner",
-  displayName: "Banner Section",
+  displayName: "Banner",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

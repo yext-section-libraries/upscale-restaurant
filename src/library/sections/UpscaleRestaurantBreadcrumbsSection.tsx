@@ -440,7 +440,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
 
 export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<BreadcrumbsSectionProps> =
   {
-    label: msg("components.breadcrumbsSection", "Breadcrumbs Section"),
+    label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: breadcrumbsFields,
     defaultProps,
     render: BreadcrumbsSection,
@@ -448,7 +448,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<Breadcrumb
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBreadcrumbsSection",
-  displayName: "Breadcrumbs Section",
+  displayName: "Breadcrumbs",
   description: "Breadcrumbs Section",
   pageSetTypes: ["ENTITY"],
 };
