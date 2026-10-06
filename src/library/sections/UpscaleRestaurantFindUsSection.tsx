@@ -944,7 +944,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
 
 export const UpscaleRestaurantFindUsSection: YextComponentConfig<FindUsSectionProps> =
   {
-    label: msg("components.findUsSection", "Find Us Section"),
+    label: msg("components.findUsLabel", "Find Us"),
     fields: findUsFields,
     defaultProps,
     render: FindUsSection,
@@ -952,7 +952,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<FindUsSectionPr
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFindUsSection",
-  displayName: "Find Us Section",
+  displayName: "Find Us",
   description: "Find Us Section",
   pageSetTypes: ["ENTITY"],
 };

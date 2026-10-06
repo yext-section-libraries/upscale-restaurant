@@ -786,7 +786,7 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
 
 export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<FeaturedItemsSectionProps> =
   {
-    label: msg("components.featuredItemsSection", "Featured Items Section"),
+    label: msg("components.featuredItemsLabel", "Featured Items"),
     fields: featuredItemsFields,
     defaultProps,
     render: FeaturedItemsSection,
@@ -794,7 +794,7 @@ export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<Featured
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFeaturedItemsSection",
-  displayName: "Featured Items Section",
+  displayName: "Featured Items",
   description: "Featured Items Section",
   pageSetTypes: ["ENTITY"],
 };

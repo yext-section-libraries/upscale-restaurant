@@ -572,7 +572,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
 
 export const UpscaleRestaurantReviewsSection: YextComponentConfig<ReviewsSectionProps> =
   {
-    label: msg("components.reviewsSection", "Reviews Section"),
+    label: msg("components.reviewsLabel", "Reviews"),
     fields: reviewsFields,
     defaultProps,
     render: ReviewsSection,
@@ -580,7 +580,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<ReviewsSection
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantReviewsSection",
-  displayName: "Reviews Section",
+  displayName: "Reviews",
   description: "Reviews Section",
   pageSetTypes: ["ENTITY"],
 };

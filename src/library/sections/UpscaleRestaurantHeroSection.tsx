@@ -718,7 +718,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
 
 export const UpscaleRestaurantHeroSection: YextComponentConfig<HeroSectionProps> =
   {
-    label: msg("components.heroSection", "Hero Section"),
+    label: msg("components.heroLabel", "Hero"),
     fields: heroFields,
     defaultProps,
     render: HeroSection,
@@ -726,7 +726,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<HeroSectionProps>
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantHeroSection",
-  displayName: "Hero Section",
+  displayName: "Hero",
   description: "Hero Section",
   pageSetTypes: ["ENTITY"],
 };
