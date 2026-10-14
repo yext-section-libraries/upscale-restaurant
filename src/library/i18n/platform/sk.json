@@ -411,5 +411,6 @@
   "useOurLocatorToFindALocationNearYou": "Pomocou nášho vyhľadávača nájdete miesto vo vašom okolí",
   "utilityIcon": "Utility Icon",
   "visitPage": "Navštíviť stránku",
-  "visitPageForName": "Navštíviť stránku pre {{name}}"
+  "visitPageForName": "Navštíviť stránku pre {{name}}",
+  "mapRequiresWebGL": "Mapa nie je dostupná, pretože WebGL nie je k dispozícii."
 }
