@@ -399,5 +399,6 @@
   "useOurLocatorToFindALocationNearYou": "Brug vores Locator til at finde en placering i nærheden af ​​dig",
   "utilityIcon": "Utility Icon",
   "visitPage": "Besøg side",
-  "visitPageForName": "Besøg siden for {{name}}"
+  "visitPageForName": "Besøg siden for {{name}}",
+  "mapRequiresWebGL": "Kortet er ikke tilgængeligt, fordi WebGL ikke er tilgængeligt."
 }

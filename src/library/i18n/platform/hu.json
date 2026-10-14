@@ -399,5 +399,6 @@
   "useOurLocatorToFindALocationNearYou": "Használja a lokátorunkat, hogy találjon egy helyet a közelben",
   "utilityIcon": "Utility Icon",
   "visitPage": "Látogasson el az oldalra",
-  "visitPageForName": "Látogassa meg a {{name}} oldalát"
+  "visitPageForName": "Látogassa meg a {{name}} oldalát",
+  "mapRequiresWebGL": "A térkép nem érhető el, mert a WebGL nem érhető el."
 }

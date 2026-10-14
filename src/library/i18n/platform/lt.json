@@ -411,5 +411,6 @@
   "useOurLocatorToFindALocationNearYou": "Naudokite mūsų ieškiklį, kad rastumėte vietą šalia jūsų",
   "utilityIcon": "Utility Icon",
   "visitPage": "Apsilankykite puslapyje",
-  "visitPageForName": "Apsilankykite puslapyje {{name}}"
+  "visitPageForName": "Apsilankykite puslapyje {{name}}",
+  "mapRequiresWebGL": "Žemėlapis nepasiekiamas, nes WebGL nepasiekiamas."
 }
