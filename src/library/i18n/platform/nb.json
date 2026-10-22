@@ -147,6 +147,7 @@
     "long": "Lang",
     "longitude": "Lengdegrad",
     "map": "Kart",
+    "mapStartingZoom": "Kartets startzoom",
     "mapboxMapStyle": "Mapbox-kartstil",
     "mapStyle": "Kartstil",
     "monday": "mandag",
