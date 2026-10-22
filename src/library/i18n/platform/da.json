@@ -147,6 +147,7 @@
     "long": "Lang",
     "longitude": "Længde",
     "map": "Kort",
+    "mapStartingZoom": "Kortets startzoom",
     "mapboxMapStyle": "Mapbox-kortstil",
     "mapStyle": "Kortstil",
     "monday": "mandag",

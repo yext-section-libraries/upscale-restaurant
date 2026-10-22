@@ -147,6 +147,7 @@
     "long": "Długi",
     "longitude": "Długość geograficzna",
     "map": "Mapa",
+    "mapStartingZoom": "Początkowy poziom powiększenia mapy",
     "mapboxMapStyle": "Styl mapy Mapbox",
     "mapStyle": "Styl mapy",
     "monday": "Poniedziałek",

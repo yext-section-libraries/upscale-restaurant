@@ -147,6 +147,7 @@
     "long": "Ilgas",
     "longitude": "Ilguma",
     "map": "Žemėlapis",
+    "mapStartingZoom": "Pradinis žemėlapio mastelio lygis",
     "mapboxMapStyle": "„Mapbox“ žemėlapio stilius",
     "mapStyle": "Žemėlapio stilius",
     "monday": "Pirmadienis",

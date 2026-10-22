@@ -147,6 +147,7 @@
     "long": "Uzun",
     "longitude": "Boylam",
     "map": "Harita",
+    "mapStartingZoom": "Haritanın başlangıç yakınlaştırma düzeyi",
     "mapboxMapStyle": "Mapbox Harita Stili",
     "mapStyle": "Harita stili",
     "monday": "Pazartesi",

@@ -147,6 +147,7 @@
     "long": "長的",
     "longitude": "經度",
     "map": "地圖",
+    "mapStartingZoom": "地圖初始縮放層級",
     "mapboxMapStyle": "Mapbox 地圖樣式",
     "mapStyle": "地圖樣式",
     "monday": "週一",

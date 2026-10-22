@@ -147,6 +147,7 @@
     "long": "Hosszú",
     "longitude": "Hosszúság",
     "map": "Térkép",
+    "mapStartingZoom": "A térkép kezdeti nagyítási szintje",
     "mapboxMapStyle": "Mapbox térképstílus",
     "mapStyle": "Térképstílus",
     "monday": "hétfő",
