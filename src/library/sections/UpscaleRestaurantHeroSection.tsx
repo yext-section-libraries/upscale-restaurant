@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -23,10 +24,9 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
-  getTextStyle,
   hasImageSource,
   makeRtf,
   makeText,
@@ -217,7 +217,11 @@ const defaultProps: HeroSectionProps = {
   },
 };
 
-const heroFields: YextFields<HeroSectionProps> = {
+type HeroSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<HeroSectionProps, typeof heroFields>>
+>;
+
+const heroFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -258,6 +262,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            transform: true,
           },
         },
       },
@@ -273,6 +278,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -293,6 +299,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -353,7 +360,7 @@ const heroFields: YextFields<HeroSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<HeroSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-hero-shell {
@@ -519,7 +526,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
+const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const streamDocument = useDocument();
   const locale = i18n.language;
@@ -529,11 +536,10 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const headingStyle = getTextStyle(
-    props.hero.heading.styles,
-    props.hero.heading.fontColor,
-    "currentColor",
-  );
+  const headingStyle = {
+    ...props.hero.heading.styles,
+    color: getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
+  };
   const descriptionStyles = {
     ...props.hero.description.styles,
     color: getThemeColorCssValue(props.hero.description.fontColor),
@@ -578,11 +584,15 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                   props.hero.image.image.constantValueEnabled
                 }
               >
-                <div className="fb-hero-image-frame">
+                <div
+                  className="fb-hero-image-frame"
+                  style={{ ...props.hero.image.styles, overflow: "hidden" }}
+                >
                   <Image
                     image={image}
                     className="fb-hero-image"
                     style={{
+                      ...props.hero.image.styles,
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
@@ -716,12 +726,17 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantHeroSection: YextComponentConfig<HeroSectionProps> =
+export const UpscaleRestaurantHeroSection: YextComponentConfig<
+  HeroSectionProps,
+  typeof heroFields
+> =
   {
     label: msg("components.heroLabel", "Hero"),
     fields: heroFields,
     defaultProps,
-    render: HeroSection,
+    render: (props) => (
+      <HeroSection {...(props as HeroSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

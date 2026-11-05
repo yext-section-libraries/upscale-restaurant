@@ -1,7 +1,7 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
-import { PuckComponent } from "@puckeditor/core";
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,7 +15,9 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   backgroundColors,
+  getThemeColorCssValue,
   getDefaultRTF,
   resolveComponentData,
   resolveYextEntityField,
@@ -38,7 +40,11 @@ type UpscaleRestaurantBannerProps = {
   };
 };
 
-const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
+type UpscaleRestaurantBannerRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<UpscaleRestaurantBannerProps, typeof UpscaleRestaurantBannerFields>>
+>;
+
+const UpscaleRestaurantBannerFields =
   {
     data: {
       label: msg("fields.bannerText", "Banner Text"),
@@ -54,6 +60,7 @@ const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
         styles: {
           label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
+          transform: true,
         },
         fontColor: {
           label: msg("fields.textColor", "Text Color"),
@@ -96,11 +103,11 @@ const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
         },
       },
     },
-  };
+  } satisfies YextFields<UpscaleRestaurantBannerProps>;
 
-const UpscaleRestaurantBannerComponent: PuckComponent<
-  UpscaleRestaurantBannerProps
-> = ({ data, styles, section, puck }) => {
+const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderProps> = (
+  { data, styles, section, puck },
+) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
   const isMappedField =
@@ -139,7 +146,9 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
 
   const richTextStyleOverrides = {
     ...data.styles,
-    color: data.fontColor ?? section.backgroundColor.contrastingColor,
+    color:
+      getThemeColorCssValue(data.fontColor) ??
+      getThemeColorCssValue(section.backgroundColor.contrastingColor),
   };
   const resolvedText = resolveComponentData(
     data.text,
@@ -177,7 +186,10 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
 /**
  * Displays a full-width, editor-configurable rich-text banner.
  */
-export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBannerProps> =
+export const UpscaleRestaurantBanner: YextComponentConfig<
+  UpscaleRestaurantBannerProps,
+  typeof UpscaleRestaurantBannerFields
+> =
   {
     label: msg("components.bannerLabel", "Banner"),
     fields: UpscaleRestaurantBannerFields,
@@ -211,7 +223,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBanne
         isEditing={props.puck.isEditing}
         liveVisibility={props.section.visibleOnLivePage}
       >
-        <UpscaleRestaurantBannerComponent {...props} />
+        <UpscaleRestaurantBannerComponent {...(props as UpscaleRestaurantBannerRenderProps)} />
       </VisibilityWrapper>
     ),
   };

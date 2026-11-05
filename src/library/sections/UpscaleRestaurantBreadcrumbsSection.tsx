@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -8,6 +9,7 @@ import {
   EntityField,
   VisibilityWrapper,
   getSurfaceColorStyle,
+  getThemeColorCssValue,
   resolveBreadcrumbs,
   resolveComponentData,
   useDocument,
@@ -15,10 +17,9 @@ import {
   type ThemeColor,
   type YextComponentConfig,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
-  getTextStyle,
   makeText,
   makeThemeColor,
   type StyledTextProps,
@@ -144,10 +145,10 @@ const UpscaleRestaurantBreadcrumbsCss = `
 `;
 
 const getTextStyles = (
-  text: StyledTextProps,
+  text: BreadcrumbsSectionRenderProps["breadcrumbs"]["rootLabel"],
   fallbackColor: string,
 ): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor, fallbackColor);
+  ({ ...text.styles, color: getThemeColorCssValue(text.fontColor) ?? fallbackColor });
 
 const resolveCurrentPageLabel = (
   currentPage: StyledTextProps["text"],
@@ -188,7 +189,11 @@ const defaultProps: BreadcrumbsSectionProps = {
   },
 };
 
-const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
+type BreadcrumbsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<BreadcrumbsSectionProps, typeof breadcrumbsFields>>
+>;
+
+const breadcrumbsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -224,6 +229,7 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -244,6 +250,7 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -262,9 +269,9 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<BreadcrumbsSectionProps>;
 
-const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
+const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
   const streamDocument = useDocument<StreamDocumentWithBreadcrumbs>();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -326,9 +333,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
   const currentPageStyles = {
     ...getTextStyles(props.breadcrumbs.currentPage, "currentColor"),
     fontWeight:
-      props.breadcrumbs.currentPage.styles.fontWeight === "default"
-        ? 600
-        : props.breadcrumbs.currentPage.styles.fontWeight,
+      props.breadcrumbs.currentPage.styles.fontWeight ?? 600,
   } satisfies React.CSSProperties;
 
   return (
@@ -438,12 +443,17 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<BreadcrumbsSectionProps> =
+export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
+  BreadcrumbsSectionProps,
+  typeof breadcrumbsFields
+> =
   {
     label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: breadcrumbsFields,
     defaultProps,
-    render: BreadcrumbsSection,
+    render: (props) => (
+      <BreadcrumbsSection {...(props as BreadcrumbsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

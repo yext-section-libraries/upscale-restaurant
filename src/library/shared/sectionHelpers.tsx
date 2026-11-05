@@ -4,7 +4,6 @@ import {
   MaybeRTF,
   getDefaultRTF,
   getThemeColorCssValue,
-  type MaybeRTFProps,
   type RichText,
   type StyledTextValue,
   type ThemeColor,
@@ -66,22 +65,6 @@ export const makeRtf = (text: string): StyledRtfProps => ({
   fontColor: undefined,
 });
 
-export const getTextStyle = (
-  styles: StyledTextValue,
-  color?: ThemeColor | string,
-  fallbackColor?: string,
-): React.CSSProperties => ({
-  fontFamily:
-    styles.fontFamily === "default" ? undefined : styles.fontFamily,
-  fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-  fontWeight:
-    styles.fontWeight === "default" ? undefined : styles.fontWeight,
-  fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-  textTransform:
-    styles.textTransform === "default" ? undefined : styles.textTransform,
-  color: getThemeColorCssValue(color) ?? fallbackColor,
-});
-
 export const resolveSelectedColor = (
   color?: ThemeColor,
 ): string | undefined =>
@@ -129,9 +112,16 @@ export const isRichTextEmpty = (value: unknown): boolean => {
 
 export const renderRichText = (
   value: unknown,
-  richTextStyleOverrides?: MaybeRTFProps["richTextStyleOverrides"],
+  richTextStyleOverrides?: React.CSSProperties,
   className?: string,
 ): React.ReactNode => {
+  const styleOverrides = richTextStyleOverrides ?? {};
+  const typographyVariables = Object.fromEntries(
+    Object.entries(styleOverrides)
+      .filter(([property, setting]) => property !== "color" && setting !== undefined)
+      .map(([property, setting]) => [`--${property}-body-${property}`, setting]),
+  );
+
   if (React.isValidElement(value)) {
     if (!richTextStyleOverrides && !className) {
       return value;
@@ -141,16 +131,6 @@ export const renderRichText = (
       className?: string;
       style?: React.CSSProperties;
     }>;
-    const { color, ...typography } = richTextStyleOverrides ?? {};
-    const styleOverrides = getTextStyle(
-      { ...defaultTextStyles, ...typography },
-      color,
-    );
-    const typographyVariables = Object.fromEntries(
-      Object.entries(styleOverrides)
-        .filter(([property, setting]) => property !== "color" && setting !== undefined)
-        .map(([property, setting]) => [`--${property}-body-${property}`, setting]),
-    );
 
     // RTF descendants read typography variables rather than inheriting styles.
     // Leave default variables unset so the current theme remains authoritative.
@@ -175,7 +155,7 @@ export const renderRichText = (
     <MaybeRTF
       className={className}
       data={data}
-      richTextStyleOverrides={richTextStyleOverrides}
+      style={{ ...styleOverrides, ...typographyVariables }}
     />
   );
 };

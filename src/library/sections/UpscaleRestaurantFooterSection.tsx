@@ -21,12 +21,12 @@ import {
   type YextArrayField,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   Background,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import {
   defaultTextStyles,
-  getTextStyle,
   hasImageSource,
   makeRtfField,
   makeText,
@@ -132,7 +132,7 @@ const defaultLink: LinkItemProps = {
   openInNewTab: false,
 };
 
-const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
+const linkFieldConfig = {
   type: "array",
   arrayFields: {
     label: {
@@ -165,11 +165,11 @@ const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
         { label: msg("fields.options.no", "No"), value: false },
       ],
     },
-  },
+  } satisfies YextFields<TranslatableCTA>,
   defaultItemProps: defaultLink satisfies TranslatableCTA,
   getItemSummary: (item) =>
     typeof item.label === "string" ? item.label : "Link",
-};
+} satisfies YextArrayField<TranslatableCTA[]>;
 
 const makeRtf = (text: string): StyledRtfProps => ({
   text: makeRtfField(text),
@@ -261,7 +261,11 @@ const defaultProps: FooterSectionProps = {
   },
 };
 
-const footerFields: YextFields<FooterSectionProps> = {
+type FooterSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FooterSectionProps, typeof footerFields>>
+>;
+
+const footerFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -295,6 +299,7 @@ const footerFields: YextFields<FooterSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -370,6 +375,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -385,6 +391,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -411,6 +418,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -425,7 +433,7 @@ const footerFields: YextFields<FooterSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FooterSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-footer-shell {
@@ -623,7 +631,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
+const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -655,7 +663,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     streamDocument,
   );
   const footerLinkTextStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.linkStyles.styles),
+    ...props.footer.linkStyles.styles,
   };
   const pageStyle: FooterStyle = {
     ...sectionSurfaceStyle,
@@ -667,15 +675,15 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     "--fb-footer-link-hover": "currentColor",
   };
   const brandNameStyle: React.CSSProperties = {
-    ...getTextStyle(props.brandName.styles),
+    ...props.brandName.styles,
     color: resolveTextColor(props.brandName.fontColor),
   };
   const quickLinksHeadingStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.quickLinksHeading.styles),
+    ...props.footer.quickLinksHeading.styles,
     color: resolveTextColor(props.footer.quickLinksHeading.fontColor),
   };
   const copyrightTextStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.copyrightText.styles),
+    ...props.footer.copyrightText.styles,
     color: resolveTextColor(props.footer.copyrightText.fontColor),
   };
   const renderLink = (
@@ -830,12 +838,17 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFooterSection: YextComponentConfig<FooterSectionProps> =
+export const UpscaleRestaurantFooterSection: YextComponentConfig<
+  FooterSectionProps,
+  typeof footerFields
+> =
   {
     label: msg("components.footer", "Footer"),
     fields: footerFields,
     defaultProps,
-    render: FooterSection,
+    render: (props) => (
+      <FooterSection {...(props as FooterSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

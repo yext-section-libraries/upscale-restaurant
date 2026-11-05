@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -19,11 +20,10 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   aspectRatioOptions,
-  getTextStyle,
   hasImageSource,
   makeText,
   makeThemeColor,
@@ -166,14 +166,14 @@ const defaultImageStyles: StyledImageValue = {
 };
 
 const makeImageStyle = (
-  image: StyledImageProps,
+  image: OfferingsSectionRenderProps["offerings"]["image"],
 ): {
   wrapper: ResponsiveImageStyle;
   image: React.CSSProperties;
 } => {
-  const hasCustomRadius = image.styles.borderRadius !== "default";
+  const hasCustomRadius = image.styles.borderRadius !== undefined;
   const aspectRatio = image.aspectRatio > 0 ? image.aspectRatio : undefined;
-  const borderRadius = hasCustomRadius ? image.styles.borderRadius : undefined;
+  const borderRadius = image.styles.borderRadius;
 
   return {
     wrapper: {
@@ -238,7 +238,11 @@ const defaultProps: OfferingsSectionProps = {
   },
 };
 
-const offeringsFields: YextFields<OfferingsSectionProps> = {
+type OfferingsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<OfferingsSectionProps, typeof offeringsFields>>
+>;
+
+const offeringsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -274,6 +278,7 @@ const offeringsFields: YextFields<OfferingsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -299,6 +304,7 @@ const offeringsFields: YextFields<OfferingsSectionProps> = {
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            transform: true,
           },
         },
       },
@@ -308,7 +314,7 @@ const offeringsFields: YextFields<OfferingsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<OfferingsSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-offerings-shell {
@@ -446,7 +452,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
+const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -461,10 +467,7 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
   );
   const headingColor = getThemeColorCssValue(props.offerings.heading.fontColor);
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(
-      props.offerings.heading.styles,
-      props.offerings.heading.fontColor,
-    ),
+    ...props.offerings.heading.styles,
     margin: "0 0 32px",
     color: headingColor,
   };
@@ -566,12 +569,17 @@ const OfferingsSection: PuckComponent<OfferingsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantOfferingsSection: YextComponentConfig<OfferingsSectionProps> =
+export const UpscaleRestaurantOfferingsSection: YextComponentConfig<
+  OfferingsSectionProps,
+  typeof offeringsFields
+> =
   {
     label: msg("components.offeringsLabel", "Offerings"),
     fields: offeringsFields,
     defaultProps,
-    render: OfferingsSection,
+    render: (props) => (
+      <OfferingsSection {...(props as OfferingsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

@@ -2,7 +2,7 @@ import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
-import { PuckComponent } from "@puckeditor/core";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import { useTranslation } from "react-i18next";
 import {
   AnalyticsScopeProvider,
@@ -29,6 +29,7 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   getAnalyticsScopeHash,
   getSurfaceColorStyle,
   getThemeColorCssValue,
@@ -159,42 +160,6 @@ const defaultUtilityIconImage: SharedHeaderAction["iconImage"] = {
 const hasExplicitThemeColor = (color?: ThemeColor): color is ThemeColor =>
   Boolean(normalizeThemeColorToken(color));
 
-const resolveBorderRadius = (value?: string): string | undefined => {
-  if (!value || value === "default") {
-    return undefined;
-  }
-
-  return value;
-};
-
-const getTextStyles = ({
-  color,
-  styles,
-}: {
-  color?: ThemeColor;
-  styles: Pick<
-    StyledLinkValue,
-    | "fontFamily"
-    | "fontSize"
-    | "fontWeight"
-    | "fontStyle"
-    | "textTransform"
-    | "letterSpacing"
-  >;
-}): React.CSSProperties => {
-  return {
-    color: getThemeColorCssValue(color),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
-    letterSpacing:
-      styles.letterSpacing === "default" ? undefined : styles.letterSpacing,
-  };
-};
-
 const getTranslatableSummary = (
   value: TranslatableString | undefined,
   fallback: string,
@@ -258,7 +223,16 @@ const SharedHeaderDefaultUtilityIcon = () => (
   </svg>
 );
 
-const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSectionProps> =
+type UpscaleRestaurantHeaderSectionRenderProps = WithId<
+  WithPuckProps<
+    YextTransformedProps<
+      UpscaleRestaurantHeaderSectionProps,
+      typeof UpscaleRestaurantHeaderSectionFields
+    >
+  >
+>;
+
+const UpscaleRestaurantHeaderSectionFields =
   {
     variant: {
       label: msg("fields.variant", "Variant"),
@@ -370,6 +344,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
         styles: {
           label: msg("fields.linkStyles", "Link Styles"),
           type: "styledLink",
+          transform: true,
           showIncludeCaretField: false,
         },
       },
@@ -417,6 +392,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
                 styles: {
                   label: msg("fields.imageStyles", "Image Styles"),
                   type: "styledImage",
+                  transform: true,
                 },
               },
             },
@@ -567,13 +543,14 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
         styles: {
           label: msg("fields.imageStyles", "Image Styles"),
           type: "styledImage",
+          transform: true,
         },
       },
     },
-  };
+  } satisfies YextFields<UpscaleRestaurantHeaderSectionProps>;
 
-const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
-  UpscaleRestaurantHeaderSectionProps
+const UpscaleRestaurantHeaderSectionComponent: React.FC<
+  UpscaleRestaurantHeaderSectionRenderProps
 > = (props) => {
   const { t, i18n } = useTranslation();
   const analytics = useAnalytics();
@@ -612,10 +589,10 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     ? ({ borderColor: dividerColorValue } as React.CSSProperties)
     : undefined;
 
-  const navigationTextStyles = getTextStyles({
-    color: navigationColor,
-    styles: props.navigation.styles,
-  });
+  const navigationTextStyles = {
+    ...props.navigation.styles,
+    color: getThemeColorCssValue(navigationColor),
+  };
 
   const logoWrapperStyle: React.CSSProperties = {
     height: "50px",
@@ -623,7 +600,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
       props.logoImage.aspectRatio > 0
         ? `${50 * props.logoImage.aspectRatio}px`
         : "50px",
-    borderRadius: resolveBorderRadius(props.logoImage.styles?.borderRadius),
+    borderRadius: props.logoImage.styles?.borderRadius,
     overflow: "hidden",
   };
 
@@ -691,7 +668,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     iconImageProps,
   }: {
     iconImage?: ImageType | ComplexImageType | TranslatableAssetImage;
-    iconImageProps: SharedHeaderAction["iconImage"];
+    iconImageProps: UpscaleRestaurantHeaderSectionRenderProps["utilities"]["items"][number]["iconImage"];
   }) => {
     if (!hasImageSource(iconImage)) {
       return (
@@ -726,7 +703,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     const wrapperStyle: React.CSSProperties = {
       width: `${iconHeight * iconAspectRatio}px`,
       height: `${iconHeight}px`,
-      borderRadius: resolveBorderRadius(iconImageProps.styles?.borderRadius),
+      borderRadius: iconImageProps.styles?.borderRadius,
       overflow: "hidden",
       flexShrink: 0,
     };
@@ -1143,7 +1120,10 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
   );
 };
 
-export const UpscaleRestaurantHeaderSection: YextComponentConfig<UpscaleRestaurantHeaderSectionProps> =
+export const UpscaleRestaurantHeaderSection: YextComponentConfig<
+  UpscaleRestaurantHeaderSectionProps,
+  typeof UpscaleRestaurantHeaderSectionFields
+> =
   {
     label: msg("components.sharedHeader", "Header"),
     fields: UpscaleRestaurantHeaderSectionFields,
@@ -1311,7 +1291,9 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<UpscaleRestaura
       <AnalyticsScopeProvider
         name={`UpscaleRestaurantHeaderSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <UpscaleRestaurantHeaderSectionComponent {...props} />
+        <UpscaleRestaurantHeaderSectionComponent
+          {...(props as UpscaleRestaurantHeaderSectionRenderProps)}
+        />
       </AnalyticsScopeProvider>
     ),
   };

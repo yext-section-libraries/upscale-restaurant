@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -17,11 +18,10 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   aspectRatioOptions,
-  getTextStyle,
   hasImageSource,
   makeRtf,
   makeText,
@@ -57,14 +57,14 @@ const defaultImageStyles: StyledImageValue = {
 };
 
 const makeImageStyle = (
-  image: AboutSectionProps["about"]["image"],
+  image: AboutSectionRenderProps["about"]["image"],
 ): {
   wrapper: ResponsiveImageStyle;
   image: React.CSSProperties;
 } => {
-  const hasCustomRadius = image.styles.borderRadius !== "default";
+  const hasCustomRadius = image.styles.borderRadius !== undefined;
   const aspectRatio = image.aspectRatio > 0 ? image.aspectRatio : undefined;
-  const borderRadius = hasCustomRadius ? image.styles.borderRadius : undefined;
+  const borderRadius = image.styles.borderRadius;
 
   return {
     wrapper: {
@@ -114,7 +114,11 @@ const defaultProps: AboutSectionProps = {
   },
 };
 
-const aboutSectionFields: YextFields<AboutSectionProps> = {
+type AboutSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<AboutSectionProps, typeof aboutSectionFields>>
+>;
+
+const aboutSectionFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -150,6 +154,7 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -170,6 +175,7 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -195,12 +201,13 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            transform: true,
           },
         },
       },
     },
   },
-};
+} satisfies YextFields<AboutSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-about-shell {
@@ -344,7 +351,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
+const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -358,7 +365,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     streamDocument,
   );
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.about.heading.styles, props.about.heading.fontColor),
+    ...props.about.heading.styles,
     textAlign: "left",
     marginBottom: "14px",
     color: getThemeColorCssValue(props.about.heading.fontColor),
@@ -442,12 +449,18 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantAboutSection: YextComponentConfig<AboutSectionProps> =
+export const UpscaleRestaurantAboutSection: YextComponentConfig<
+  AboutSectionProps,
+  typeof aboutSectionFields
+> =
   {
     label: msg("components.aboutLabel", "About"),
     fields: aboutSectionFields,
     defaultProps,
-    render: AboutSection,
+    // Puck 0.24 deep slot types expand CSS string unions; the runtime CSS is unchanged.
+    render: (props) => (
+      <AboutSection {...(props as AboutSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

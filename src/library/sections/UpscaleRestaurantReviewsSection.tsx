@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -15,6 +16,7 @@ import {
   type ThemeColor,
   type YextComponentConfig,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
 import {
   makeText,
@@ -69,7 +71,11 @@ const defaultProps: ReviewsSectionProps = {
   },
 };
 
-const reviewsFields: YextFields<ReviewsSectionProps> = {
+type ReviewsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<ReviewsSectionProps, typeof reviewsFields>>
+>;
+
+const reviewsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -110,6 +116,7 @@ const reviewsFields: YextFields<ReviewsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -130,6 +137,7 @@ const reviewsFields: YextFields<ReviewsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -140,7 +148,7 @@ const reviewsFields: YextFields<ReviewsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<ReviewsSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-reviews-shell {
@@ -376,7 +384,7 @@ const editorFallbackReviews: NonNullable<
   },
 ];
 
-const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
+const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement => {
   const { t, i18n } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithReviews>();
   const locale = i18n.language;
@@ -437,6 +445,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
             >
               <h2
                 style={{
+                  ...props.reviews.heading.styles,
                   color: getThemeColorCssValue(props.reviews.heading.fontColor),
                   textAlign: "center",
                 }}
@@ -487,6 +496,7 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
                 <p
                   className="fb-recent-heading"
                   style={{
+                    ...props.reviews.recentHeading.styles,
                     color: getThemeColorCssValue(
                       props.reviews.recentHeading.fontColor,
                     ),
@@ -570,12 +580,17 @@ const ReviewsSection = (props: ReviewsSectionProps): React.ReactElement => {
   );
 };
 
-export const UpscaleRestaurantReviewsSection: YextComponentConfig<ReviewsSectionProps> =
+export const UpscaleRestaurantReviewsSection: YextComponentConfig<
+  ReviewsSectionProps,
+  typeof reviewsFields
+> =
   {
     label: msg("components.reviewsLabel", "Reviews"),
     fields: reviewsFields,
     defaultProps,
-    render: ReviewsSection,
+    render: (props) => (
+      <ReviewsSection {...(props as ReviewsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

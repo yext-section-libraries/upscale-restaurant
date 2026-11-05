@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -18,11 +19,10 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   defaultTextStyles,
-  getTextStyle,
   makeRtfField,
   makeText,
   renderRichText,
@@ -163,7 +163,11 @@ const defaultProps: FaqSectionProps = {
   },
 };
 
-const faqFields: YextFields<FaqSectionProps> = {
+type FaqSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FaqSectionProps, typeof faqFields>>
+>;
+
+const faqFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -197,6 +201,7 @@ const faqFields: YextFields<FaqSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -221,6 +226,7 @@ const faqFields: YextFields<FaqSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -236,6 +242,7 @@ const faqFields: YextFields<FaqSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -248,7 +255,7 @@ const faqFields: YextFields<FaqSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FaqSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-faq-shell {
@@ -361,7 +368,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
+const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -376,7 +383,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
   );
   const headingColor = toCssColor(props.heading.fontColor);
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.heading.styles),
+    ...props.heading.styles,
     marginBottom: "28px",
     color: headingColor,
   };
@@ -385,7 +392,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
     streamDocument,
   );
   const questionStyle: React.CSSProperties = {
-    ...getTextStyle(props.faqs.styles.question.styles),
+    ...props.faqs.styles.question.styles,
     color: toCssColor(props.faqs.styles.question.fontColor),
   };
   const answerRichTextStyles = {
@@ -457,12 +464,17 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFaqSection: YextComponentConfig<FaqSectionProps> =
+export const UpscaleRestaurantFaqSection: YextComponentConfig<
+  FaqSectionProps,
+  typeof faqFields
+> =
   {
     label: msg("components.faqLabel", "FAQ"),
     fields: faqFields,
     defaultProps,
-    render: FaqSection,
+    render: (props) => (
+      <FaqSection {...(props as FaqSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

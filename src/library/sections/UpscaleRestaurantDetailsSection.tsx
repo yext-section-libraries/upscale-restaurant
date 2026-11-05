@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -18,6 +19,7 @@ import {
   EntityField,
   VisibilityWrapper,
   getSurfaceColorStyle,
+  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledTextValue,
@@ -26,13 +28,12 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   msg,
   pt,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   defaultTextStyles,
-  getTextStyle,
   makeText,
   makeThemeColor,
   type StyledTextProps,
@@ -111,11 +112,19 @@ const makeTextList = (items: string[]): TextListProps => ({
   fontColor: undefined,
 });
 
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor);
+const makeTextStyle = (
+  text: DetailsSectionRenderProps["details"]["heading"],
+): React.CSSProperties => ({
+  ...text.styles,
+  color: getThemeColorCssValue(text.fontColor),
+});
 
-const makeTextListStyle = (text: TextListProps): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor);
+const makeTextListStyle = (
+  text: DetailsSectionRenderProps["details"]["otherDetails"],
+): React.CSSProperties => ({
+  ...text.styles,
+  color: getThemeColorCssValue(text.fontColor),
+});
 
 const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
   data: {
@@ -203,7 +212,11 @@ const defaultProps: DetailsSectionProps = {
   },
 };
 
-const detailsFields: YextFields<DetailsSectionProps> = {
+type DetailsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<DetailsSectionProps, typeof detailsFields>>
+>;
+
+const detailsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -244,6 +257,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -264,6 +278,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -307,6 +322,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -331,6 +347,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
               label: {
                 label: msg("fields.label", "Label"),
                 type: "translatableString",
+                transform: true,
               },
             },
             defaultItemProps: {
@@ -379,6 +396,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -410,6 +428,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -444,6 +463,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -502,7 +522,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<DetailsSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-details-shell {
@@ -668,7 +688,7 @@ const formatPhoneForDisplay = (
     : parsedPhoneNumber.number.national || phoneNumber;
 };
 
-const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
+const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const dayOfWeekNames = React.useMemo<DayOfWeekNames>(() => {
     const formatter = new Intl.DateTimeFormat(i18n.language, {
@@ -821,16 +841,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                       locale,
                       streamDocument,
                     );
-                    const phoneLabel =
-                      typeof phone.label === "string"
-                        ? phone.label
-                        : phone.label
-                          ? resolveComponentData(
-                              phone.label,
-                              locale,
-                              streamDocument,
-                            )
-                          : "";
+                    const phoneLabel = phone.label ?? "";
                     const normalizedNumber = (phoneNumber ?? "").trim();
                     const phoneText = formatPhoneForDisplay(
                       normalizedNumber,
@@ -977,12 +988,17 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantDetailsSection: YextComponentConfig<DetailsSectionProps> =
+export const UpscaleRestaurantDetailsSection: YextComponentConfig<
+  DetailsSectionProps,
+  typeof detailsFields
+> =
   {
     label: msg("components.detailsLabel", "Details"),
     fields: detailsFields,
     defaultProps,
-    render: DetailsSectionComponent,
+    render: (props) => (
+      <DetailsSectionComponent {...(props as DetailsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

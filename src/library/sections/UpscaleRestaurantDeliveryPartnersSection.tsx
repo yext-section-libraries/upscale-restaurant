@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -13,9 +14,9 @@ import {
   type ThemeColor,
   type YextComponentConfig,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
 import { resolveComponentData, useDocument } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   makeText,
   makeThemeColor,
@@ -92,7 +93,11 @@ const defaultProps: DeliveryPartnersSectionProps = {
   ],
 };
 
-const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
+type DeliveryPartnersSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<DeliveryPartnersSectionProps, typeof deliveryPartnersFields>>
+>;
+
+const deliveryPartnersFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -124,6 +129,7 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -139,6 +145,7 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
       cta: {
         label: msg("fields.callToAction", "Call To Action"),
         type: "comprehensiveCTA",
+        transform: true,
       },
     },
     defaultItemProps: {
@@ -146,7 +153,7 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
     },
     getItemSummary: () => "CTA",
   },
-};
+} satisfies YextFields<DeliveryPartnersSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-page {
@@ -234,9 +241,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
-  props,
-) => {
+const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -282,26 +287,7 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
               <h2
                 style={{
                   textAlign: "center",
-                  fontFamily:
-                    props.heading.styles.fontFamily === "default"
-                      ? undefined
-                      : props.heading.styles.fontFamily,
-                  fontSize:
-                    props.heading.styles.fontSize === "default"
-                      ? undefined
-                      : props.heading.styles.fontSize,
-                  fontWeight:
-                    props.heading.styles.fontWeight === "default"
-                      ? undefined
-                      : props.heading.styles.fontWeight,
-                  fontStyle:
-                    props.heading.styles.fontStyle === "default"
-                      ? undefined
-                      : props.heading.styles.fontStyle,
-                  textTransform:
-                    props.heading.styles.textTransform === "default"
-                      ? undefined
-                      : props.heading.styles.textTransform,
+                  ...props.heading.styles,
                   color:
                     getThemeColorCssValue(props.heading.fontColor) ??
                     sectionForegroundColor,
@@ -311,14 +297,9 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
               </h2>
             </EntityField>
             <div className="fb-actions">
-              {props.ctas.map((item, index) => {
-                const ctaValue: Partial<ComprehensiveCTAValue> = {
-                  data: item.cta.data,
-                  styles: item.cta.styles,
-                };
-
-                return <ComprehensiveCTA key={index} value={ctaValue} />;
-              })}
+              {props.ctas.map((item, index) => (
+                <ComprehensiveCTA key={index} value={item.cta} />
+              ))}
             </div>
           </div>
         </section>
@@ -327,12 +308,17 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
   );
 };
 
-export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
+export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
+  DeliveryPartnersSectionProps,
+  typeof deliveryPartnersFields
+> =
   {
     label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
     fields: deliveryPartnersFields,
     defaultProps,
-    render: DeliveryPartnersSection,
+    render: (props) => (
+      <DeliveryPartnersSection {...(props as DeliveryPartnersSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

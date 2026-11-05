@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -13,7 +14,7 @@ import {
   getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
-  type ComprehensiveCTAValue,
+  type ResolvedComprehensiveCTAValue,
   type StyledImageValue,
   type StyledLinkValue,
   type StyledTextValue,
@@ -23,11 +24,10 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   defaultTextStyles,
-  getTextStyle,
   hasImageSource,
   makeRtfField,
   makeText,
@@ -132,15 +132,13 @@ const makeCta = (label: string, link: string): FeaturedItemCtaProps => ({
 });
 
 const makeImageStyle = (
-  styles?: Partial<StyledImageValue>,
+  styles?: React.CSSProperties,
 ): React.CSSProperties => {
-  const resolvedStyles = { ...defaultImageStyles, ...styles };
+  const resolvedStyles = styles;
 
   return {
     borderRadius:
-      resolvedStyles.borderRadius === "default"
-        ? "8px"
-        : resolvedStyles.borderRadius,
+      resolvedStyles?.borderRadius ?? "8px",
     overflow: "hidden",
   };
 };
@@ -291,7 +289,11 @@ const defaultProps: FeaturedItemsSectionProps = {
   },
 };
 
-const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
+type FeaturedItemsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FeaturedItemsSectionProps, typeof featuredItemsFields>>
+>;
+
+const featuredItemsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -328,6 +330,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -352,6 +355,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -367,6 +371,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -382,6 +387,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
               styles: {
                 label: msg("fields.imageStyles", "Image Styles"),
                 type: "styledImage",
+                transform: true,
               },
             },
           },
@@ -392,6 +398,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
               styles: {
                 label: msg("fields.linkStyles", "Link Styles"),
                 type: "styledLink",
+                transform: true,
                 showIncludeCaretField: false,
               },
               fontColor: {
@@ -422,7 +429,7 @@ const featuredItemsFields: YextFields<FeaturedItemsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FeaturedItemsSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-featured-shell {
@@ -608,9 +615,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
-  props,
-) => {
+const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -624,14 +629,21 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
     streamDocument,
   );
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.heading.styles),
+    ...props.heading.styles,
     margin: "0 0 28px",
     color: resolveSelectedColor(props.heading.fontColor),
   };
   const items = featuredItemsSource.resolveItems(
     props.featuredItems.data,
-    streamDocument,
+    { ...streamDocument, locale },
   );
+
+  // resolveItems already interpolates manual content in the selected locale.
+  // Mapped item content still needs the page document during manual resolution.
+  const itemInterpolationDocument =
+    props.featuredItems.data.constantValueEnabled || !props.featuredItems.data.field
+      ? undefined
+      : streamDocument;
 
   return (
     <VisibilityWrapper
@@ -663,10 +675,10 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
               <div className="fb-featured-grid">
                 {items.map((item, index) => {
                   const title = item.title
-                    ? resolveComponentData(item.title, locale, streamDocument)
+                    ? resolveComponentData(item.title, locale, itemInterpolationDocument)
                     : "";
                   const titleStyle: React.CSSProperties = {
-                    ...getTextStyle(props.featuredItems.styles.title.styles),
+                    ...props.featuredItems.styles.title.styles,
                     color: resolveSelectedColor(
                       props.featuredItems.styles.title.fontColor,
                     ),
@@ -681,27 +693,27 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                     ? resolveComponentData(
                         item.description,
                         locale,
-                        streamDocument,
+                        itemInterpolationDocument,
                       )
                     : "";
                   const imageStyles = makeImageStyle(
                     props.featuredItems.styles.image.styles,
                   );
                   const resolvedImage = item.image
-                    ? resolveComponentData(item.image, locale, streamDocument)
+                    ? resolveComponentData(item.image, locale, itemInterpolationDocument)
                     : "";
                   const ctaLabel = item.cta.label
                     ? resolveComponentData(
                         item.cta.label,
                         locale,
-                        streamDocument,
+                        itemInterpolationDocument,
                       )
                     : "";
                   const ctaLink = item.cta.link
                     ? resolveComponentData(
                         item.cta.link,
                         locale,
-                        streamDocument,
+                        itemInterpolationDocument,
                       )
                     : "";
                   const featureImage = hasImageSource(resolvedImage)
@@ -709,22 +721,18 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                     : undefined;
                   const hasFeatureImage = Boolean(featureImage);
                   const hasCta = Boolean(ctaLabel) && Boolean(ctaLink);
-                  const ctaValue: Partial<ComprehensiveCTAValue> | undefined =
+                  const ctaValue: ResolvedComprehensiveCTAValue | undefined =
                     hasCta
                       ? {
                           data: {
                             actionType: "link",
                             cta: {
-                              field: "",
-                              constantValue: {
-                                label: String(ctaLabel),
-                                link: String(ctaLink),
-                                linkType: item.cta.linkType,
-                                normalizeLink: item.cta.normalizeLink,
-                                openInNewTab: item.cta.openInNewTab,
-                                ctaType: "textAndLink",
-                              },
-                              constantValueEnabled: true,
+                              label: String(ctaLabel),
+                              link: String(ctaLink),
+                              linkType: item.cta.linkType,
+                              normalizeLink: item.cta.normalizeLink,
+                              openInNewTab: item.cta.openInNewTab,
+                              ctaType: "textAndLink",
                             },
                             openInNewTab: item.cta.openInNewTab,
                           },
@@ -733,7 +741,6 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                             color:
                               props.featuredItems.styles.cta.color ??
                               props.featuredItems.styles.cta.fontColor,
-                            link: props.featuredItems.styles.cta.styles,
                           },
                         }
                       : undefined;
@@ -768,7 +775,10 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
                         </div>
                         {ctaValue ? (
                           <div className="fb-feature-cta">
-                            <ComprehensiveCTA value={ctaValue} />
+                            <ComprehensiveCTA
+                              value={ctaValue}
+                              style={props.featuredItems.styles.cta.styles}
+                            />
                           </div>
                         ) : null}
                       </Background>
@@ -784,12 +794,17 @@ const FeaturedItemsSection: PuckComponent<FeaturedItemsSectionProps> = (
   );
 };
 
-export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<FeaturedItemsSectionProps> =
+export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<
+  FeaturedItemsSectionProps,
+  typeof featuredItemsFields
+> =
   {
     label: msg("components.featuredItemsLabel", "Featured Items"),
     fields: featuredItemsFields,
     defaultProps,
-    render: FeaturedItemsSection,
+    render: (props) => (
+      <FeaturedItemsSection {...(props as FeaturedItemsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

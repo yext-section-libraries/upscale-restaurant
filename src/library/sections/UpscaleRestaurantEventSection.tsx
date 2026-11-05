@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -16,10 +17,9 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
-  getTextStyle,
   hasImageSource,
   makeRtf,
   makeText,
@@ -111,7 +111,11 @@ const defaultProps: EventSectionProps = {
   },
 };
 
-const eventFields: YextFields<EventSectionProps> = {
+type EventSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<EventSectionProps, typeof eventFields>>
+>;
+
+const eventFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -153,6 +157,7 @@ const eventFields: YextFields<EventSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -173,6 +178,7 @@ const eventFields: YextFields<EventSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -187,7 +193,7 @@ const eventFields: YextFields<EventSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<EventSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-event-shell {
@@ -327,7 +333,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const EventSection: PuckComponent<EventSectionProps> = (props) => {
+const EventSection: React.FC<EventSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -339,7 +345,7 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
   const headingColor =
     resolveSelectedColor(props.event.heading.fontColor) ?? "currentColor";
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.event.heading.styles),
+    ...props.event.heading.styles,
     color: headingColor,
   };
   const descriptionStyles = {
@@ -432,12 +438,17 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantEventSection: YextComponentConfig<EventSectionProps> =
+export const UpscaleRestaurantEventSection: YextComponentConfig<
+  EventSectionProps,
+  typeof eventFields
+> =
   {
     label: msg("components.eventLabel", "Event"),
     fields: eventFields,
     defaultProps,
-    render: EventSection,
+    render: (props) => (
+      <EventSection {...(props as EventSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {

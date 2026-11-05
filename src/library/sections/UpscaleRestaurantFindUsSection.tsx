@@ -1,3 +1,4 @@
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -26,9 +27,9 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   Background,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
 import {
   makeText,
   makeThemeColor,
@@ -126,7 +127,11 @@ const defaultProps = {
   },
 } satisfies FindUsSectionProps;
 
-const findUsFields: YextFields<FindUsSectionProps> = {
+type FindUsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FindUsSectionProps, typeof findUsFields>>
+>;
+
+const findUsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -295,6 +300,7 @@ const findUsFields: YextFields<FindUsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -329,7 +335,7 @@ const findUsFields: YextFields<FindUsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FindUsSectionProps>;
 
 const UpscaleRestaurantCss = `
 .fb-find-us-shell {
@@ -757,7 +763,7 @@ const renderNearbyLocationCard = (
   );
 };
 
-const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
+const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithLocation>();
   const locale = i18n.language;
@@ -828,6 +834,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
             >
               <h2
                 style={{
+                  ...props.findUs.heading.styles,
                   marginBottom: 28,
                   color: getThemeColorCssValue(props.findUs.heading.fontColor),
                 }}
@@ -942,12 +949,17 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFindUsSection: YextComponentConfig<FindUsSectionProps> =
+export const UpscaleRestaurantFindUsSection: YextComponentConfig<
+  FindUsSectionProps,
+  typeof findUsFields
+> =
   {
     label: msg("components.findUsLabel", "Find Us"),
     fields: findUsFields,
     defaultProps,
-    render: FindUsSection,
+    render: (props) => (
+      <FindUsSection {...(props as FindUsSectionRenderProps)} />
+    ),
   };
 
 export const config: SectionConfig = {
