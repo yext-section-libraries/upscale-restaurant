@@ -1,3 +1,16 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  getSurfaceColorStyle,
+  aspectRatioOptions,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -9,8 +22,6 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledImageValue,
@@ -20,16 +31,6 @@ import {
   type YextFields,
   type YextTransformedProps,
 } from "@yext/visual-editor";
-import {
-  aspectRatioOptions,
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type AboutSectionProps = {
@@ -210,79 +211,17 @@ const aboutSectionFields = {
 } satisfies YextFields<AboutSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-about-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-about-shell * { box-sizing: border-box; }
-.fb-about-shell p,
-.fb-about-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-about-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-about-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-about-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-about-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-about-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-about-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-about-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
 .fb-about-section {
-  padding-block: 0;
-  padding-inline: var(--padding-pageSection-horizontalPadding);
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(1540px, 100%);
+.fb-about-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-about-grid {
@@ -296,14 +235,12 @@ const UpscaleRestaurantCss = `
   align-self: center;
 }
 .fb-about-text h2 {
-  font-size: clamp(34px, 4vw, 54px);
   line-height: 1.08;
   margin-bottom: 14px;
   text-align: left;
 }
 .fb-about-text p {
   color: currentColor;
-  font-size: 16px;
   line-height: 1.5;
   margin: 14px 0 16px;
 }
@@ -329,11 +266,8 @@ const UpscaleRestaurantCss = `
   }
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-about-section {
-    padding-inline: var(--padding-pageSection-horizontalPadding);
+    padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   }
   .fb-about-text {
     max-width: none;
@@ -368,11 +302,11 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
     ...props.about.heading.styles,
     textAlign: "left",
     marginBottom: "14px",
-    color: getThemeColorCssValue(props.about.heading.fontColor),
+    color: resolveSelectedColor(props.about.heading.fontColor),
   };
   const contentStyleOverrides = {
     ...props.about.content.styles,
-    color: getThemeColorCssValue(props.about.content.fontColor),
+    color: resolveSelectedColor(props.about.content.fontColor),
   };
   const content = resolveComponentData(
     props.about.content.text,
@@ -454,7 +388,7 @@ export const UpscaleRestaurantAboutSection: YextComponentConfig<
   typeof aboutSectionFields
 > =
   {
-    label: msg("components.aboutLabel", "About"),
+    label: msg("components.aboutLabel", "About Section"),
     fields: aboutSectionFields,
     defaultProps,
     // Puck 0.24 deep slot types expand CSS string unions; the runtime CSS is unchanged.
@@ -465,7 +399,7 @@ export const UpscaleRestaurantAboutSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantAboutSection",
-  displayName: "About",
+  displayName: "About Section",
   description: "About Section",
   pageSetTypes: ["ENTITY"],
 };

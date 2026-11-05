@@ -1,3 +1,11 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  getSurfaceColorStyle,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -9,8 +17,6 @@ import {
   EntityField,
   VisibilityWrapper,
   getAggregateRating,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type ThemeColor,
@@ -18,11 +24,6 @@ import {
   type YextFields,
   type YextTransformedProps,
 } from "@yext/visual-editor";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type ReviewsSectionProps = {
   puck?: {
@@ -151,78 +152,17 @@ const reviewsFields = {
 } satisfies YextFields<ReviewsSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-reviews-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-reviews-shell * { box-sizing: border-box; }
-.fb-reviews-shell p,
-.fb-reviews-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-reviews-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-reviews-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-reviews-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-reviews-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-reviews-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-reviews-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-reviews-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-tint-section {
+.fb-reviews-shell .fb-tint-section {
   background: var(--fb-tint-bg);
 }
-.fb-wide-container {
-  width: min(1540px, calc(100% - 48px));
+.fb-reviews-shell .fb-wide-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-review-summary,
@@ -234,16 +174,12 @@ const UpscaleRestaurantCss = `
   justify-content: center;
   gap: 10px;
   margin: 0 0 28px;
-  font-size: 16px;
 }
 .fb-stars {
   color: var(--fb-stars);
-  letter-spacing: 0.04em;
 }
 .fb-recent-heading {
   margin: 0 0 16px;
-  font-size: 18px;
-  font-weight: 700;
 }
 .fb-review-grid {
   display: grid;
@@ -275,17 +211,10 @@ const UpscaleRestaurantCss = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-weight: 700;
-}
-.fb-review-card h3 {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: 15px;
-  font-weight: 700;
 }
 .fb-review-card time {
   color: currentColor;
   opacity: 0.7;
-  font-size: 12px;
 }
 .fb-review-card p {
   margin: 0;
@@ -293,14 +222,12 @@ const UpscaleRestaurantCss = `
 .fb-review-author p {
   color: currentColor;
   opacity: 0.7;
-  font-size: 12px;
 }
 .fb-review-stars-line {
   display: flex;
   align-items: center;
   gap: 8px;
   margin: 10px 0 8px !important;
-  font-weight: 700;
 }
 .fb-review-response {
   border-left: 3px solid var(--fb-primary);
@@ -309,7 +236,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-review-response strong {
   display: block;
-  font-size: 13px;
 }
 @media (max-width: 1100px) {
   .fb-review-grid {
@@ -317,9 +243,6 @@ const UpscaleRestaurantCss = `
   }
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-review-grid {
     grid-template-columns: 1fr;
   }
@@ -446,7 +369,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
               <h2
                 style={{
                   ...props.reviews.heading.styles,
-                  color: getThemeColorCssValue(props.reviews.heading.fontColor),
+                  color: resolveSelectedColor(props.reviews.heading.fontColor),
                   textAlign: "center",
                 }}
               >
@@ -497,7 +420,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
                   className="fb-recent-heading"
                   style={{
                     ...props.reviews.recentHeading.styles,
-                    color: getThemeColorCssValue(
+                    color: resolveSelectedColor(
                       props.reviews.recentHeading.fontColor,
                     ),
                   }}
@@ -517,6 +440,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
                 return (
                   <Background
                     background={props.section.cardBackgroundColor}
+                    style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                     className="fb-review-card"
                     key={`${review.authorName ?? "review"}-${index}`}
                   >
@@ -585,7 +509,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<
   typeof reviewsFields
 > =
   {
-    label: msg("components.reviewsLabel", "Reviews"),
+    label: msg("components.reviewsLabel", "Reviews Section"),
     fields: reviewsFields,
     defaultProps,
     render: (props) => (
@@ -595,7 +519,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantReviewsSection",
-  displayName: "Reviews",
+  displayName: "Reviews Section",
   description: "Reviews Section",
   pageSetTypes: ["ENTITY"],
 };

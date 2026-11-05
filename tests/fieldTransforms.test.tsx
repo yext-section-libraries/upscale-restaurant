@@ -26,7 +26,7 @@ import { UpscaleRestaurantHeaderSection as Header } from "../src/library/section
 import { UpscaleRestaurantHeroSection as Hero } from "../src/library/sections/UpscaleRestaurantHeroSection";
 import { UpscaleRestaurantOfferingsSection as Offerings } from "../src/library/sections/UpscaleRestaurantOfferingsSection";
 import { UpscaleRestaurantReviewsSection as Reviews } from "../src/library/sections/UpscaleRestaurantReviewsSection";
-import { renderRichText } from "../src/library/shared/sectionHelpers";
+import { getSurfaceColorStyle, renderRichText, resolveSelectedColor } from "../src/library/shared/sectionHelpers";
 
 const sections = { About, Banner, Breadcrumbs, Delivery, Details, Event, Faq, Featured, FindUs, Footer, Header, Hero, Offerings, Reviews };
 const document = { name: "[[city]]", city: "Should not interpolate twice", locale: "fr", address: { line1: "1 rue de Paris", city: "Paris", region: "IDF", postalCode: "75001", countryCode: "FR" } };
@@ -184,6 +184,23 @@ test("default/custom typography, theme colors, responsive image styles and rich-
     assert.match(html, /color:red/);
     assert.match(html, /custom/);
   }
+  for (const color of [undefined, { selectedColor: "default", contrastingColor: "white" }]) {
+    props.about.content.fontColor = color;
+    props.about.content.text = staticField({ html: '<p>Inherited <span style="color: #c00000">Authored</span></p>' });
+    const rendered = await renderSection(About, props);
+    assert.equal(rendered.dom.querySelector(".rtf-theme")?.style.color, "");
+    const authored = rendered.dom.querySelector('.rtf-theme span[style]')!;
+    assert.equal(authored.style.color, "#c00000");
+    assert.equal(authored.style.getPropertyPriority("color"), "important");
+  }
+  for (const value of [
+    { html: '<p style="color: red">Authored</p>' },
+    <div><div className="rtf-wrapper" dangerouslySetInnerHTML={{ __html: '<p style="color: red">Authored</p>' }} /></div>,
+  ]) {
+    const html = renderToStaticMarkup(<>{renderRichText(value)}</>);
+    assert.match(html, /color: red !important/);
+  }
+
 });
 
 test("Header and Hero image radii survive transforms without changing responsive sizing", async () => {
@@ -310,5 +327,52 @@ test("serialized layouts stay unchanged during rendering", async () => {
     };
     await visit(data);
     assert.equal(JSON.stringify(data), before, name);
+  }
+});
+
+
+test("default foreground follows actual section and nested card backgrounds", async () => {
+  for (const [background, foreground] of [["#111111", "#ffffff"], ["#ffffff", "#000000"]]) {
+    const color = { selectedColor: background, contrastingColor: foreground === "#ffffff" ? "black" : "white" };
+    assert.equal(getSurfaceColorStyle(color).color, foreground, "saved contrast metadata must not control foreground");
+    assert.equal(resolveSelectedColor({ selectedColor: "default", contrastingColor: "white" }), undefined);
+    for (const [section, selector] of [[About, ".fb-about-shell"], [Hero, ".fb-hero-shell"], [Hero, ".fb-hero-card"], [Details, ".fb-panel"], [Featured, ".fb-feature-overlay"], [Reviews, ".fb-review-card"], [FindUs, ".fb-panel"], [Banner, ".components"], [Header, "header"], [Footer, ".fb-footer-shell"]] as const) {
+      const props = structuredClone(section.defaultProps!) as any;
+      props.section.backgroundColor = color;
+      props.section.cardBackgroundColor = color;
+      if (section === FindUs) props.findUs.nearbyLocationCardStyles.cardBackgroundColor = color;
+      const { dom } = await renderSection(section, props, "en", document, true);
+      assert.equal(dom.querySelector(selector)?.style.color, foreground, selector);
+    }
+  }
+  for (const background of ["#111111", "#ffffff"]) {
+    const style = getSurfaceColorStyle(
+      { selectedColor: "palette-primary", contrastingColor: "white" },
+      { __: { theme: JSON.stringify({ "--colors-palette-primary": background }) } },
+    );
+    assert.equal(style.color, background === "#111111" ? "#ffffff" : "#000000");
+  }
+});
+
+test("every Editor translation key exists in every supported locale", () => {
+  const root = new URL("../src/library/", import.meta.url);
+  const keys = new Set<string>();
+  function visit(path: URL) {
+    for (const entry of readdirSync(path, { withFileTypes: true })) {
+      const child = new URL(entry.name + (entry.isDirectory() ? "/" : ""), path);
+      if (entry.isDirectory()) visit(child);
+      else if (entry.name.endsWith(".tsx")) {
+        for (const match of readFileSync(child, "utf8").matchAll(/\b(?:msg|pt)\(\s*"([^"]+)"/g)) keys.add(match[1]);
+      }
+    }
+  }
+  visit(root);
+  const locales = new URL("i18n/platform/", root);
+  for (const locale of readdirSync(locales).filter(name => name.endsWith(".json"))) {
+    const translations = JSON.parse(readFileSync(new URL(locale, locales), "utf8"));
+    for (const key of keys) {
+      const value = key.split(".").reduce((value, part) => value?.[part], translations);
+      assert.equal(typeof value, "string", `${locale}: ${key}`);
+    }
   }
 });

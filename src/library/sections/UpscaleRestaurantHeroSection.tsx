@@ -1,3 +1,15 @@
+import "../shared/typography.css";
+import {
+  getSurfaceColorStyle,
+  resolveSelectedColor,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -16,7 +28,6 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledImageValue,
@@ -26,15 +37,6 @@ import {
   type YextFields,
   type YextTransformedProps,
 } from "@yext/visual-editor";
-import {
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
@@ -363,70 +365,7 @@ const heroFields = {
 } satisfies YextFields<HeroSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-hero-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-hero-shell * { box-sizing: border-box; }
-.fb-hero-shell p,
-.fb-hero-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-hero-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-hero-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-hero-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-hero-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-hero-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-hero-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-hero {
   min-height: 660px;
   position: relative;
@@ -450,8 +389,8 @@ const UpscaleRestaurantCss = `
   left: 0;
   bottom: 50px;
   z-index: 5;
-  width: min(720px, calc(100% - 56px));
-  padding: 24px 26px;
+  width: min(var(--maxWidth-pageSection-contentWidth), calc(100% - 56px));
+  padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   border-radius: 0 8px 8px 0;
 }
 .fb-hero-card h1 {
@@ -467,7 +406,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-open-now {
   color: var(--fb-open-now);
-  font-weight: 700;
 }
 .fb-hero-actions {
   display: flex;
@@ -479,7 +417,6 @@ const UpscaleRestaurantCss = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
 }
 @media (max-width: 760px) {
   .fb-hero,
@@ -506,7 +443,7 @@ const UpscaleRestaurantCss = `
     bottom: auto;
     z-index: 5;
     width: 100%;
-    padding: 16px;
+    padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
     border-radius: 0;
   }
   .fb-hero-actions .fb-pill {
@@ -538,11 +475,11 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
   );
   const headingStyle = {
     ...props.hero.heading.styles,
-    color: getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
+    color: resolveSelectedColor(props.hero.heading.fontColor) ?? "currentColor",
   };
   const descriptionStyles = {
     ...props.hero.description.styles,
-    color: getThemeColorCssValue(props.hero.description.fontColor),
+    color: resolveSelectedColor(props.hero.description.fontColor),
   };
   const description = resolveComponentData(
     props.hero.description.text,
@@ -570,6 +507,7 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
       <Background
         className="fb-hero-shell"
         background={props.section.backgroundColor}
+        style={getSurfaceColorStyle(props.section.backgroundColor, streamDocument)}
       >
         <style>{UpscaleRestaurantCss}</style>
         <header className="fb-site-header">
@@ -603,6 +541,7 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
             ) : null}
             <Background
               background={props.section.cardBackgroundColor}
+              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
               className="fb-hero-card"
             >
               <EntityField
@@ -731,7 +670,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<
   typeof heroFields
 > =
   {
-    label: msg("components.heroLabel", "Hero"),
+    label: msg("components.heroLabel", "Hero Section"),
     fields: heroFields,
     defaultProps,
     render: (props) => (
@@ -741,7 +680,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantHeroSection",
-  displayName: "Hero",
+  displayName: "Hero Section",
   description: "Hero Section",
   pageSetTypes: ["ENTITY"],
 };

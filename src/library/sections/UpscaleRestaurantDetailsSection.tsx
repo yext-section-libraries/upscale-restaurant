@@ -1,3 +1,12 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  getSurfaceColorStyle,
+  defaultTextStyles,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 
@@ -18,8 +27,6 @@ import {
   ComprehensiveCTAValue,
   EntityField,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledTextValue,
@@ -32,12 +39,6 @@ import {
   msg,
   pt,
 } from "@yext/visual-editor";
-import {
-  defaultTextStyles,
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type LinkItemProps = {
   cta: ComprehensiveCTAValue;
@@ -116,14 +117,14 @@ const makeTextStyle = (
   text: DetailsSectionRenderProps["details"]["heading"],
 ): React.CSSProperties => ({
   ...text.styles,
-  color: getThemeColorCssValue(text.fontColor),
+  color: resolveSelectedColor(text.fontColor),
 });
 
 const makeTextListStyle = (
   text: DetailsSectionRenderProps["details"]["otherDetails"],
 ): React.CSSProperties => ({
   ...text.styles,
-  color: getThemeColorCssValue(text.fontColor),
+  color: resolveSelectedColor(text.fontColor),
 });
 
 const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
@@ -525,76 +526,14 @@ const detailsFields = {
 } satisfies YextFields<DetailsSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-details-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-details-shell * { box-sizing: border-box; }
-.fb-details-shell p,
-.fb-details-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-details-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-details-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-details-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-details-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-details-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-details-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-details-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(var(--fb-content-width, var(--maxWidth-pageSection-contentWidth)), calc(100% - 48px));
-  max-width: 1200px;
+.fb-details-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-details-grid {
@@ -602,17 +541,16 @@ const UpscaleRestaurantCss = `
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
 }
-.fb-panel {
+.fb-details-shell .fb-panel {
   border-radius: 8px;
   min-width: 0;
   padding: 26px 24px;
 }
-.fb-panel h3 {
+.fb-details-shell .fb-panel h3 {
   margin: 28px 0 16px;
-  font-size: var(--fontSize-h3-fontSize);
 }
-.fb-panel h3:first-child { margin-top: 0; }
-.fb-panel p {
+.fb-details-shell .fb-panel h3:first-child { margin-top: 0; }
+.fb-details-shell .fb-panel p {
   margin: 3px 0 0;
   opacity: 0.82;
 }
@@ -663,9 +601,6 @@ const UpscaleRestaurantCss = `
   margin-top: 14px;
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-details-grid {
     grid-template-columns: 1fr;
   }
@@ -797,6 +732,7 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
             <div className="fb-details-grid">
               <Background
                 background={props.section.cardBackgroundColor}
+              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                 className="fb-panel"
               >
                 <div className="fb-detail-group">
@@ -945,6 +881,7 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
               </Background>
               <Background
                 background={props.section.cardBackgroundColor}
+              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                 className="fb-panel"
               >
                 <EntityField
@@ -993,7 +930,7 @@ export const UpscaleRestaurantDetailsSection: YextComponentConfig<
   typeof detailsFields
 > =
   {
-    label: msg("components.detailsLabel", "Details"),
+    label: msg("components.detailsLabel", "Details Section"),
     fields: detailsFields,
     defaultProps,
     render: (props) => (
@@ -1003,7 +940,7 @@ export const UpscaleRestaurantDetailsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantDetailsSection",
-  displayName: "Details",
+  displayName: "Details Section",
   description: "Details Section",
   pageSetTypes: ["ENTITY"],
 };

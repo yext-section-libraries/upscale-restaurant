@@ -1,3 +1,10 @@
+import "../shared/typography.css";
+import {
+  getSurfaceColorStyle,
+  isRichTextEmpty,
+  renderRichText,
+  resolveSelectedColor,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -17,13 +24,11 @@ import {
   type YextFields,
   type YextTransformedProps,
   backgroundColors,
-  getThemeColorCssValue,
   getDefaultRTF,
   resolveComponentData,
   resolveYextEntityField,
   useDocument,
 } from "@yext/visual-editor";
-import { isRichTextEmpty, renderRichText } from "../shared/sectionHelpers";
 
 type UpscaleRestaurantBannerProps = {
   data: {
@@ -127,7 +132,7 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
       <PageSection
         background={section.backgroundColor}
         className="flex items-center justify-center"
-        verticalPadding="sm"
+        outerStyle={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
           <CircleSlash2 className="h-10 w-10 flex-shrink-0 text-gray-400" />
@@ -147,8 +152,7 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
   const richTextStyleOverrides = {
     ...data.styles,
     color:
-      getThemeColorCssValue(data.fontColor) ??
-      getThemeColorCssValue(section.backgroundColor.contrastingColor),
+      resolveSelectedColor(data.fontColor),
   };
   const resolvedText = resolveComponentData(
     data.text,
@@ -170,7 +174,7 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
           right: "justify-end text-right",
         }[styles.textAlignment]
       }`}
-      verticalPadding="sm"
+      outerStyle={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}
@@ -191,7 +195,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<
   typeof UpscaleRestaurantBannerFields
 > =
   {
-    label: msg("components.bannerLabel", "Banner"),
+    label: msg("components.bannerLabel", "Banner Section"),
     fields: UpscaleRestaurantBannerFields,
     defaultProps: {
       data: {
@@ -230,7 +234,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBanner",
-  displayName: "Banner",
+  displayName: "Banner Section",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

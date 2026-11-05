@@ -1,3 +1,11 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  getSurfaceColorStyle,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -8,8 +16,6 @@ import {
   Background,
   EntityField,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveBreadcrumbs,
   resolveComponentData,
   useDocument,
@@ -19,11 +25,6 @@ import {
   type YextFields,
   type YextTransformedProps,
 } from "@yext/visual-editor";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type BreadcrumbsSectionProps = {
@@ -61,33 +62,17 @@ type BreadcrumbsStyle = React.CSSProperties & {
 };
 
 const UpscaleRestaurantBreadcrumbsCss = `
-.fb-breadcrumbs-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-breadcrumbs-shell * { box-sizing: border-box; }
-.fb-breadcrumbs-shell a,
-.fb-breadcrumbs-shell span,
-.fb-breadcrumbs-shell li {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
 .fb-breadcrumbs-shell {
   border-bottom: 1px solid var(--fb-breadcrumb-border-color);
 }
-.fb-section {
-  padding: 18px 0;
+.fb-breadcrumbs-shell .fb-section {
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
+.fb-breadcrumbs-shell .fb-container {
   width: min(100%, var(--maxWidth-pageSection-contentWidth, 1200px));
   margin: 0 auto;
-  padding: 0 24px;
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
 }
 .fb-breadcrumbs-list {
   list-style: none;
@@ -116,9 +101,6 @@ const UpscaleRestaurantBreadcrumbsCss = `
 .fb-breadcrumb-link:hover {
   color: var(--fb-breadcrumb-color);
 }
-.fb-breadcrumb-current {
-  font-weight: 600;
-}
 .fb-breadcrumb-separator {
   display: inline-flex;
   align-items: center;
@@ -126,18 +108,12 @@ const UpscaleRestaurantBreadcrumbsCss = `
   color: var(--fb-breadcrumb-color);
 }
 @media (max-width: 767px) {
-  .fb-section {
-    padding: 14px 0;
+  .fb-breadcrumbs-shell .fb-container {
+    padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   }
-
-  .fb-container {
-    padding: 0 16px;
-  }
-
   .fb-breadcrumbs-list {
     row-gap: 8px;
   }
-
   .fb-breadcrumb-separator {
     margin: 0 8px;
   }
@@ -148,7 +124,7 @@ const getTextStyles = (
   text: BreadcrumbsSectionRenderProps["breadcrumbs"]["rootLabel"],
   fallbackColor: string,
 ): React.CSSProperties =>
-  ({ ...text.styles, color: getThemeColorCssValue(text.fontColor) ?? fallbackColor });
+  ({ ...text.styles, color: resolveSelectedColor(text.fontColor) ?? fallbackColor });
 
 const resolveCurrentPageLabel = (
   currentPage: StyledTextProps["text"],
@@ -289,7 +265,6 @@ const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
     return props.puck.isEditing ? (
       <p
         style={{
-          fontFamily: "Arial, Helvetica, sans-serif",
           padding: "18px 24px",
         }}
       >
@@ -332,8 +307,6 @@ const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
   );
   const currentPageStyles = {
     ...getTextStyles(props.breadcrumbs.currentPage, "currentColor"),
-    fontWeight:
-      props.breadcrumbs.currentPage.styles.fontWeight ?? 600,
   } satisfies React.CSSProperties;
 
   return (
@@ -448,7 +421,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
   typeof breadcrumbsFields
 > =
   {
-    label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
+    label: msg("components.breadcrumbsLabel", "Breadcrumbs Section"),
     fields: breadcrumbsFields,
     defaultProps,
     render: (props) => (
@@ -458,7 +431,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBreadcrumbsSection",
-  displayName: "Breadcrumbs",
+  displayName: "Breadcrumbs Section",
   description: "Breadcrumbs Section",
   pageSetTypes: ["ENTITY"],
 };

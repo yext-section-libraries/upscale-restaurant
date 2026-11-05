@@ -1,3 +1,9 @@
+import "../shared/typography.css";
+import {
+  getSurfaceColorStyle,
+  aspectRatioOptions,
+  hasImageSource,
+} from "../shared/sectionHelpers";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
@@ -31,7 +37,6 @@ import {
   type YextFields,
   type YextTransformedProps,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   i18nPageInstance,
   normalizeLink,
@@ -39,7 +44,6 @@ import {
   resolveComponentData,
   useDocument,
 } from "@yext/visual-editor";
-import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
 
 type SharedHeaderVariant =
   | "centerLogoSplitNav"
@@ -109,11 +113,6 @@ const linkTypeOptions: Array<{ label: string; value: LinkType }> = [
 const defaultSurfaceColor: ThemeColor = {
   selectedColor: "white",
   contrastingColor: "black",
-};
-
-const defaultPrimaryCtaColor: ThemeColor = {
-  selectedColor: "palette-primary",
-  contrastingColor: "palette-primary-contrast",
 };
 
 const defaultLinkStyles: StyledLinkValue = {
@@ -484,7 +483,7 @@ const UpscaleRestaurantHeaderSectionFields =
               },
               styles: {
                 variant: "primary",
-                color: defaultPrimaryCtaColor,
+                color: undefined,
                 button: defaultButtonStyles,
                 link: defaultLinkStyles,
               },
@@ -609,6 +608,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
     width: "100%",
     height: "100%",
     objectFit: props.logoImage.aspectRatio > 0 ? "cover" : "contain",
+    borderRadius: props.logoImage.styles?.borderRadius,
   };
 
   const navigationLinks = (props.navigation.links ?? [])
@@ -713,6 +713,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
       width: "100%",
       height: "100%",
       objectFit: "cover",
+      borderRadius: iconImageProps.styles?.borderRadius,
     };
 
     return (
@@ -868,7 +869,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
   const desktopVariantContent = (() => {
     if (props.variant === "centerLogoSplitNav") {
       return (
-        <div className="grid min-h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 px-12 py-4">
+        <div className="grid min-h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 px-12">
           <div className="flex items-center justify-start">
             {renderNavigationLinks("row")}
           </div>
@@ -880,7 +881,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
 
     if (props.variant === "logoLeftInlineNav") {
       return (
-        <div className="flex min-h-[82px] items-center gap-8 px-12 py-4">
+        <div className="flex min-h-[82px] items-center gap-8 px-12">
           <div className="shrink-0">{renderLogo()}</div>
           <div className="min-w-0 flex-1">{renderNavigationLinks("row")}</div>
           <div className="min-w-0 w-full max-w-[calc((100%-theme(spacing.32))/2)]">
@@ -892,7 +893,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
 
     if (props.variant === "stackedNavBelow") {
       return (
-        <div className="py-4">
+        <div>
           <div className="flex items-center justify-between gap-8 pb-4">
             <div className="shrink-0 px-12">{renderLogo()}</div>
             <div className="min-w-0 w-full max-w-[calc((100%-theme(spacing.16))/2)] px-12">
@@ -933,7 +934,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
       <Background
         as="header"
         background={props.section.backgroundColor}
-        className="relative"
+        className="relative py-pageSection-verticalPadding"
         style={{
           ...headerSurfaceStyle,
           ...(getThemeColorCssValue(navigationColor)
@@ -941,9 +942,9 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
             : {}),
         }}
       >
-        <div className="hidden lg:block">{desktopVariantContent}</div>
+        <div className="mx-auto hidden max-w-pageSection-contentWidth lg:block">{desktopVariantContent}</div>
 
-        <div className="flex min-h-[82px] items-center gap-4 px-6 md:px-8 lg:hidden">
+        <div className="mx-auto flex min-h-[82px] max-w-pageSection-contentWidth items-center gap-4 px-6 md:px-8 lg:hidden">
           <div className="min-w-0 flex-1">{renderLogo()}</div>
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
@@ -1125,7 +1126,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
   typeof UpscaleRestaurantHeaderSectionFields
 > =
   {
-    label: msg("components.sharedHeader", "Header"),
+    label: msg("components.sharedHeader", "Header Section"),
     fields: UpscaleRestaurantHeaderSectionFields,
     defaultProps: {
       variant: "centerLogoSplitNav",
@@ -1256,7 +1257,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
               },
               styles: {
                 variant: "primary",
-                color: defaultPrimaryCtaColor,
+                color: undefined,
                 button: defaultButtonStyles,
                 link: defaultLinkStyles,
               },
@@ -1300,7 +1301,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantHeaderSection",
-  displayName: "Header",
+  displayName: "Header Section",
   description: "Header",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

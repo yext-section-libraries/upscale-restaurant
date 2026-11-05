@@ -1,3 +1,10 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -9,7 +16,6 @@ import {
   EntityField,
   VisibilityWrapper,
   getDefaultForegroundColor,
-  getThemeColorCssValue,
   type ComprehensiveCTAValue,
   type ThemeColor,
   type YextComponentConfig,
@@ -17,11 +23,6 @@ import {
   type YextTransformedProps,
 } from "@yext/visual-editor";
 import { resolveComponentData, useDocument } from "@yext/visual-editor";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type DeliveryPartnersSectionProps = {
@@ -156,75 +157,14 @@ const deliveryPartnersFields = {
 } satisfies YextFields<DeliveryPartnersSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-page {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-page * { box-sizing: border-box; }
-.fb-page p,
-.fb-page li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
+.fb-page .fb-section {
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-page h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-page h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-page h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-page h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-page h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-page h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
-  padding: 64px 0;
-}
-.fb-container {
-  width: min(1200px, calc(100% - 48px));
+.fb-page .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-actions {
@@ -251,16 +191,16 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
     streamDocument,
   );
   const sectionForegroundColor =
-    getThemeColorCssValue(
+    resolveSelectedColor(
       getDefaultForegroundColor(props.section.backgroundColor, streamDocument),
     ) ?? "currentColor";
   const pageStyle: DeliveryPartnersStyle = {
     "--fb-text": sectionForegroundColor,
     "--fb-muted": sectionForegroundColor,
     "--fb-white-bg":
-      getThemeColorCssValue(makeThemeColor("white", "black")) ?? "currentColor",
+      resolveSelectedColor(makeThemeColor("white", "black")) ?? "currentColor",
     "--fb-card-bg":
-      getThemeColorCssValue(makeThemeColor("white", "black")) ?? "currentColor",
+      resolveSelectedColor(makeThemeColor("white", "black")) ?? "currentColor",
     "--fb-primary": "var(--colors-palette-primary)",
     "--fb-secondary": "var(--colors-palette-secondary)",
     "--fb-tertiary": "var(--colors-palette-tertiary)",
@@ -289,7 +229,7 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
                   textAlign: "center",
                   ...props.heading.styles,
                   color:
-                    getThemeColorCssValue(props.heading.fontColor) ??
+                    resolveSelectedColor(props.heading.fontColor) ??
                     sectionForegroundColor,
                 }}
               >
@@ -313,7 +253,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
   typeof deliveryPartnersFields
 > =
   {
-    label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
+    label: msg("components.deliveryPartnersLabel", "Delivery Partners Section"),
     fields: deliveryPartnersFields,
     defaultProps,
     render: (props) => (
@@ -323,7 +263,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantDeliveryPartnersSection",
-  displayName: "Delivery Partners",
+  displayName: "Delivery Partners Section",
   description: "Delivery Partners Section",
   pageSetTypes: ["ENTITY"],
 };

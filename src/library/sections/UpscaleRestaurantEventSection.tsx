@@ -1,3 +1,15 @@
+import "../shared/typography.css";
+import {
+  getSurfaceColorStyle,
+  hasImageSource,
+  makeRtf,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+  resolveSelectedColor,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -8,7 +20,6 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  getSurfaceColorStyle,
   Image,
   VisibilityWrapper,
   resolveComponentData,
@@ -19,16 +30,6 @@ import {
   type YextFields,
   type YextTransformedProps,
 } from "@yext/visual-editor";
-import {
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  resolveSelectedColor,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type StyledImageProps = {
@@ -105,7 +106,7 @@ const defaultProps: EventSectionProps = {
       },
       styles: {
         variant: "primary",
-        color: makeThemeColor("palette-primary", "palette-primary-contrast"),
+        color: undefined,
       },
     },
   },
@@ -196,70 +197,7 @@ const eventFields = {
 } satisfies YextFields<EventSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-event-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-event-shell * { box-sizing: border-box; }
-.fb-event-shell p,
-.fb-event-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-event-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-event-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-event-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-event-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-event-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-event-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-event-banner {
   position: relative;
   height: 560px;
@@ -286,20 +224,13 @@ const UpscaleRestaurantCss = `
   right: 0;
   bottom: 64px;
   z-index: 1;
-  width: min(760px, calc(100% - 48px));
+  width: min(var(--maxWidth-pageSection-contentWidth), calc(100% - 48px));
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 18px;
-}
-.fb-event-overlay h2 {
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-}
-.fb-event-description {
-  font-size: 16px;
 }
 .fb-event-cta {
   display: flex;
@@ -328,7 +259,7 @@ const UpscaleRestaurantCss = `
     z-index: 1;
     width: 100%;
     box-sizing: border-box;
-    padding: 72px 16px;
+    padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   }
 }
 `;
@@ -419,7 +350,9 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
               </div>
             </EntityField>
             <div className="fb-event-cta">
-              <Background background={eventOverlayBackground}>
+              <Background background={eventOverlayBackground}
+                style={getSurfaceColorStyle(eventOverlayBackground, streamDocument)}
+              >
                 <EntityField
                   displayName={pt("callToAction", "Call To Action")}
                   fieldId={props.event.cta.data.cta.field}
@@ -443,7 +376,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<
   typeof eventFields
 > =
   {
-    label: msg("components.eventLabel", "Event"),
+    label: msg("components.eventLabel", "Event Section"),
     fields: eventFields,
     defaultProps,
     render: (props) => (
@@ -453,7 +386,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantEventSection",
-  displayName: "Event",
+  displayName: "Event Section",
   description: "Event Section",
   pageSetTypes: ["ENTITY"],
 };

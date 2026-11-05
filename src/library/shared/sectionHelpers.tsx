@@ -4,6 +4,8 @@ import {
   MaybeRTF,
   getDefaultRTF,
   getThemeColorCssValue,
+  getThemeColorHexValue,
+  isDarkColor,
   type RichText,
   type StyledTextValue,
   type ThemeColor,
@@ -66,11 +68,33 @@ export const makeRtf = (text: string): StyledRtfProps => ({
 });
 
 export const resolveSelectedColor = (
-  color?: ThemeColor,
+  color?: ThemeColor | string,
 ): string | undefined =>
-  !color?.selectedColor || color.selectedColor === "default"
+  !color ||
+  (typeof color === "string"
+    ? color === "default"
+    : !color.selectedColor || color.selectedColor === "default")
     ? undefined
     : getThemeColorCssValue(color);
+
+/** Recompute contrast from the surface, ignoring stale saved contrast metadata. */
+export const getSurfaceColorStyle = (
+  color: ThemeColor | string | undefined,
+  streamDocument?: Record<string, any>,
+): React.CSSProperties => {
+  const backgroundColor = getThemeColorCssValue(color);
+  if (!backgroundColor) return {};
+  const hex = getThemeColorHexValue(color, streamDocument);
+  return {
+    backgroundColor,
+    color: isDarkColor(
+      hex ?? (typeof color === "string" ? color : color?.selectedColor),
+      streamDocument,
+    )
+      ? "#ffffff"
+      : "#000000",
+  };
+};
 
 export const hasImageSource = (
   image: unknown,
@@ -110,16 +134,56 @@ export const isRichTextEmpty = (value: unknown): boolean => {
   return false;
 };
 
+/** Inline colors authored in rich text must survive the platform's inherit rule. */
+const preserveRichTextColors = (value: unknown): unknown => {
+  const preserveHtmlColors = (html: string) => html.replace(
+    /style=(["'])(.*?)\1/gi,
+    (_attribute, quote, declarations: string) =>
+      `style=${quote}${declarations.replace(
+        /(^|;)\s*color\s*:\s*([^;]+)/gi,
+        (_declaration, separator, color: string) =>
+          `${separator}color: ${color.replace(/\s*!important\s*$/i, "")} !important`,
+      )}${quote}`,
+  );
+  if (React.isValidElement(value)) {
+    const element = value as React.ReactElement<{
+      data?: unknown;
+      children?: React.ReactNode;
+      dangerouslySetInnerHTML?: { __html: string };
+    }>;
+    return React.cloneElement(element, {
+      ...(element.props.data ? { data: preserveRichTextColors(element.props.data) } : {}),
+      ...(element.props.dangerouslySetInnerHTML ? {
+        dangerouslySetInnerHTML: {
+          __html: preserveHtmlColors(element.props.dangerouslySetInnerHTML.__html),
+        },
+      } : {}),
+      ...(element.props.children ? {
+        children: React.Children.map(element.props.children, child =>
+          preserveRichTextColors(child) as React.ReactNode),
+      } : {}),
+    });
+  }
+  if (value && typeof value === "object" && "html" in value && typeof value.html === "string") {
+    return { ...value, html: preserveHtmlColors(value.html) };
+  }
+  return value;
+};
+
 export const renderRichText = (
   value: unknown,
   richTextStyleOverrides?: React.CSSProperties,
   className?: string,
 ): React.ReactNode => {
+  value = preserveRichTextColors(value);
   const styleOverrides = richTextStyleOverrides ?? {};
   const typographyVariables = Object.fromEntries(
     Object.entries(styleOverrides)
       .filter(([property, setting]) => property !== "color" && setting !== undefined)
-      .map(([property, setting]) => [`--${property}-body-${property}`, setting]),
+      .flatMap(([property, setting]) => [
+        [`--${property}-body-${property}`, setting],
+        [`--upscale-restaurant-body-${property}`, setting],
+      ]),
   );
 
   if (React.isValidElement(value)) {

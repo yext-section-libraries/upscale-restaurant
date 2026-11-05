@@ -1,3 +1,11 @@
+import "../shared/typography.css";
+import {
+  getSurfaceColorStyle,
+  resolveSelectedColor,
+  makeText,
+  makeThemeColor,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
@@ -15,7 +23,6 @@ import {
   EntityField,
   VisibilityWrapper,
   CTA,
-  getThemeColorCssValue,
   mergeMeta,
   resolveComponentData,
   resolveUrlTemplate,
@@ -30,11 +37,6 @@ import {
   type YextTransformedProps,
   Background,
 } from "@yext/visual-editor";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type NearbyLocationCardStyles = {
   cardBackgroundColor: string | ThemeColor;
@@ -338,84 +340,22 @@ const findUsFields = {
 } satisfies YextFields<FindUsSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-find-us-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-find-us-shell * { box-sizing: border-box; }
-.fb-find-us-shell p,
-.fb-find-us-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-find-us-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-find-us-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-find-us-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-find-us-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-find-us-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-find-us-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-find-us-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(1540px, calc(100% - 48px));
+.fb-find-us-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-find-section h2 {
   margin-bottom: 28px;
   text-align: center;
-  font-size: var(--fontSize-h2-fontSize);
   line-height: 1.25;
 }
-.fb-panel {
+.fb-find-us-shell .fb-panel {
   border-radius: 8px;
   min-width: 0;
   padding: 26px 24px;
@@ -447,7 +387,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-location-grid h3 {
   margin-bottom: 10px;
-  font-size: 24px;
   line-height: 1.2;
 }
 .fb-location-grid p {
@@ -455,7 +394,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-location-grid a {
   color: var(--fb-text);
-  font-weight: 600;
   text-underline-offset: 4px;
 }
 .fb-location-hours {
@@ -471,9 +409,6 @@ const UpscaleRestaurantCss = `
   }
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-location-grid {
     grid-template-columns: 1fr;
   }
@@ -505,7 +440,7 @@ const toCssColor = (color?: string | ThemeColor): string | undefined => {
     return color;
   }
 
-  return getThemeColorCssValue(color);
+  return resolveSelectedColor(color);
 };
 
 const toBackgroundColor = (color: string | ThemeColor): ThemeColor => {
@@ -682,6 +617,7 @@ const renderNearbyLocationCard = (
       key={locationData.id ?? locationData.name ?? index}
       background={toBackgroundColor(cardStyles.cardBackgroundColor)}
       className="fb-panel"
+      style={getSurfaceColorStyle(toBackgroundColor(cardStyles.cardBackgroundColor), streamDocument)}
     >
       <article>
         <h3 style={{ color: titleColor }}>{locationData.name}</h3>
@@ -821,6 +757,7 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
       <Background
         className="fb-find-us-shell"
         background={props.section.backgroundColor}
+        style={getSurfaceColorStyle(props.section.backgroundColor, streamDocument)}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section fb-find-section">
@@ -836,7 +773,7 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
                 style={{
                   ...props.findUs.heading.styles,
                   marginBottom: 28,
-                  color: getThemeColorCssValue(props.findUs.heading.fontColor),
+                  color: resolveSelectedColor(props.findUs.heading.fontColor),
                 }}
               >
                 {heading}
@@ -878,6 +815,9 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
                         cardStyles.cardBackgroundColor,
                       )}
                       className="fb-panel"
+                      style={getSurfaceColorStyle(toBackgroundColor(
+                        cardStyles.cardBackgroundColor,
+                      ), streamDocument)}
                     >
                       <article>
                         <h3
@@ -954,7 +894,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<
   typeof findUsFields
 > =
   {
-    label: msg("components.findUsLabel", "Find Us"),
+    label: msg("components.findUsLabel", "Find Us Section"),
     fields: findUsFields,
     defaultProps,
     render: (props) => (
@@ -964,7 +904,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFindUsSection",
-  displayName: "Find Us",
+  displayName: "Find Us Section",
   description: "Find Us Section",
   pageSetTypes: ["ENTITY"],
 };

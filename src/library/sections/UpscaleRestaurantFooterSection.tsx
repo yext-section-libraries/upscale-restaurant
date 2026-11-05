@@ -1,3 +1,14 @@
+import "../shared/typography.css";
+import {
+  resolveSelectedColor,
+  getSurfaceColorStyle,
+  defaultTextStyles,
+  hasImageSource,
+  makeRtfField,
+  makeText,
+  makeThemeColor,
+  renderRichText,
+} from "../shared/sectionHelpers";
 import type { SectionConfig } from "@yext/visual-editor";
 import { pt } from "@yext/visual-editor";
 
@@ -7,8 +18,6 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   msg,
@@ -25,14 +34,6 @@ import {
   Background,
 } from "@yext/visual-editor";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
-import {
-  defaultTextStyles,
-  hasImageSource,
-  makeRtfField,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type StyledTextProps = {
@@ -177,7 +178,7 @@ const makeRtf = (text: string): StyledRtfProps => ({
 });
 
 const resolveTextColor = (color: ThemeColor | undefined): string =>
-  getThemeColorCssValue(color) ?? "currentColor";
+  resolveSelectedColor(color) ?? "currentColor";
 
 const makeImage = (url: string, alternateText: string): StyledImageProps => ({
   image: {
@@ -436,79 +437,10 @@ const footerFields = {
 } satisfies YextFields<FooterSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-footer-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-footer-shell * { box-sizing: border-box; }
-.fb-footer-shell p,
-.fb-footer-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-footer-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-footer-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-footer-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-footer-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-footer-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-footer-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-footer-links-grid a,
 .fb-footer-bottom a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
   line-height: 1.5;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
 }
 .fb-footer-shell h2,
 .fb-footer-shell h3,
@@ -518,11 +450,13 @@ const UpscaleRestaurantCss = `
 .fb-footer {
   background: var(--fb-footer-bg);
   color: var(--fb-footer-text);
-  padding: 64px 0 22px;
+  padding-block: var(--padding-pageSection-verticalPadding);
   overflow-x: clip;
 }
-.fb-container {
-  width: min(1540px, calc(100% - 32px));
+.fb-footer-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-footer-grid {
@@ -539,10 +473,6 @@ const UpscaleRestaurantCss = `
   margin-bottom: 28px;
 }
 .fb-footer-brand {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
   line-height: 1;
   margin-bottom: 14px;
 }
@@ -575,7 +505,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-footer-links-grid a,
 .fb-footer-bottom a {
-  font-size: 13px;
   margin-bottom: 10px;
   overflow-wrap: anywhere;
 }
@@ -619,7 +548,7 @@ const UpscaleRestaurantCss = `
 }
 @media (max-width: 760px) {
   .fb-footer {
-    padding-top: 52px;
+    padding-block: var(--padding-pageSection-verticalPadding);
   }
   .fb-footer-grid {
     grid-template-columns: 1fr;
@@ -843,7 +772,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<
   typeof footerFields
 > =
   {
-    label: msg("components.footer", "Footer"),
+    label: msg("components.footer", "Footer Section"),
     fields: footerFields,
     defaultProps,
     render: (props) => (
@@ -853,7 +782,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFooterSection",
-  displayName: "Footer",
+  displayName: "Footer Section",
   description: "Footer Section",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };
