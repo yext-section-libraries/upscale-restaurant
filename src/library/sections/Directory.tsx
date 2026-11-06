@@ -6,7 +6,7 @@ export const Directory = SectionComponent;
 
 export const config: SectionConfig = {
   id: "Directory",
-  displayName: "Directory Section",
+  displayName: "Directory",
   description: "Displays the directory page experience.",
   pageSetTypes: ["DIRECTORY"],
   category: "Standard Sections",

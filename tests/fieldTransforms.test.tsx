@@ -175,7 +175,7 @@ test("default/custom typography, theme colors, responsive image styles and rich-
   assert.equal(image.style.borderRadius, "23px");
   assert.equal(image.style.objectFit, "cover");
   assert.equal(dom.querySelector(".fb-about-image")!.style.overflow, "hidden");
-  assert.ok(dom.querySelector(".fb-about-image")!.style.getPropertyValue("--fb-mobile-image-width"));
+  assert.equal(dom.querySelector(".fb-about-image")!.style.aspectRatio, "1 / 1");
 
   for (const value of [{ html: "<p>Raw</p>" }, <div className="existing" style={{ lineHeight: 2 }}><p>Element</p></div>]) {
     const html = renderToStaticMarkup(<>{renderRichText(value, { fontSize: "27px", fontStyle: "italic", color: "red" }, "custom")}</>);
@@ -191,14 +191,15 @@ test("default/custom typography, theme colors, responsive image styles and rich-
     assert.equal(rendered.dom.querySelector(".rtf-theme")?.style.color, "");
     const authored = rendered.dom.querySelector('.rtf-theme span[style]')!;
     assert.equal(authored.style.color, "#c00000");
-    assert.equal(authored.style.getPropertyPriority("color"), "important");
+    assert.equal(authored.style.getPropertyPriority("color"), "");
   }
   for (const value of [
     { html: '<p style="color: red">Authored</p>' },
     <div><div className="rtf-wrapper" dangerouslySetInnerHTML={{ __html: '<p style="color: red">Authored</p>' }} /></div>,
   ]) {
     const html = renderToStaticMarkup(<>{renderRichText(value)}</>);
-    assert.match(html, /color: red !important/);
+    assert.match(html, /color: red/);
+    assert.doesNotMatch(html, /!important/);
   }
 
 });

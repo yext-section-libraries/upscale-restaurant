@@ -253,7 +253,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
   typeof deliveryPartnersFields
 > =
   {
-    label: msg("components.deliveryPartnersLabel", "Delivery Partners Section"),
+    label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
     fields: deliveryPartnersFields,
     defaultProps,
     render: (props) => (
@@ -263,7 +263,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantDeliveryPartnersSection",
-  displayName: "Delivery Partners Section",
+  displayName: "Delivery Partners",
   description: "Delivery Partners Section",
   pageSetTypes: ["ENTITY"],
 };

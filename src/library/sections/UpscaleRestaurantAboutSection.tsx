@@ -49,43 +49,8 @@ type AboutSectionProps = {
   };
 };
 
-type ResponsiveImageStyle = React.CSSProperties & {
-  "--fb-mobile-image-width"?: string;
-};
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
-};
-
-const makeImageStyle = (
-  image: AboutSectionRenderProps["about"]["image"],
-): {
-  wrapper: ResponsiveImageStyle;
-  image: React.CSSProperties;
-} => {
-  const hasCustomRadius = image.styles.borderRadius !== undefined;
-  const aspectRatio = image.aspectRatio > 0 ? image.aspectRatio : undefined;
-  const borderRadius = image.styles.borderRadius;
-
-  return {
-    wrapper: {
-      aspectRatio,
-      borderRadius,
-      overflow: hasCustomRadius ? "hidden" : undefined,
-      width: "100%",
-      "--fb-mobile-image-width":
-        aspectRatio !== undefined ? `${360 * aspectRatio}px` : undefined,
-    },
-    image: {
-      display: "block",
-      aspectRatio,
-      width: "100%",
-      height: "auto",
-      borderRadius,
-      objectFit: "cover",
-      objectPosition: "center",
-    },
-  };
 };
 
 const defaultProps: AboutSectionProps = {
@@ -312,6 +277,7 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
     props.about.content.text,
     locale,
     streamDocument,
+    { color: props.about.content.fontColor },
   );
   const image = resolveComponentData(
     props.about.image.image,
@@ -320,7 +286,13 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
   );
   const currentImage = image ?? props.about.image.image.constantValue;
   const hasImage = hasImageSource(currentImage);
-  const imageStyles = makeImageStyle(props.about.image);
+  const imageStyle = {
+    ...props.about.image.styles,
+    aspectRatio:
+      props.about.image.aspectRatio > 0
+        ? props.about.image.aspectRatio
+        : undefined,
+  };
 
   return (
     <VisibilityWrapper
@@ -370,8 +342,24 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
                     props.about.image.image.constantValueEnabled
                   }
                 >
-                  <div className="fb-about-image" style={imageStyles.wrapper}>
-                    <Image image={currentImage} style={imageStyles.image} />
+                  <div
+                    className="fb-about-image"
+                    style={{
+                      ...imageStyle,
+                      overflow: imageStyle.borderRadius ? "hidden" : undefined,
+                    }}
+                  >
+                    <Image
+                      image={currentImage}
+                      style={{
+                        ...imageStyle,
+                        display: "block",
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                    />
                   </div>
                 </EntityField>
               </div>
@@ -388,7 +376,7 @@ export const UpscaleRestaurantAboutSection: YextComponentConfig<
   typeof aboutSectionFields
 > =
   {
-    label: msg("components.aboutLabel", "About Section"),
+    label: msg("components.aboutLabel", "About"),
     fields: aboutSectionFields,
     defaultProps,
     // Puck 0.24 deep slot types expand CSS string unions; the runtime CSS is unchanged.
@@ -399,7 +387,7 @@ export const UpscaleRestaurantAboutSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantAboutSection",
-  displayName: "About Section",
+  displayName: "About",
   description: "About Section",
   pageSetTypes: ["ENTITY"],
 };

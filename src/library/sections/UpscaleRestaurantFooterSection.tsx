@@ -90,12 +90,7 @@ type FooterSectionProps = {
 
 type FooterStyle = React.CSSProperties & Record<`--${string}`, string>;
 
-const makeTextStyle = (): StyledTextStyleProps => ({
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const linkTypeOptions = () => [
+const linkTypeOptions = [
   { label: msg("fields.options.url", "URL"), value: "URL" },
   { label: msg("fields.options.email", "Email"), value: "Email" },
   { label: msg("fields.options.phone", "Phone"), value: "Phone" },
@@ -148,7 +143,7 @@ const linkFieldConfig = {
     linkType: {
       type: "basicSelector",
       label: msg("fields.linkType", "Link Type"),
-      options: linkTypeOptions(),
+      options: linkTypeOptions,
     },
     normalizeLink: {
       label: msg("fields.normalizeLink", "Normalize Link"),
@@ -233,7 +228,7 @@ const defaultProps: FooterSectionProps = {
       "Neighborhood burgers, cocktails, and brunch in [[address.city]].",
     ),
     quickLinksHeading: makeText("Quick links"),
-    linkStyles: makeTextStyle(),
+    linkStyles: { styles: defaultTextStyles, fontColor: undefined },
     quickLinks: [
       { ...defaultLink, label: createTranslatableString("Menu") },
       { ...defaultLink, label: createTranslatableString("Order Online") },
@@ -580,6 +575,7 @@ const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
     props.footer.description.text,
     locale,
     streamDocument,
+    { color: props.footer.description.fontColor },
   );
   const quickLinksHeading = resolveComponentData(
     props.footer.quickLinksHeading.text,
@@ -772,7 +768,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<
   typeof footerFields
 > =
   {
-    label: msg("components.footer", "Footer Section"),
+    label: msg("components.footer", "Footer"),
     fields: footerFields,
     defaultProps,
     render: (props) => (
@@ -782,7 +778,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFooterSection",
-  displayName: "Footer Section",
+  displayName: "Footer",
   description: "Footer Section",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

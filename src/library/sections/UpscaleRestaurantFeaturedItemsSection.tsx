@@ -132,18 +132,6 @@ const makeCta = (label: string, link: string): FeaturedItemCtaProps => ({
   openInNewTab: false,
 });
 
-const makeImageStyle = (
-  styles?: React.CSSProperties,
-): React.CSSProperties => {
-  const resolvedStyles = styles;
-
-  return {
-    borderRadius:
-      resolvedStyles?.borderRadius ?? "var(--borderRadius-image-borderRadius)",
-    overflow: "hidden",
-  };
-};
-
 const featuredItemsSource = createItemSource<FeaturedItemProps>({
   label: msg("fields.featuredItems", "Featured Items"),
   mappingFields: {
@@ -455,6 +443,7 @@ const UpscaleRestaurantCss = `
   flex-direction: column;
 }
 .fb-feature-image-frame {
+  border-radius: var(--borderRadius-image-borderRadius);
   width: 100%;
   height: 210px;
   overflow: hidden;
@@ -627,11 +616,9 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
                         item.description,
                         locale,
                         itemInterpolationDocument,
+                        { color: props.featuredItems.styles.description.fontColor },
                       )
                     : "";
-                  const imageStyles = makeImageStyle(
-                    props.featuredItems.styles.image.styles,
-                  );
                   const resolvedImage = item.image
                     ? resolveComponentData(item.image, locale, itemInterpolationDocument)
                     : "";
@@ -690,12 +677,12 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
                       {hasFeatureImage ? (
                         <div
                           className="fb-feature-image-frame"
-                          style={imageStyles}
+                          style={props.featuredItems.styles.image.styles}
                         >
                           <Image
                             image={featureImage as ImageType}
                             className="fb-feature-image"
-                            style={{ borderRadius: imageStyles.borderRadius }}
+                            style={props.featuredItems.styles.image.styles}
                           />
                         </div>
                       ) : null}
@@ -734,7 +721,7 @@ export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<
   typeof featuredItemsFields
 > =
   {
-    label: msg("components.featuredItemsLabel", "Featured Items Section"),
+    label: msg("components.featuredItemsLabel", "Featured Items"),
     fields: featuredItemsFields,
     defaultProps,
     render: (props) => (
@@ -744,7 +731,7 @@ export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFeaturedItemsSection",
-  displayName: "Featured Items Section",
+  displayName: "Featured Items",
   description: "Featured Items Section",
   pageSetTypes: ["ENTITY"],
 };

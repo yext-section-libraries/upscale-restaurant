@@ -134,48 +134,11 @@ export const isRichTextEmpty = (value: unknown): boolean => {
   return false;
 };
 
-/** Inline colors authored in rich text must survive the platform's inherit rule. */
-const preserveRichTextColors = (value: unknown): unknown => {
-  const preserveHtmlColors = (html: string) => html.replace(
-    /style=(["'])(.*?)\1/gi,
-    (_attribute, quote, declarations: string) =>
-      `style=${quote}${declarations.replace(
-        /(^|;)\s*color\s*:\s*([^;]+)/gi,
-        (_declaration, separator, color: string) =>
-          `${separator}color: ${color.replace(/\s*!important\s*$/i, "")} !important`,
-      )}${quote}`,
-  );
-  if (React.isValidElement(value)) {
-    const element = value as React.ReactElement<{
-      data?: unknown;
-      children?: React.ReactNode;
-      dangerouslySetInnerHTML?: { __html: string };
-    }>;
-    return React.cloneElement(element, {
-      ...(element.props.data ? { data: preserveRichTextColors(element.props.data) } : {}),
-      ...(element.props.dangerouslySetInnerHTML ? {
-        dangerouslySetInnerHTML: {
-          __html: preserveHtmlColors(element.props.dangerouslySetInnerHTML.__html),
-        },
-      } : {}),
-      ...(element.props.children ? {
-        children: React.Children.map(element.props.children, child =>
-          preserveRichTextColors(child) as React.ReactNode),
-      } : {}),
-    });
-  }
-  if (value && typeof value === "object" && "html" in value && typeof value.html === "string") {
-    return { ...value, html: preserveHtmlColors(value.html) };
-  }
-  return value;
-};
-
 export const renderRichText = (
   value: unknown,
   richTextStyleOverrides?: React.CSSProperties,
   className?: string,
 ): React.ReactNode => {
-  value = preserveRichTextColors(value);
   const styleOverrides = richTextStyleOverrides ?? {};
   const typographyVariables = Object.fromEntries(
     Object.entries(styleOverrides)

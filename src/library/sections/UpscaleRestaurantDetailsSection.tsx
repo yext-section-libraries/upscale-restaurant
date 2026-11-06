@@ -113,20 +113,6 @@ const makeTextList = (items: string[]): TextListProps => ({
   fontColor: undefined,
 });
 
-const makeTextStyle = (
-  text: DetailsSectionRenderProps["details"]["heading"],
-): React.CSSProperties => ({
-  ...text.styles,
-  color: resolveSelectedColor(text.fontColor),
-});
-
-const makeTextListStyle = (
-  text: DetailsSectionRenderProps["details"]["otherDetails"],
-): React.CSSProperties => ({
-  ...text.styles,
-  color: resolveSelectedColor(text.fontColor),
-});
-
 const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
   data: {
     actionType: "link",
@@ -660,32 +646,50 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
     props.section.backgroundColor,
     streamDocument,
   );
-  const sectionHeadingStyle = makeTextStyle(props.details.heading);
+  const sectionHeadingStyle = {
+    ...props.details.heading.styles,
+    color: resolveSelectedColor(props.details.heading.fontColor),
+  };
   const addressHeading = resolveComponentData(
     props.details.addressHeading.text,
     locale,
     streamDocument,
   );
-  const addressHeadingStyle = makeTextStyle(props.details.addressHeading);
+  const addressHeadingStyle = {
+    ...props.details.addressHeading.styles,
+    color: resolveSelectedColor(props.details.addressHeading.fontColor),
+  };
   const phoneHeading = resolveComponentData(
     props.details.phoneHeading.text,
     locale,
     streamDocument,
   );
-  const phoneHeadingStyle = makeTextStyle(props.details.phoneHeading);
+  const phoneHeadingStyle = {
+    ...props.details.phoneHeading.styles,
+    color: resolveSelectedColor(props.details.phoneHeading.fontColor),
+  };
   const otherHeading = resolveComponentData(
     props.details.otherHeading.text,
     locale,
     streamDocument,
   );
-  const otherHeadingStyle = makeTextStyle(props.details.otherHeading);
-  const otherDetailsStyle = makeTextListStyle(props.details.otherDetails);
+  const otherHeadingStyle = {
+    ...props.details.otherHeading.styles,
+    color: resolveSelectedColor(props.details.otherHeading.fontColor),
+  };
+  const otherDetailsStyle = {
+    ...props.details.otherDetails.styles,
+    color: resolveSelectedColor(props.details.otherDetails.fontColor),
+  };
   const hoursHeading = resolveComponentData(
     props.details.hoursHeading.text,
     locale,
     streamDocument,
   );
-  const hoursHeadingStyle = makeTextStyle(props.details.hoursHeading);
+  const hoursHeadingStyle = {
+    ...props.details.hoursHeading.styles,
+    color: resolveSelectedColor(props.details.hoursHeading.fontColor),
+  };
   const resolvedAddress = resolveComponentData(
     props.details.address,
     locale,
@@ -930,7 +934,7 @@ export const UpscaleRestaurantDetailsSection: YextComponentConfig<
   typeof detailsFields
 > =
   {
-    label: msg("components.detailsLabel", "Details Section"),
+    label: msg("components.detailsLabel", "Details"),
     fields: detailsFields,
     defaultProps,
     render: (props) => (
@@ -940,7 +944,7 @@ export const UpscaleRestaurantDetailsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantDetailsSection",
-  displayName: "Details Section",
+  displayName: "Details",
   description: "Details Section",
   pageSetTypes: ["ENTITY"],
 };

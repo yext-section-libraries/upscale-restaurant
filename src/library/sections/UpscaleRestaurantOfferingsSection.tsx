@@ -158,43 +158,8 @@ type OfferingsSectionProps = {
 };
 
 type OfferingsStyle = React.CSSProperties & Record<`--${string}`, string>;
-type ResponsiveImageStyle = React.CSSProperties & {
-  "--fb-mobile-image-width"?: string;
-};
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
-};
-
-const makeImageStyle = (
-  image: OfferingsSectionRenderProps["offerings"]["image"],
-): {
-  wrapper: ResponsiveImageStyle;
-  image: React.CSSProperties;
-} => {
-  const hasCustomRadius = image.styles.borderRadius !== undefined;
-  const aspectRatio = image.aspectRatio > 0 ? image.aspectRatio : undefined;
-  const borderRadius = image.styles.borderRadius;
-
-  return {
-    wrapper: {
-      aspectRatio,
-      borderRadius,
-      overflow: hasCustomRadius ? "hidden" : undefined,
-      width: "100%",
-      "--fb-mobile-image-width":
-        aspectRatio !== undefined ? `${360 * aspectRatio}px` : undefined,
-    },
-    image: {
-      display: "block",
-      aspectRatio,
-      width: "100%",
-      height: "auto",
-      borderRadius,
-      objectFit: "cover",
-      objectPosition: "center",
-    },
-  };
 };
 
 const makeImage = (
@@ -414,7 +379,13 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
     streamDocument,
   );
   const hasImage = hasImageSource(resolvedImage);
-  const imageStyles = makeImageStyle(props.offerings.image);
+  const imageStyle = {
+    ...props.offerings.image.styles,
+    aspectRatio:
+      props.offerings.image.aspectRatio > 0
+        ? props.offerings.image.aspectRatio
+        : undefined,
+  };
   const resolvedItems = offeringsItemSource.resolveItems(
     props.offerings.items,
     streamDocument,
@@ -449,11 +420,24 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
                   props.offerings.image.image.constantValueEnabled
                 }
               >
-                <div className="fb-offerings-image" style={imageStyles.wrapper}>
+                <div
+                  className="fb-offerings-image"
+                  style={{
+                    ...imageStyle,
+                    overflow: imageStyle.borderRadius ? "hidden" : undefined,
+                  }}
+                >
                   <Image
                     image={resolvedImage}
                     className="fb-offerings-image-content"
-                    style={imageStyles.image}
+                    style={{
+                      ...imageStyle,
+                      display: "block",
+                      width: "100%",
+                      height: "auto",
+                      objectFit: "cover",
+                      objectPosition: "center",
+                    }}
                   />
                 </div>
               </EntityField>
@@ -511,7 +495,7 @@ export const UpscaleRestaurantOfferingsSection: YextComponentConfig<
   typeof offeringsFields
 > =
   {
-    label: msg("components.offeringsLabel", "Offerings Section"),
+    label: msg("components.offeringsLabel", "Offerings"),
     fields: offeringsFields,
     defaultProps,
     render: (props) => (
@@ -521,7 +505,7 @@ export const UpscaleRestaurantOfferingsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantOfferingsSection",
-  displayName: "Offerings Section",
+  displayName: "Offerings",
   description: "Offerings Section",
   pageSetTypes: ["ENTITY"],
 };

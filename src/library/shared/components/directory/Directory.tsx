@@ -173,7 +173,7 @@ const DirectoryComponent: PuckComponent<DirectoryProps> = ({
  * Available on Directory templates.
  */
 export const Directory: YextComponentConfig<DirectoryProps> = {
-  label: msg("components.directory", "Directory Section"),
+  label: msg("components.directory", "Directory"),
   fields: directoryFields,
   resolveFields: (data, params) => {
     if (

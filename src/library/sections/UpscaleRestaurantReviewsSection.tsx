@@ -509,7 +509,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<
   typeof reviewsFields
 > =
   {
-    label: msg("components.reviewsLabel", "Reviews Section"),
+    label: msg("components.reviewsLabel", "Reviews"),
     fields: reviewsFields,
     defaultProps,
     render: (props) => (
@@ -519,7 +519,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantReviewsSection",
-  displayName: "Reviews Section",
+  displayName: "Reviews",
   description: "Reviews Section",
   pageSetTypes: ["ENTITY"],
 };

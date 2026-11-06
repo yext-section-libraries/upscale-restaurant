@@ -421,7 +421,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
   typeof breadcrumbsFields
 > =
   {
-    label: msg("components.breadcrumbsLabel", "Breadcrumbs Section"),
+    label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: breadcrumbsFields,
     defaultProps,
     render: (props) => (
@@ -431,7 +431,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBreadcrumbsSection",
-  displayName: "Breadcrumbs Section",
+  displayName: "Breadcrumbs",
   description: "Breadcrumbs Section",
   pageSetTypes: ["ENTITY"],
 };

@@ -156,9 +156,6 @@ const defaultUtilityIconImage: SharedHeaderAction["iconImage"] = {
   },
 };
 
-const hasExplicitThemeColor = (color?: ThemeColor): color is ThemeColor =>
-  Boolean(normalizeThemeColorToken(color));
-
 const getTranslatableSummary = (
   value: TranslatableString | undefined,
   fallback: string,
@@ -576,7 +573,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
 
-  const navigationColor = hasExplicitThemeColor(props.navigation.fontColor)
+  const navigationColor = normalizeThemeColorToken(props.navigation.fontColor)
     ? props.navigation.fontColor
     : undefined;
   const headerSurfaceStyle = getSurfaceColorStyle(
@@ -1126,7 +1123,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
   typeof UpscaleRestaurantHeaderSectionFields
 > =
   {
-    label: msg("components.sharedHeader", "Header Section"),
+    label: msg("components.sharedHeader", "Header"),
     fields: UpscaleRestaurantHeaderSectionFields,
     defaultProps: {
       variant: "centerLogoSplitNav",
@@ -1301,7 +1298,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantHeaderSection",
-  displayName: "Header Section",
+  displayName: "Header",
   description: "Header",
   pageSetTypes: ["ENTITY", "DIRECTORY", "LOCATOR"],
 };

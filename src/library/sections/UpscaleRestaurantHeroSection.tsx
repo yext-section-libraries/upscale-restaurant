@@ -485,6 +485,7 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
     props.hero.description.text,
     locale,
     streamDocument,
+    { color: props.hero.description.fontColor },
   );
   const image = resolveComponentData(
     props.hero.image.image,
@@ -670,7 +671,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<
   typeof heroFields
 > =
   {
-    label: msg("components.heroLabel", "Hero Section"),
+    label: msg("components.heroLabel", "Hero"),
     fields: heroFields,
     defaultProps,
     render: (props) => (
@@ -680,7 +681,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantHeroSection",
-  displayName: "Hero Section",
+  displayName: "Hero",
   description: "Hero Section",
   pageSetTypes: ["ENTITY"],
 };

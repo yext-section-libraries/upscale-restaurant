@@ -6,7 +6,7 @@ export const Locator = SectionComponent;
 
 export const config: SectionConfig = {
   id: "Locator",
-  displayName: "Locator Section",
+  displayName: "Locator",
   description: "Displays the locator page experience.",
   pageSetTypes: ["LOCATOR"],
   category: "Standard Sections",

@@ -894,7 +894,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<
   typeof findUsFields
 > =
   {
-    label: msg("components.findUsLabel", "Find Us Section"),
+    label: msg("components.findUsLabel", "Find Us"),
     fields: findUsFields,
     defaultProps,
     render: (props) => (
@@ -904,7 +904,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFindUsSection",
-  displayName: "Find Us Section",
+  displayName: "Find Us",
   description: "Find Us Section",
   pageSetTypes: ["ENTITY"],
 };

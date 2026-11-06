@@ -158,6 +158,7 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
     data.text,
     i18n.language,
     streamDocument,
+    { color: data.fontColor },
   );
 
   if (!resolvedText) {
@@ -195,7 +196,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<
   typeof UpscaleRestaurantBannerFields
 > =
   {
-    label: msg("components.bannerLabel", "Banner Section"),
+    label: msg("components.bannerLabel", "Banner"),
     fields: UpscaleRestaurantBannerFields,
     defaultProps: {
       data: {
@@ -234,7 +235,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantBanner",
-  displayName: "Banner Section",
+  displayName: "Banner",
   description: "Banner",
   pageSetTypes: ["ENTITY"],
 };

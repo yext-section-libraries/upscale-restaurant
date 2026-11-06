@@ -458,7 +458,7 @@ export const LocatorComponent: YextComponentConfig<LocatorProps> = {
     },
     distanceDisplay: DEFAULT_DISTANCE_DISPLAY,
   },
-  label: msg("components.locator", "Locator Section"),
+  label: msg("components.locator", "Locator"),
   /**
    * Reconciles `props.locationStyles` and `props.resultCard` so
    * each list has exactly one entry per current locator entity type.

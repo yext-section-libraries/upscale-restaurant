@@ -287,6 +287,7 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
     props.event.description.text,
     locale,
     streamDocument,
+    { color: props.event.description.fontColor },
   );
   const image = resolveComponentData(
     props.event.image.image,
@@ -376,7 +377,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<
   typeof eventFields
 > =
   {
-    label: msg("components.eventLabel", "Event Section"),
+    label: msg("components.eventLabel", "Event"),
     fields: eventFields,
     defaultProps,
     render: (props) => (
@@ -386,7 +387,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantEventSection",
-  displayName: "Event Section",
+  displayName: "Event",
   description: "Event Section",
   pageSetTypes: ["ENTITY"],
 };

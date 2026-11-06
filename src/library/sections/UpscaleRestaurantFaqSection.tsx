@@ -36,9 +36,6 @@ type FaqItemProps = {
   answer: YextEntityField<TranslatableRichText>;
 };
 
-const toCssColor = (color?: ThemeColor): string | undefined =>
-  resolveSelectedColor(color);
-
 const faqItemsSource = createItemSource<FaqItemProps>({
   label: msg("fields.faqItems", "FAQ Items"),
   mappingFields: {
@@ -314,7 +311,7 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
     locale,
     streamDocument,
   );
-  const headingColor = toCssColor(props.heading.fontColor);
+  const headingColor = resolveSelectedColor(props.heading.fontColor);
   const headingStyle: React.CSSProperties = {
     ...props.heading.styles,
     marginBottom: "28px",
@@ -326,11 +323,11 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
   );
   const questionStyle: React.CSSProperties = {
     ...props.faqs.styles.question.styles,
-    color: toCssColor(props.faqs.styles.question.fontColor),
+    color: resolveSelectedColor(props.faqs.styles.question.fontColor),
   };
   const answerRichTextStyles = {
     ...props.faqs.styles.answer.styles,
-    color: toCssColor(props.faqs.styles.answer.fontColor),
+    color: resolveSelectedColor(props.faqs.styles.answer.fontColor),
   };
 
   return (
@@ -372,6 +369,7 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
                     item.answer,
                     locale,
                     streamDocument,
+                    { color: props.faqs.styles.answer.fontColor },
                   );
 
                   return (
@@ -402,7 +400,7 @@ export const UpscaleRestaurantFaqSection: YextComponentConfig<
   typeof faqFields
 > =
   {
-    label: msg("components.faqLabel", "FAQ Section"),
+    label: msg("components.faqLabel", "FAQ"),
     fields: faqFields,
     defaultProps,
     render: (props) => (
@@ -412,7 +410,7 @@ export const UpscaleRestaurantFaqSection: YextComponentConfig<
 
 export const config: SectionConfig = {
   id: "UpscaleRestaurantFaqSection",
-  displayName: "FAQ Section",
+  displayName: "FAQ",
   description: "FAQ Section",
   pageSetTypes: ["ENTITY"],
 };
