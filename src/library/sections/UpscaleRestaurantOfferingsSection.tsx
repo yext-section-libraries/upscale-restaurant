@@ -154,7 +154,6 @@ type OfferingsSectionProps = {
   };
 };
 
-type OfferingsStyle = React.CSSProperties & Record<`--${string}`, string>;
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
 };
@@ -318,11 +317,11 @@ const UpscaleRestaurantCss = `
   content: "✓";
   position: absolute;
   left: 0;
-  color: var(--fb-list-bullet);
+  color: currentColor;
 }
 .fb-offerings-list .fb-unavailable::before {
   content: "×";
-  color: var(--fb-list-unavailable);
+  color: currentColor;
 }
 @media (max-width: 1100px) {
   .fb-offerings-grid {
@@ -380,10 +379,6 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
     props.offerings.items,
     streamDocument,
   );
-  const pageStyle: OfferingsStyle = {
-    "--fb-list-bullet": "currentColor",
-    "--fb-list-unavailable": "currentColor",
-  };
 
   return (
     <VisibilityWrapper
@@ -393,7 +388,6 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
       <Background
         className="fb-offerings-shell"
         background={props.section.backgroundColor}
-        style={pageStyle}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section fb-tint-section">

@@ -577,9 +577,6 @@ const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
     locale,
     streamDocument,
   );
-  const footerLinkTextStyle: React.CSSProperties = {
-    ...props.footer.linkStyles.styles,
-  };
   const pageStyle: FooterStyle = {
     "--fb-footer-text": "currentColor",
     "--fb-footer-border": "currentColor",
@@ -630,7 +627,7 @@ const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
         eventName={eventName}
         className="fb-footer-link"
       >
-        <span style={footerLinkTextStyle}>{label}</span>
+        <span style={props.footer.linkStyles.styles}>{label}</span>
       </Link>
     );
   };

@@ -13,7 +13,6 @@ import {
   ComprehensiveCTA,
   EntityField,
   VisibilityWrapper,
-  getDefaultForegroundColor,
   type ComprehensiveCTAValue,
   type ThemeColor,
   type YextComponentConfig,
@@ -36,9 +35,6 @@ type DeliveryPartnersSectionProps = {
     cta: ComprehensiveCTAValue;
   }[];
 };
-
-type DeliveryPartnersStyle = React.CSSProperties &
-  Record<`--${string}`, string>;
 
 const makeCta = (
   label: string,
@@ -185,21 +181,6 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
     locale,
     streamDocument,
   );
-  const sectionForegroundColor =
-    getThemeColorCssValue(
-      getDefaultForegroundColor(props.section.backgroundColor, streamDocument),
-    ) ?? "currentColor";
-  const pageStyle: DeliveryPartnersStyle = {
-    "--fb-text": sectionForegroundColor,
-    "--fb-muted": sectionForegroundColor,
-    "--fb-white-bg":
-      getThemeColorCssValue({ selectedColor: "white", contrastingColor: "black" }) ?? "currentColor",
-    "--fb-card-bg":
-      getThemeColorCssValue({ selectedColor: "white", contrastingColor: "black" }) ?? "currentColor",
-    "--fb-primary": "var(--colors-palette-primary)",
-    "--fb-secondary": "var(--colors-palette-secondary)",
-    "--fb-tertiary": "var(--colors-palette-tertiary)",
-  };
 
   return (
     <VisibilityWrapper
@@ -208,7 +189,6 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
     >
       <Background
         className="fb-page"
-        style={pageStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>
@@ -223,9 +203,7 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
                 style={{
                   textAlign: "center",
                   ...props.heading.styles,
-                  color:
-                    getThemeColorCssValue(props.heading.fontColor) ??
-                    sectionForegroundColor,
+                  color: getThemeColorCssValue(props.heading.fontColor),
                 }}
               >
                 {heading}

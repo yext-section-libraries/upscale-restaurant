@@ -1,7 +1,5 @@
 import "../shared/typography.css";
-import {
-  renderRichText,
-} from "../shared/sectionHelpers";
+import { renderRichText } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
