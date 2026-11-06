@@ -368,9 +368,7 @@ export const UpscaleRestaurantEventSection: YextComponentConfig<
     label: msg("components.eventLabel", "Event"),
     fields: eventFields,
     defaultProps,
-    render: (props) => (
-      <EventSection {...(props as EventSectionRenderProps)} />
-    ),
+    render: (props) => <EventSection {...props} />,
   };
 
 export const config: SectionConfig = {

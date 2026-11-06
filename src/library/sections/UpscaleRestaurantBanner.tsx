@@ -238,7 +238,7 @@ export const UpscaleRestaurantBanner: YextComponentConfig<
         isEditing={props.puck.isEditing}
         liveVisibility={props.section.visibleOnLivePage}
       >
-        <UpscaleRestaurantBannerComponent {...(props as UpscaleRestaurantBannerRenderProps)} />
+        <UpscaleRestaurantBannerComponent {...props} />
       </VisibilityWrapper>
     ),
   };

@@ -1278,7 +1278,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<
         name={`UpscaleRestaurantHeaderSection${getAnalyticsScopeHash(props.id)}`}
       >
         <UpscaleRestaurantHeaderSectionComponent
-          {...(props as UpscaleRestaurantHeaderSectionRenderProps)}
+          {...props}
         />
       </AnalyticsScopeProvider>
     ),

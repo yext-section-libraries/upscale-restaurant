@@ -889,9 +889,7 @@ export const UpscaleRestaurantFindUsSection: YextComponentConfig<
     label: msg("components.findUsLabel", "Find Us"),
     fields: findUsFields,
     defaultProps,
-    render: (props) => (
-      <FindUsSection {...(props as FindUsSectionRenderProps)} />
-    ),
+    render: (props) => <FindUsSection {...props} />,
   };
 
 export const config: SectionConfig = {

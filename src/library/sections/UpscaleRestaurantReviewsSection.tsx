@@ -500,9 +500,7 @@ export const UpscaleRestaurantReviewsSection: YextComponentConfig<
     label: msg("components.reviewsLabel", "Reviews"),
     fields: reviewsFields,
     defaultProps,
-    render: (props) => (
-      <ReviewsSection {...(props as ReviewsSectionRenderProps)} />
-    ),
+    render: (props) => <ReviewsSection {...props} />,
   };
 
 export const config: SectionConfig = {

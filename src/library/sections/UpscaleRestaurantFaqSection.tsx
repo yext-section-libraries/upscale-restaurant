@@ -396,9 +396,7 @@ export const UpscaleRestaurantFaqSection: YextComponentConfig<
     label: msg("components.faqLabel", "FAQ"),
     fields: faqFields,
     defaultProps,
-    render: (props) => (
-      <FaqSection {...(props as FaqSectionRenderProps)} />
-    ),
+    render: (props) => <FaqSection {...props} />,
   };
 
 export const config: SectionConfig = {

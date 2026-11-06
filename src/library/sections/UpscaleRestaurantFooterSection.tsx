@@ -757,9 +757,7 @@ export const UpscaleRestaurantFooterSection: YextComponentConfig<
     label: msg("components.footer", "Footer"),
     fields: footerFields,
     defaultProps,
-    render: (props) => (
-      <FooterSection {...(props as FooterSectionRenderProps)} />
-    ),
+    render: (props) => <FooterSection {...props} />,
   };
 
 export const config: SectionConfig = {

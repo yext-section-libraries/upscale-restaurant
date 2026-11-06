@@ -1,6 +1,5 @@
 import "../shared/typography.css";
 import {
-  aspectRatioOptions,
   hasImageSource,
   makeRtf,
   makeText,
@@ -40,7 +39,6 @@ type AboutSectionProps = {
     content: StyledRtfProps;
     image: {
       image: YextEntityField<ImageType>;
-      aspectRatio: number;
       styles: StyledImageValue;
     };
   };
@@ -48,6 +46,7 @@ type AboutSectionProps = {
 
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
+  aspectRatio: 1,
 };
 
 const defaultProps: AboutSectionProps = {
@@ -71,7 +70,6 @@ const defaultProps: AboutSectionProps = {
         },
         constantValueEnabled: true,
       },
-      aspectRatio: 1,
       styles: defaultImageStyles,
     },
   },
@@ -156,14 +154,10 @@ const aboutSectionFields = {
             type: "entityField",
             filter: { types: ["type.image"] },
           },
-          aspectRatio: {
-            type: "basicSelector",
-            label: msg("fields.aspectRatio", "Aspect Ratio"),
-            options: aspectRatioOptions,
-          },
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            includeAspectRatio: true,
             transform: true,
           },
         },
@@ -279,13 +273,7 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
   );
   const currentImage = image ?? props.about.image.image.constantValue;
   const hasImage = hasImageSource(currentImage);
-  const imageStyle = {
-    ...props.about.image.styles,
-    aspectRatio:
-      props.about.image.aspectRatio > 0
-        ? props.about.image.aspectRatio
-        : undefined,
-  };
+  const imageStyle = props.about.image.styles;
 
   return (
     <VisibilityWrapper
@@ -371,10 +359,7 @@ export const UpscaleRestaurantAboutSection: YextComponentConfig<
     label: msg("components.aboutLabel", "About"),
     fields: aboutSectionFields,
     defaultProps,
-    // Puck 0.24 deep slot types expand CSS string unions; the runtime CSS is unchanged.
-    render: (props) => (
-      <AboutSection {...(props as AboutSectionRenderProps)} />
-    ),
+    render: (props) => <AboutSection {...props} />,
   };
 
 export const config: SectionConfig = {

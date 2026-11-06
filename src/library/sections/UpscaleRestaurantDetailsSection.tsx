@@ -928,9 +928,7 @@ export const UpscaleRestaurantDetailsSection: YextComponentConfig<
     label: msg("components.detailsLabel", "Details"),
     fields: detailsFields,
     defaultProps,
-    render: (props) => (
-      <DetailsSectionComponent {...(props as DetailsSectionRenderProps)} />
-    ),
+    render: (props) => <DetailsSectionComponent {...props} />,
   };
 
 export const config: SectionConfig = {

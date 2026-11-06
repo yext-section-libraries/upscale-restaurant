@@ -1,6 +1,5 @@
 import "../shared/typography.css";
 import {
-  aspectRatioOptions,
   hasImageSource,
   makeText,
   type StyledTextProps,
@@ -31,7 +30,6 @@ import { useTranslation } from "react-i18next";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
-  aspectRatio: number;
   styles: StyledImageValue;
 };
 
@@ -175,8 +173,7 @@ const makeImage = (
     },
     constantValueEnabled: true,
   },
-  aspectRatio: aspectRatio,
-  styles: defaultImageStyles,
+  styles: { ...defaultImageStyles, aspectRatio },
 });
 
 const defaultProps: OfferingsSectionProps = {
@@ -255,14 +252,10 @@ const offeringsFields = {
             type: "entityField",
             filter: { types: ["type.image"] },
           },
-          aspectRatio: {
-            label: msg("fields.aspectRatio", "Aspect Ratio"),
-            type: "basicSelector",
-            options: aspectRatioOptions,
-          },
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            includeAspectRatio: true,
             transform: true,
           },
         },
@@ -368,13 +361,7 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
     streamDocument,
   );
   const hasImage = hasImageSource(resolvedImage);
-  const imageStyle = {
-    ...props.offerings.image.styles,
-    aspectRatio:
-      props.offerings.image.aspectRatio > 0
-        ? props.offerings.image.aspectRatio
-        : undefined,
-  };
+  const imageStyle = props.offerings.image.styles;
   const resolvedItems = offeringsItemSource.resolveItems(
     props.offerings.items,
     streamDocument,
@@ -481,9 +468,7 @@ export const UpscaleRestaurantOfferingsSection: YextComponentConfig<
     label: msg("components.offeringsLabel", "Offerings"),
     fields: offeringsFields,
     defaultProps,
-    render: (props) => (
-      <OfferingsSection {...(props as OfferingsSectionRenderProps)} />
-    ),
+    render: (props) => <OfferingsSection {...props} />,
   };
 
 export const config: SectionConfig = {

@@ -15,7 +15,8 @@
           "defaultValue": "Find the right location for you."
         },
         "constantValueEnabled": true
-      }
+      },
+      "sectionLibraryMigrationVersion": 1
     }
   },
   "content": [

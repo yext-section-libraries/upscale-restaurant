@@ -397,9 +397,7 @@ export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
     label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: breadcrumbsFields,
     defaultProps,
-    render: (props) => (
-      <BreadcrumbsSection {...(props as BreadcrumbsSectionRenderProps)} />
-    ),
+    render: (props) => <BreadcrumbsSection {...props} />,
   };
 
 export const config: SectionConfig = {

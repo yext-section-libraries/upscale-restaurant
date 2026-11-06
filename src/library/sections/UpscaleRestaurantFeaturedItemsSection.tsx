@@ -715,9 +715,7 @@ export const UpscaleRestaurantFeaturedItemsSection: YextComponentConfig<
     label: msg("components.featuredItemsLabel", "Featured Items"),
     fields: featuredItemsFields,
     defaultProps,
-    render: (props) => (
-      <FeaturedItemsSection {...(props as FeaturedItemsSectionRenderProps)} />
-    ),
+    render: (props) => <FeaturedItemsSection {...props} />,
   };
 
 export const config: SectionConfig = {

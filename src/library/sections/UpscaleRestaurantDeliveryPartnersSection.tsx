@@ -229,9 +229,7 @@ export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
     label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
     fields: deliveryPartnersFields,
     defaultProps,
-    render: (props) => (
-      <DeliveryPartnersSection {...(props as DeliveryPartnersSectionRenderProps)} />
-    ),
+    render: (props) => <DeliveryPartnersSection {...props} />,
   };
 
 export const config: SectionConfig = {

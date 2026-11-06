@@ -669,9 +669,7 @@ export const UpscaleRestaurantHeroSection: YextComponentConfig<
     label: msg("components.heroLabel", "Hero"),
     fields: heroFields,
     defaultProps,
-    render: (props) => (
-      <HeroSection {...(props as HeroSectionRenderProps)} />
-    ),
+    render: (props) => <HeroSection {...props} />,
   };
 
 export const config: SectionConfig = {

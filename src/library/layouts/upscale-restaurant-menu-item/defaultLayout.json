@@ -12,7 +12,8 @@
         "field": "description",
         "constantValue": "",
         "constantValueEnabled": false
-      }
+      },
+      "sectionLibraryMigrationVersion": 1
     }
   },
   "zones": {},
@@ -494,9 +495,9 @@
                     "constantValueEnabled": true
                   },
                   "styles": {
+                    "aspectRatio": 1,
                     "borderRadius": "default"
-                  },
-                  "aspectRatio": 1
+                  }
                 },
                 "items": {
                   "field": "",
