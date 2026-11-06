@@ -1,6 +1,7 @@
 import "../shared/typography.css";
 import {
   hasImageSource,
+  makeCta,
   makeRtf,
   makeText,
   renderRichText,
@@ -27,6 +28,7 @@ import {
   VisibilityWrapper,
   resolveComponentData,
   useDocument,
+  type ComprehensiveCTAValue,
   type StyledImageValue,
   type ThemeColor,
   type YextComponentConfig,
@@ -38,27 +40,6 @@ import {
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
   styles: StyledImageValue;
-};
-
-type HeroCtaValue = {
-  data: {
-    actionType: "link";
-    cta: {
-      field: string;
-      constantValue: {
-        label: string;
-        link: string;
-        openInNewTab: boolean;
-        normalizeLink: boolean;
-      };
-      constantValueEnabled: boolean;
-    };
-    openInNewTab: boolean;
-  };
-  styles: {
-    variant: "primary" | "secondary" | "link";
-    color: ThemeColor | undefined;
-  };
 };
 
 type HeroSectionProps = {
@@ -75,7 +56,7 @@ type HeroSectionProps = {
     heading: StyledTextProps;
     description: StyledRtfProps;
     ctas: {
-      cta: HeroCtaValue;
+      cta: ComprehensiveCTAValue;
     }[];
   };
   hours: YextEntityField<HoursType>;
@@ -104,31 +85,6 @@ const makeImage = (
   },
   styles: {
     borderRadius: "default",
-  },
-});
-
-const makeCta = (
-  label: string,
-  link: string,
-  variant: "primary" | "secondary" | "link",
-): HeroCtaValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        openInNewTab: false,
-        normalizeLink: false,
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    variant,
-    color: undefined,
   },
 });
 
@@ -199,9 +155,9 @@ const defaultProps: HeroSectionProps = {
       "[[name]] is an upscale burger restaurant located in [[address.city]], [[address.region]]. They offer dine-in, takeout, delivery, and curbside pickup options. The location serves lunch, dinner, and brunch, with happy hour available on weekdays.",
     ),
     ctas: [
-      { cta: makeCta("Call Ahead", "#", "primary") },
-      { cta: makeCta("Order Online", "#", "secondary") },
-      { cta: makeCta("View Menu", "#", "link") },
+      { cta: makeCta("Call Ahead", "#", { variant: "primary" }) },
+      { cta: makeCta("Order Online", "#", { variant: "secondary" }) },
+      { cta: makeCta("View Menu", "#", { variant: "link" }) },
     ],
   },
   hours: {
@@ -317,7 +273,7 @@ const heroFields = {
           },
         },
         defaultItemProps: {
-          cta: makeCta("CTA", "#", "primary"),
+          cta: makeCta("CTA", "#", { variant: "primary" }),
         },
         getItemSummary: () => "CTA",
       },

@@ -3,6 +3,7 @@ import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
   MaybeRTF,
   getDefaultRTF,
+  type ComprehensiveCTAValue,
   type RichText,
   type StyledTextValue,
   type ThemeColor,
@@ -57,6 +58,31 @@ export const makeRtf = (text: string): StyledRtfProps => ({
   text: makeRtfField(text),
   styles: defaultTextStyles,
   fontColor: undefined,
+});
+
+// Builds authored editor defaults; field transforms resolve these for rendering.
+export const makeCta = (
+  label: string,
+  link: string,
+  styles: ComprehensiveCTAValue["styles"],
+  ctaType: ComprehensiveCTAValue["data"]["cta"]["constantValue"]["ctaType"] = "textAndLink",
+): ComprehensiveCTAValue => ({
+  data: {
+    actionType: "link",
+    cta: {
+      field: "",
+      constantValue: {
+        label,
+        link,
+        openInNewTab: false,
+        normalizeLink: false,
+        ctaType,
+      },
+      constantValueEnabled: true,
+    },
+    openInNewTab: false,
+  },
+  styles,
 });
 
 export const hasImageSource = (

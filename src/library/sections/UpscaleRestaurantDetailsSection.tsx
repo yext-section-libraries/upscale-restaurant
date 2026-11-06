@@ -1,6 +1,7 @@
 import "../shared/typography.css";
 import {
   defaultTextStyles,
+  makeCta,
   makeText,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
@@ -22,11 +23,11 @@ import {
   Background,
   CTA,
   ComprehensiveCTA,
-  ComprehensiveCTAValue,
   EntityField,
   VisibilityWrapper,
   resolveComponentData,
   useDocument,
+  type ComprehensiveCTAValue,
   type StyledTextValue,
   type ThemeColor,
   type TranslatableString,
@@ -111,27 +112,6 @@ const makeTextList = (items: string[]): TextListProps => ({
   fontColor: undefined,
 });
 
-const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        normalizeLink: false,
-        openInNewTab: false,
-        ctaType: label === "Get Directions" ? "getDirections" : "textAndLink",
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    variant: "link",
-  },
-});
-
 const defaultProps: DetailsSectionProps = {
   section: {
     visibleOnLivePage: true,
@@ -179,9 +159,11 @@ const defaultProps: DetailsSectionProps = {
     ]),
     links: [
       {
-        cta: makeCta("Website", "#"),
+        cta: makeCta("Website", "#", { variant: "link" }),
       },
-      { cta: makeCta("Get Directions", "#") },
+      {
+        cta: makeCta("Get Directions", "#", { variant: "link" }, "getDirections"),
+      },
     ],
     hoursHeading: makeText("Dining Hours"),
     hours: {
@@ -432,7 +414,7 @@ const detailsFields = {
           },
         },
         defaultItemProps: {
-          cta: makeCta("Link", "#"),
+          cta: makeCta("Link", "#", { variant: "link" }),
         },
         getItemSummary: () => "CTA",
       },

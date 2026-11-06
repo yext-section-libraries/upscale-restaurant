@@ -1,5 +1,6 @@
 import "../shared/typography.css";
 import {
+  makeCta,
   makeText,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
@@ -36,42 +37,6 @@ type DeliveryPartnersSectionProps = {
   }[];
 };
 
-const makeCta = (
-  label: string,
-  link: string,
-  variant: "primary" | "secondary" | "link",
-): ComprehensiveCTAValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        openInNewTab: false,
-        normalizeLink: false,
-        ctaType: "presetImage",
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    presetImage: label.includes("DoorDash")
-      ? label.includes("Uber")
-        ? "uber-eats"
-        : "grubhub"
-      : "doordash",
-    variant,
-    color:
-      variant === "primary"
-        ? { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" }
-        : variant === "secondary"
-          ? { selectedColor: "palette-secondary", contrastingColor: "palette-secondary-contrast" }
-          : undefined,
-  },
-});
-
 const defaultProps: DeliveryPartnersSectionProps = {
   section: {
     visibleOnLivePage: true,
@@ -79,9 +44,38 @@ const defaultProps: DeliveryPartnersSectionProps = {
   },
   heading: makeText("Order delivery from our delivery partners"),
   ctas: [
-    { cta: makeCta("Order on DoorDash", "#", "primary") },
-    { cta: makeCta("Order on Uber Eats", "#", "secondary") },
-    { cta: makeCta("Order on Grubhub", "#", "link") },
+    {
+      cta: makeCta(
+        "Order on DoorDash",
+        "#",
+        {
+          variant: "primary",
+          presetImage: "doordash",
+          color: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
+        },
+        "presetImage",
+      ),
+    },
+    {
+      cta: makeCta(
+        "Order on Uber Eats",
+        "#",
+        {
+          variant: "secondary",
+          presetImage: "uber-eats",
+          color: { selectedColor: "palette-secondary", contrastingColor: "palette-secondary-contrast" },
+        },
+        "presetImage",
+      ),
+    },
+    {
+      cta: makeCta(
+        "Order on Grubhub",
+        "#",
+        { variant: "link", presetImage: "grubhub" },
+        "presetImage",
+      ),
+    },
   ],
 };
 
@@ -141,7 +135,16 @@ const deliveryPartnersFields = {
       },
     },
     defaultItemProps: {
-      cta: makeCta("Order", "#", "primary"),
+      cta: makeCta(
+        "Order",
+        "#",
+        {
+          variant: "primary",
+          presetImage: "doordash",
+          color: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
+        },
+        "presetImage",
+      ),
     },
     getItemSummary: () => "CTA",
   },
