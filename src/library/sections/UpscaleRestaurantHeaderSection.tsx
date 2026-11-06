@@ -1,6 +1,5 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
   aspectRatioOptions,
   hasImageSource,
 } from "../shared/sectionHelpers";
@@ -576,10 +575,6 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
   const navigationColor = normalizeThemeColorToken(props.navigation.fontColor)
     ? props.navigation.fontColor
     : undefined;
-  const headerSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const dividerColorValue = getThemeColorCssValue(props.section.dividerColor);
   const dividerStyle = dividerColorValue
     ? ({ borderColor: dividerColorValue } as React.CSSProperties)
@@ -932,12 +927,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
         as="header"
         background={props.section.backgroundColor}
         className="relative py-pageSection-verticalPadding"
-        style={{
-          ...headerSurfaceStyle,
-          ...(getThemeColorCssValue(navigationColor)
-            ? { color: getThemeColorCssValue(navigationColor) }
-            : {}),
-        }}
+        style={{ color: getThemeColorCssValue(navigationColor) }}
       >
         <div className="mx-auto hidden max-w-pageSection-contentWidth lg:block">{desktopVariantContent}</div>
 
@@ -1004,11 +994,9 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
         </div>
 
         {menuOpen ? (
-          <div
+          <Background
+            background={props.section.backgroundColor}
             className="absolute inset-x-0 top-full z-20 max-h-[calc(100vh-82px)] overflow-y-auto px-6 py-6 md:px-8 lg:hidden"
-            style={{
-              ...headerSurfaceStyle,
-            }}
           >
             <div className="space-y-6">
               {navigationLinks.length > 0
@@ -1111,7 +1099,7 @@ const UpscaleRestaurantHeaderSectionComponent: React.FC<
                 </div>
               )}
             </div>
-          </div>
+          </Background>
         ) : null}
       </Background>
     </VisibilityWrapper>

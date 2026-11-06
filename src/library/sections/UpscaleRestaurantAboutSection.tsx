@@ -1,19 +1,16 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   aspectRatioOptions,
   hasImageSource,
   makeRtf,
   makeText,
-  makeThemeColor,
   renderRichText,
   type StyledRtfProps,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -56,7 +53,7 @@ const defaultImageStyles: StyledImageValue = {
 const defaultProps: AboutSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "palette-quaternary"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "palette-quaternary" },
   },
   about: {
     heading: makeText("What is [[name]]?"),
@@ -259,19 +256,15 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const headingStyle: React.CSSProperties = {
     ...props.about.heading.styles,
     textAlign: "left",
     marginBottom: "14px",
-    color: resolveSelectedColor(props.about.heading.fontColor),
+    color: getThemeColorCssValue(props.about.heading.fontColor),
   };
   const contentStyleOverrides = {
     ...props.about.content.styles,
-    color: resolveSelectedColor(props.about.content.fontColor),
+    color: getThemeColorCssValue(props.about.content.fontColor),
   };
   const content = resolveComponentData(
     props.about.content.text,
@@ -301,7 +294,6 @@ const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
     >
       <Background
         className="fb-about-shell"
-        style={sectionSurfaceStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>

@@ -1,18 +1,15 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
-  resolveSelectedColor,
   hasImageSource,
   makeRtf,
   makeText,
-  makeThemeColor,
   renderRichText,
   type StyledRtfProps,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -187,8 +184,8 @@ const defaultSeparatorTemplate = (params: StatusParams): React.ReactNode => {
 const defaultProps: HeroSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("palette-primary-dark", "white"),
-    cardBackgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "palette-primary-dark", contrastingColor: "white" },
+    cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   hero: {
     image: makeImage(
@@ -475,11 +472,11 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
   );
   const headingStyle = {
     ...props.hero.heading.styles,
-    color: resolveSelectedColor(props.hero.heading.fontColor) ?? "currentColor",
+    color: getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
   };
   const descriptionStyles = {
     ...props.hero.description.styles,
-    color: resolveSelectedColor(props.hero.description.fontColor),
+    color: getThemeColorCssValue(props.hero.description.fontColor),
   };
   const description = resolveComponentData(
     props.hero.description.text,
@@ -508,7 +505,6 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
       <Background
         className="fb-hero-shell"
         background={props.section.backgroundColor}
-        style={getSurfaceColorStyle(props.section.backgroundColor, streamDocument)}
       >
         <style>{UpscaleRestaurantCss}</style>
         <header className="fb-site-header">
@@ -542,7 +538,6 @@ const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
             ) : null}
             <Background
               background={props.section.cardBackgroundColor}
-              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
               className="fb-hero-card"
             >
               <EntityField

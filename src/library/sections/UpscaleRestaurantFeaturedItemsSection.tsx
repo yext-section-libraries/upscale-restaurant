@@ -1,18 +1,15 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
   defaultTextStyles,
   hasImageSource,
   makeRtfField,
   makeText,
-  makeThemeColor,
   renderRichText,
-  resolveSelectedColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType, LinkType } from "@yext/pages-components";
@@ -250,8 +247,8 @@ const featuredItemsSource = createItemSource<FeaturedItemProps>({
 const defaultProps: FeaturedItemsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "palette-quaternary"),
-    cardBackgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "palette-quaternary" },
+    cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   heading: makeText("Featured Items"),
   featuredItems: {
@@ -541,10 +538,6 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const heading = resolveComponentData(
     props.heading.text,
     locale,
@@ -553,7 +546,7 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
   const headingStyle: React.CSSProperties = {
     ...props.heading.styles,
     margin: "0 0 28px",
-    color: resolveSelectedColor(props.heading.fontColor),
+    color: getThemeColorCssValue(props.heading.fontColor),
   };
   const items = featuredItemsSource.resolveItems(
     props.featuredItems.data,
@@ -575,7 +568,6 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
       <Background
         background={props.section.backgroundColor}
         className="fb-featured-shell"
-        style={sectionSurfaceStyle}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section fb-featured-section">
@@ -601,13 +593,13 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
                     : "";
                   const titleStyle: React.CSSProperties = {
                     ...props.featuredItems.styles.title.styles,
-                    color: resolveSelectedColor(
+                    color: getThemeColorCssValue(
                       props.featuredItems.styles.title.fontColor,
                     ),
                   };
                   const descriptionStyles = {
                     ...props.featuredItems.styles.description.styles,
-                    color: resolveSelectedColor(
+                    color: getThemeColorCssValue(
                       props.featuredItems.styles.description.fontColor,
                     ),
                   };
@@ -688,7 +680,6 @@ const FeaturedItemsSection: React.FC<FeaturedItemsSectionRenderProps> = (props) 
                       ) : null}
                       <Background
                         background={props.section.cardBackgroundColor}
-                      style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                         className="fb-feature-overlay"
                       >
                         <h3 style={titleStyle}>{title}</h3>

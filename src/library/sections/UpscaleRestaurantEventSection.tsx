@@ -1,18 +1,15 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
   hasImageSource,
   makeRtf,
   makeText,
-  makeThemeColor,
   renderRichText,
-  resolveSelectedColor,
   type StyledRtfProps,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -51,10 +48,7 @@ type EventSectionProps = {
   };
 };
 
-const eventOverlayBackground = makeThemeColor(
-  "palette-quaternary",
-  "palette-quaternary-contrast",
-);
+const eventOverlayBackground = { selectedColor: "palette-quaternary", contrastingColor: "palette-quaternary-contrast" };
 
 const makeImage = (
   url: string,
@@ -274,14 +268,14 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
     streamDocument,
   );
   const headingColor =
-    resolveSelectedColor(props.event.heading.fontColor) ?? "currentColor";
+    getThemeColorCssValue(props.event.heading.fontColor) ?? "currentColor";
   const headingStyle: React.CSSProperties = {
     ...props.event.heading.styles,
     color: headingColor,
   };
   const descriptionStyles = {
     ...props.event.description.styles,
-    color: resolveSelectedColor(props.event.description.fontColor),
+    color: getThemeColorCssValue(props.event.description.fontColor),
   };
   const description = resolveComponentData(
     props.event.description.text,
@@ -298,10 +292,6 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
     data: props.event.cta.data,
     styles: props.event.cta.styles,
   };
-  const overlaySurfaceStyle = getSurfaceColorStyle(
-    eventOverlayBackground,
-    streamDocument,
-  );
 
   return (
     <VisibilityWrapper
@@ -328,7 +318,6 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
           <Background
             background={eventOverlayBackground}
             className="fb-event-overlay"
-            style={overlaySurfaceStyle}
           >
             <EntityField
               displayName={pt("heading", "Heading")}
@@ -352,7 +341,6 @@ const EventSection: React.FC<EventSectionRenderProps> = (props) => {
             </EntityField>
             <div className="fb-event-cta">
               <Background background={eventOverlayBackground}
-                style={getSurfaceColorStyle(eventOverlayBackground, streamDocument)}
               >
                 <EntityField
                   displayName={pt("callToAction", "Call To Action")}

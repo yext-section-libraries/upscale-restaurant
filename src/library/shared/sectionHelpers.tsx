@@ -3,9 +3,6 @@ import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
   MaybeRTF,
   getDefaultRTF,
-  getThemeColorCssValue,
-  getThemeColorHexValue,
-  isDarkColor,
   type RichText,
   type StyledTextValue,
   type ThemeColor,
@@ -35,11 +32,6 @@ export const defaultTextStyles: StyledTextValue = {
   textTransform: "default",
 };
 
-export const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({ selectedColor, contrastingColor });
-
 export const makeText = (
   text: string,
   field = "",
@@ -67,35 +59,6 @@ export const makeRtf = (text: string): StyledRtfProps => ({
   fontColor: undefined,
 });
 
-export const resolveSelectedColor = (
-  color?: ThemeColor | string,
-): string | undefined =>
-  !color ||
-  (typeof color === "string"
-    ? color === "default"
-    : !color.selectedColor || color.selectedColor === "default")
-    ? undefined
-    : getThemeColorCssValue(color);
-
-/** Recompute contrast from the surface, ignoring stale saved contrast metadata. */
-export const getSurfaceColorStyle = (
-  color: ThemeColor | string | undefined,
-  streamDocument?: Record<string, any>,
-): React.CSSProperties => {
-  const backgroundColor = getThemeColorCssValue(color);
-  if (!backgroundColor) return {};
-  const hex = getThemeColorHexValue(color, streamDocument);
-  return {
-    backgroundColor,
-    color: isDarkColor(
-      hex ?? (typeof color === "string" ? color : color?.selectedColor),
-      streamDocument,
-    )
-      ? "#ffffff"
-      : "#000000",
-  };
-};
-
 export const hasImageSource = (
   image: unknown,
 ): image is ImageType | ComplexImageType | TranslatableAssetImage => {
@@ -115,23 +78,6 @@ export const hasImageSource = (
       typeof image.image.url === "string" &&
       image.image.url.trim(),
   );
-};
-
-export const isRichTextEmpty = (value: unknown): boolean => {
-  if (!value) {
-    return true;
-  }
-
-  if (typeof value === "string") {
-    return value.trim() === "";
-  }
-
-  if (typeof value === "object" && "html" in value) {
-    const html = (value as { html?: unknown }).html;
-    return typeof html !== "string" || html.trim() === "";
-  }
-
-  return false;
 };
 
 export const renderRichText = (

@@ -5,6 +5,7 @@ import { test } from "node:test";
 import { renderToStaticMarkup } from "react-dom/server";
 import { Window } from "happy-dom";
 import {
+  getThemeColorCssValue,
   EntityField,
   VisualEditorProvider,
   VisualEditorRender,
@@ -26,7 +27,9 @@ import { UpscaleRestaurantHeaderSection as Header } from "../src/library/section
 import { UpscaleRestaurantHeroSection as Hero } from "../src/library/sections/UpscaleRestaurantHeroSection";
 import { UpscaleRestaurantOfferingsSection as Offerings } from "../src/library/sections/UpscaleRestaurantOfferingsSection";
 import { UpscaleRestaurantReviewsSection as Reviews } from "../src/library/sections/UpscaleRestaurantReviewsSection";
-import { getSurfaceColorStyle, renderRichText, resolveSelectedColor } from "../src/library/shared/sectionHelpers";
+import {
+  renderRichText,
+} from "../src/library/shared/sectionHelpers";
 
 const sections = { About, Banner, Breadcrumbs, Delivery, Details, Event, Faq, Featured, FindUs, Footer, Header, Hero, Offerings, Reviews };
 const document = { name: "[[city]]", city: "Should not interpolate twice", locale: "fr", address: { line1: "1 rue de Paris", city: "Paris", region: "IDF", postalCode: "75001", countryCode: "FR" } };
@@ -332,26 +335,33 @@ test("serialized layouts stay unchanged during rendering", async () => {
 });
 
 
-test("default foreground follows actual section and nested card backgrounds", async () => {
-  for (const [background, foreground] of [["#111111", "#ffffff"], ["#ffffff", "#000000"]]) {
-    const color = { selectedColor: background, contrastingColor: foreground === "#ffffff" ? "black" : "white" };
-    assert.equal(getSurfaceColorStyle(color).color, foreground, "saved contrast metadata must not control foreground");
-    assert.equal(resolveSelectedColor({ selectedColor: "default", contrastingColor: "white" }), undefined);
-    for (const [section, selector] of [[About, ".fb-about-shell"], [Hero, ".fb-hero-shell"], [Hero, ".fb-hero-card"], [Details, ".fb-panel"], [Featured, ".fb-feature-overlay"], [Reviews, ".fb-review-card"], [FindUs, ".fb-panel"], [Banner, ".components"], [Header, "header"], [Footer, ".fb-footer-shell"]] as const) {
+test("background components apply section and nested card contrast", async () => {
+  for (const [background, foreground] of [["black", "white"], ["white", "black"]]) {
+    const sectionColor = { selectedColor: foreground, contrastingColor: background };
+    const cardColor = { selectedColor: background, contrastingColor: foreground };
+    assert.equal(getThemeColorCssValue({ selectedColor: "default", contrastingColor: "white" }), undefined);
+    for (const [section, selector, nested] of [
+      [About, ".fb-about-shell", false],
+      [Hero, ".fb-hero-shell", false],
+      [Hero, ".fb-hero-card", true],
+      [Details, ".fb-panel", true],
+      [Featured, ".fb-feature-overlay", true],
+      [Reviews, ".fb-review-card", true],
+      [FindUs, ".fb-panel", true],
+      [Banner, ".components", false],
+      [Header, "header", false],
+      [Footer, ".fb-footer-shell", false],
+    ] as const) {
       const props = structuredClone(section.defaultProps!) as any;
-      props.section.backgroundColor = color;
-      props.section.cardBackgroundColor = color;
-      if (section === FindUs) props.findUs.nearbyLocationCardStyles.cardBackgroundColor = color;
+      props.section.backgroundColor = sectionColor;
+      props.section.cardBackgroundColor = cardColor;
+      if (section === FindUs) props.findUs.nearbyLocationCardStyles.cardBackgroundColor = cardColor;
       const { dom } = await renderSection(section, props, "en", document, true);
-      assert.equal(dom.querySelector(selector)?.style.color, foreground, selector);
+      const surface = dom.querySelector(selector)!;
+      assert.ok(surface.classList.contains(`text-${nested ? foreground : background}`), selector);
+      assert.ok(surface.classList.contains(`bg-${nested ? background : foreground}`), selector);
+      assert.equal(surface.style.color, "", "Background handles contrast without an inline override");
     }
-  }
-  for (const background of ["#111111", "#ffffff"]) {
-    const style = getSurfaceColorStyle(
-      { selectedColor: "palette-primary", contrastingColor: "white" },
-      { __: { theme: JSON.stringify({ "--colors-palette-primary": background }) } },
-    );
-    assert.equal(style.color, background === "#111111" ? "#ffffff" : "#000000");
   }
 });
 

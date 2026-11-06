@@ -1,7 +1,5 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   defaultTextStyles,
   makeRtfField,
   makeText,
@@ -10,7 +8,7 @@ import {
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -302,16 +300,12 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const resolvedHeading = resolveComponentData(
     props.heading.text,
     locale,
     streamDocument,
   );
-  const headingColor = resolveSelectedColor(props.heading.fontColor);
+  const headingColor = getThemeColorCssValue(props.heading.fontColor);
   const headingStyle: React.CSSProperties = {
     ...props.heading.styles,
     marginBottom: "28px",
@@ -323,11 +317,11 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
   );
   const questionStyle: React.CSSProperties = {
     ...props.faqs.styles.question.styles,
-    color: resolveSelectedColor(props.faqs.styles.question.fontColor),
+    color: getThemeColorCssValue(props.faqs.styles.question.fontColor),
   };
   const answerRichTextStyles = {
     ...props.faqs.styles.answer.styles,
-    color: resolveSelectedColor(props.faqs.styles.answer.fontColor),
+    color: getThemeColorCssValue(props.faqs.styles.answer.fontColor),
   };
 
   return (
@@ -338,7 +332,6 @@ const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
       <Background
         background={props.section.backgroundColor}
         className="fb-faq-shell"
-        style={sectionSurfaceStyle}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section">

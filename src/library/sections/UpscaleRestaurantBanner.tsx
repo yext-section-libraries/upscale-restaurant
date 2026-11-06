@@ -1,13 +1,10 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
-  isRichTextEmpty,
   renderRichText,
-  resolveSelectedColor,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -110,6 +107,23 @@ const UpscaleRestaurantBannerFields =
     },
   } satisfies YextFields<UpscaleRestaurantBannerProps>;
 
+const isRichTextEmpty = (value: unknown): boolean => {
+  if (!value) {
+    return true;
+  }
+
+  if (typeof value === "string") {
+    return value.trim() === "";
+  }
+
+  if (typeof value === "object" && "html" in value) {
+    const html = (value as { html?: unknown }).html;
+    return typeof html !== "string" || html.trim() === "";
+  }
+
+  return false;
+};
+
 const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderProps> = (
   { data, styles, section, puck },
 ) => {
@@ -132,7 +146,6 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
       <PageSection
         background={section.backgroundColor}
         className="flex items-center justify-center"
-        outerStyle={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
           <CircleSlash2 className="h-10 w-10 flex-shrink-0 text-gray-400" />
@@ -152,7 +165,7 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
   const richTextStyleOverrides = {
     ...data.styles,
     color:
-      resolveSelectedColor(data.fontColor),
+      getThemeColorCssValue(data.fontColor),
   };
   const resolvedText = resolveComponentData(
     data.text,
@@ -175,7 +188,6 @@ const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderPr
           right: "justify-end text-right",
         }[styles.textAlignment]
       }`}
-      outerStyle={getSurfaceColorStyle(section.backgroundColor, streamDocument)}
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}

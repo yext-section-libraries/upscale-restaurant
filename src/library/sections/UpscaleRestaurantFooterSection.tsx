@@ -1,16 +1,13 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   defaultTextStyles,
   hasImageSource,
   makeRtfField,
   makeText,
-  makeThemeColor,
   renderRichText,
 } from "../shared/sectionHelpers";
 import type { SectionConfig } from "@yext/visual-editor";
-import { pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link, type ImageType } from "@yext/pages-components";
@@ -173,7 +170,7 @@ const makeRtf = (text: string): StyledRtfProps => ({
 });
 
 const resolveTextColor = (color: ThemeColor | undefined): string =>
-  resolveSelectedColor(color) ?? "currentColor";
+  getThemeColorCssValue(color) ?? "currentColor";
 
 const makeImage = (url: string, alternateText: string): StyledImageProps => ({
   image: {
@@ -191,10 +188,7 @@ const makeImage = (url: string, alternateText: string): StyledImageProps => ({
 const defaultProps: FooterSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-primary",
-      "palette-primary-contrast",
-    ),
+    backgroundColor: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
   },
   brandName: makeText("[[name]]", "name"),
   socialLinks: [
@@ -559,10 +553,6 @@ const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const descriptionRichTextStyleOverrides = {
     color: resolveTextColor(props.footer.description.fontColor),
   };
@@ -591,7 +581,6 @@ const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
     ...props.footer.linkStyles.styles,
   };
   const pageStyle: FooterStyle = {
-    ...sectionSurfaceStyle,
     "--fb-footer-text": "currentColor",
     "--fb-footer-border": "currentColor",
     "--fb-footer-link-color": resolveTextColor(

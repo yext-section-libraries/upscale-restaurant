@@ -1,10 +1,7 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   defaultTextStyles,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
@@ -21,6 +18,7 @@ import {
 } from "@yext/pages-components";
 import { useTranslation } from "react-i18next";
 import {
+  getThemeColorCssValue,
   Background,
   CTA,
   ComprehensiveCTA,
@@ -137,8 +135,8 @@ const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
 const defaultProps: DetailsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
-    cardBackgroundColor: makeThemeColor("[#f6f4ef]", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
+    cardBackgroundColor: { selectedColor: "[#f6f4ef]", contrastingColor: "black" },
   },
   details: {
     heading: makeText("Restaurant Details"),
@@ -642,13 +640,9 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const sectionHeadingStyle = {
     ...props.details.heading.styles,
-    color: resolveSelectedColor(props.details.heading.fontColor),
+    color: getThemeColorCssValue(props.details.heading.fontColor),
   };
   const addressHeading = resolveComponentData(
     props.details.addressHeading.text,
@@ -657,7 +651,7 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
   );
   const addressHeadingStyle = {
     ...props.details.addressHeading.styles,
-    color: resolveSelectedColor(props.details.addressHeading.fontColor),
+    color: getThemeColorCssValue(props.details.addressHeading.fontColor),
   };
   const phoneHeading = resolveComponentData(
     props.details.phoneHeading.text,
@@ -666,7 +660,7 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
   );
   const phoneHeadingStyle = {
     ...props.details.phoneHeading.styles,
-    color: resolveSelectedColor(props.details.phoneHeading.fontColor),
+    color: getThemeColorCssValue(props.details.phoneHeading.fontColor),
   };
   const otherHeading = resolveComponentData(
     props.details.otherHeading.text,
@@ -675,11 +669,11 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
   );
   const otherHeadingStyle = {
     ...props.details.otherHeading.styles,
-    color: resolveSelectedColor(props.details.otherHeading.fontColor),
+    color: getThemeColorCssValue(props.details.otherHeading.fontColor),
   };
   const otherDetailsStyle = {
     ...props.details.otherDetails.styles,
-    color: resolveSelectedColor(props.details.otherDetails.fontColor),
+    color: getThemeColorCssValue(props.details.otherDetails.fontColor),
   };
   const hoursHeading = resolveComponentData(
     props.details.hoursHeading.text,
@@ -688,7 +682,7 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
   );
   const hoursHeadingStyle = {
     ...props.details.hoursHeading.styles,
-    color: resolveSelectedColor(props.details.hoursHeading.fontColor),
+    color: getThemeColorCssValue(props.details.hoursHeading.fontColor),
   };
   const resolvedAddress = resolveComponentData(
     props.details.address,
@@ -713,7 +707,6 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
     >
       <Background
         className="fb-details-shell"
-        style={sectionSurfaceStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>
@@ -736,7 +729,6 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
             <div className="fb-details-grid">
               <Background
                 background={props.section.cardBackgroundColor}
-              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                 className="fb-panel"
               >
                 <div className="fb-detail-group">
@@ -885,7 +877,6 @@ const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => 
               </Background>
               <Background
                 background={props.section.cardBackgroundColor}
-              style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                 className="fb-panel"
               >
                 <EntityField

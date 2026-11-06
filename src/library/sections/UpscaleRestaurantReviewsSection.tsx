@@ -1,14 +1,11 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -60,11 +57,8 @@ type StreamDocumentWithReviews = {
 const defaultProps: ReviewsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-tertiary",
-      "palette-tertiary-contrast",
-    ),
-    cardBackgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "palette-tertiary", contrastingColor: "palette-tertiary-contrast" },
+    cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   reviews: {
     heading: makeText("Reviews"),
@@ -332,12 +326,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
   const { averageRating, reviewCount } = getAggregateRating(streamDocument);
   const showFallbackReviews = liveReviewItems.length === 0 && isEditing;
   const hideSection = reviewItems.length === 0 && !isEditing;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const pageStyle: ReviewsStyle = {
-    ...sectionSurfaceStyle,
     "--fb-primary": "var(--colors-palette-primary)",
     "--fb-stars": "var(--colors-palette-primary)",
   };
@@ -369,7 +358,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
               <h2
                 style={{
                   ...props.reviews.heading.styles,
-                  color: resolveSelectedColor(props.reviews.heading.fontColor),
+                  color: getThemeColorCssValue(props.reviews.heading.fontColor),
                   textAlign: "center",
                 }}
               >
@@ -420,7 +409,7 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
                   className="fb-recent-heading"
                   style={{
                     ...props.reviews.recentHeading.styles,
-                    color: resolveSelectedColor(
+                    color: getThemeColorCssValue(
                       props.reviews.recentHeading.fontColor,
                     ),
                   }}
@@ -440,7 +429,6 @@ const ReviewsSection = (props: ReviewsSectionRenderProps): React.ReactElement =>
                 return (
                   <Background
                     background={props.section.cardBackgroundColor}
-                    style={getSurfaceColorStyle(props.section.cardBackgroundColor, streamDocument)}
                     className="fb-review-card"
                     key={`${review.authorName ?? "review"}-${index}`}
                   >

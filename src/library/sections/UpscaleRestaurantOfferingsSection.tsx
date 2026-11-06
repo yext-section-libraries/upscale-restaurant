@@ -1,16 +1,13 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   aspectRatioOptions,
   hasImageSource,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -186,10 +183,7 @@ const makeImage = (
 const defaultProps: OfferingsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-tertiary",
-      "palette-tertiary-contrast",
-    ),
+    backgroundColor: { selectedColor: "palette-tertiary", contrastingColor: "palette-tertiary-contrast" },
   },
   offerings: {
     heading: makeText("Offerings"),
@@ -363,11 +357,7 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
-  const headingColor = resolveSelectedColor(props.offerings.heading.fontColor);
+  const headingColor = getThemeColorCssValue(props.offerings.heading.fontColor);
   const headingStyle: React.CSSProperties = {
     ...props.offerings.heading.styles,
     margin: "0 0 32px",
@@ -391,7 +381,6 @@ const OfferingsSection: React.FC<OfferingsSectionRenderProps> = (props) => {
     streamDocument,
   );
   const pageStyle: OfferingsStyle = {
-    ...sectionSurfaceStyle,
     "--fb-list-bullet": "currentColor",
     "--fb-list-unavailable": "currentColor",
   };

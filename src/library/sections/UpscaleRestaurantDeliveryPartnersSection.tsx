@@ -1,13 +1,11 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -71,9 +69,9 @@ const makeCta = (
     variant,
     color:
       variant === "primary"
-        ? makeThemeColor("palette-primary", "palette-primary-contrast")
+        ? { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" }
         : variant === "secondary"
-          ? makeThemeColor("palette-secondary", "palette-secondary-contrast")
+          ? { selectedColor: "palette-secondary", contrastingColor: "palette-secondary-contrast" }
           : undefined,
   },
 });
@@ -81,10 +79,7 @@ const makeCta = (
 const defaultProps: DeliveryPartnersSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-tertiary",
-      "palette-tertiary-contrast",
-    ),
+    backgroundColor: { selectedColor: "palette-tertiary", contrastingColor: "palette-tertiary-contrast" },
   },
   heading: makeText("Order delivery from our delivery partners"),
   ctas: [
@@ -191,16 +186,16 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
     streamDocument,
   );
   const sectionForegroundColor =
-    resolveSelectedColor(
+    getThemeColorCssValue(
       getDefaultForegroundColor(props.section.backgroundColor, streamDocument),
     ) ?? "currentColor";
   const pageStyle: DeliveryPartnersStyle = {
     "--fb-text": sectionForegroundColor,
     "--fb-muted": sectionForegroundColor,
     "--fb-white-bg":
-      resolveSelectedColor(makeThemeColor("white", "black")) ?? "currentColor",
+      getThemeColorCssValue({ selectedColor: "white", contrastingColor: "black" }) ?? "currentColor",
     "--fb-card-bg":
-      resolveSelectedColor(makeThemeColor("white", "black")) ?? "currentColor",
+      getThemeColorCssValue({ selectedColor: "white", contrastingColor: "black" }) ?? "currentColor",
     "--fb-primary": "var(--colors-palette-primary)",
     "--fb-secondary": "var(--colors-palette-secondary)",
     "--fb-tertiary": "var(--colors-palette-tertiary)",
@@ -229,7 +224,7 @@ const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (p
                   textAlign: "center",
                   ...props.heading.styles,
                   color:
-                    resolveSelectedColor(props.heading.fontColor) ??
+                    getThemeColorCssValue(props.heading.fontColor) ??
                     sectionForegroundColor,
                 }}
               >

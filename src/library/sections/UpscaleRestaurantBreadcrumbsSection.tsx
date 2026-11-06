@@ -1,14 +1,11 @@
 import "../shared/typography.css";
 import {
-  resolveSelectedColor,
-  getSurfaceColorStyle,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link } from "@yext/pages-components";
@@ -120,12 +117,6 @@ const UpscaleRestaurantBreadcrumbsCss = `
 }
 `;
 
-const getTextStyles = (
-  text: BreadcrumbsSectionRenderProps["breadcrumbs"]["rootLabel"],
-  fallbackColor: string,
-): React.CSSProperties =>
-  ({ ...text.styles, color: resolveSelectedColor(text.fontColor) ?? fallbackColor });
-
 const resolveCurrentPageLabel = (
   currentPage: StyledTextProps["text"],
   locale: string,
@@ -142,21 +133,10 @@ const resolveCurrentPageLabel = (
   );
 };
 
-const getPrefixedHref = (
-  slug: string | undefined,
-  relativePrefixToRoot?: string,
-): string => {
-  const resolvedSlug = slug ?? "";
-
-  return relativePrefixToRoot
-    ? `${relativePrefixToRoot}${resolvedSlug}`
-    : resolvedSlug;
-};
-
 const defaultProps: BreadcrumbsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   breadcrumbs: {
     rootLabel: makeText("All Locations"),
@@ -278,12 +258,7 @@ const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
     );
   }
 
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const pageStyle: BreadcrumbsStyle = {
-    ...sectionSurfaceStyle,
     "--fb-breadcrumb-color": "currentColor",
     "--fb-breadcrumb-muted-color": "currentColor",
     "--fb-breadcrumb-border-color": "currentColor",
@@ -301,12 +276,13 @@ const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
     locale,
     streamDocument,
   );
-  const rootTextStyles = getTextStyles(
-    props.breadcrumbs.rootLabel,
-    "currentColor",
-  );
+  const rootTextStyles = {
+    ...props.breadcrumbs.rootLabel.styles,
+    color: getThemeColorCssValue(props.breadcrumbs.rootLabel.fontColor) ?? "currentColor",
+  };
   const currentPageStyles = {
-    ...getTextStyles(props.breadcrumbs.currentPage, "currentColor"),
+    ...props.breadcrumbs.currentPage.styles,
+    color: getThemeColorCssValue(props.breadcrumbs.currentPage.fontColor) ?? "currentColor",
   } satisfies React.CSSProperties;
 
   return (
@@ -333,10 +309,7 @@ const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
                   : isCurrentPage
                     ? currentPageLabel || breadcrumb.name || ""
                     : breadcrumb.name || "";
-                const href = getPrefixedHref(
-                  breadcrumb.slug,
-                  relativePrefixToRoot,
-                );
+                const href = `${relativePrefixToRoot ?? ""}${breadcrumb.slug ?? ""}`;
 
                 let crumbNode: React.ReactNode;
                 if (isCurrentPage && !isRoot) {

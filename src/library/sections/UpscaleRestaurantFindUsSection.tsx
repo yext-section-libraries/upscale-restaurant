@@ -1,14 +1,11 @@
 import "../shared/typography.css";
 import {
-  getSurfaceColorStyle,
-  resolveSelectedColor,
   makeText,
-  makeThemeColor,
   type StyledTextProps,
 } from "../shared/sectionHelpers";
 import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -84,8 +81,8 @@ type StreamDocumentWithLocation = {
   yextDisplayCoordinate?: { latitude?: number; longitude?: number };
 };
 
-const makeNearbyLocationCardStyles = (): NearbyLocationCardStyles => ({
-  cardBackgroundColor: makeThemeColor("white", "black"),
+const defaultNearbyLocationCardStyles: NearbyLocationCardStyles = {
+  cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   cardTitleColor: undefined,
   showHours: true,
   showPhone: true,
@@ -104,15 +101,15 @@ const makeNearbyLocationCardStyles = (): NearbyLocationCardStyles => ({
     showRegion: true,
     showCountry: false,
   },
-});
+};
 
 const defaultProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   findUs: {
-    nearbyLocationCardStyles: makeNearbyLocationCardStyles(),
+    nearbyLocationCardStyles: defaultNearbyLocationCardStyles,
     heading: makeText("Where To Find Us"),
     map: {
       coordinate: {
@@ -440,7 +437,7 @@ const toCssColor = (color?: string | ThemeColor): string | undefined => {
     return color;
   }
 
-  return resolveSelectedColor(color);
+  return getThemeColorCssValue(color);
 };
 
 const toBackgroundColor = (color: string | ThemeColor): ThemeColor => {
@@ -617,7 +614,6 @@ const renderNearbyLocationCard = (
       key={locationData.id ?? locationData.name ?? index}
       background={toBackgroundColor(cardStyles.cardBackgroundColor)}
       className="fb-panel"
-      style={getSurfaceColorStyle(toBackgroundColor(cardStyles.cardBackgroundColor), streamDocument)}
     >
       <article>
         <h3 style={{ color: titleColor }}>{locationData.name}</h3>
@@ -757,7 +753,6 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
       <Background
         className="fb-find-us-shell"
         background={props.section.backgroundColor}
-        style={getSurfaceColorStyle(props.section.backgroundColor, streamDocument)}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section fb-find-section">
@@ -773,7 +768,7 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
                 style={{
                   ...props.findUs.heading.styles,
                   marginBottom: 28,
-                  color: resolveSelectedColor(props.findUs.heading.fontColor),
+                  color: getThemeColorCssValue(props.findUs.heading.fontColor),
                 }}
               >
                 {heading}
@@ -815,9 +810,6 @@ const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
                         cardStyles.cardBackgroundColor,
                       )}
                       className="fb-panel"
-                      style={getSurfaceColorStyle(toBackgroundColor(
-                        cardStyles.cardBackgroundColor,
-                      ), streamDocument)}
                     >
                       <article>
                         <h3
