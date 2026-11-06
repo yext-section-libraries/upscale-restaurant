@@ -1,8 +1,13 @@
+import "../shared/typography.css";
+import {
+  aspectRatioOptions,
+  hasImageSource,
+} from "../shared/sectionHelpers";
 import type { SectionConfig } from "@yext/visual-editor";
 import { msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
-import { PuckComponent } from "@puckeditor/core";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import { useTranslation } from "react-i18next";
 import {
   AnalyticsScopeProvider,
@@ -29,8 +34,8 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   getAnalyticsScopeHash,
-  getSurfaceColorStyle,
   getThemeColorCssValue,
   i18nPageInstance,
   normalizeLink,
@@ -38,7 +43,6 @@ import {
   resolveComponentData,
   useDocument,
 } from "@yext/visual-editor";
-import { aspectRatioOptions, hasImageSource } from "../shared/sectionHelpers";
 
 type SharedHeaderVariant =
   | "centerLogoSplitNav"
@@ -110,11 +114,6 @@ const defaultSurfaceColor: ThemeColor = {
   contrastingColor: "black",
 };
 
-const defaultPrimaryCtaColor: ThemeColor = {
-  selectedColor: "palette-primary",
-  contrastingColor: "palette-primary-contrast",
-};
-
 const defaultLinkStyles: StyledLinkValue = {
   fontFamily: "default",
   fontSize: "default",
@@ -154,45 +153,6 @@ const defaultUtilityIconImage: SharedHeaderAction["iconImage"] = {
   styles: {
     borderRadius: "default",
   },
-};
-
-const hasExplicitThemeColor = (color?: ThemeColor): color is ThemeColor =>
-  Boolean(normalizeThemeColorToken(color));
-
-const resolveBorderRadius = (value?: string): string | undefined => {
-  if (!value || value === "default") {
-    return undefined;
-  }
-
-  return value;
-};
-
-const getTextStyles = ({
-  color,
-  styles,
-}: {
-  color?: ThemeColor;
-  styles: Pick<
-    StyledLinkValue,
-    | "fontFamily"
-    | "fontSize"
-    | "fontWeight"
-    | "fontStyle"
-    | "textTransform"
-    | "letterSpacing"
-  >;
-}): React.CSSProperties => {
-  return {
-    color: getThemeColorCssValue(color),
-    fontFamily: styles.fontFamily === "default" ? undefined : styles.fontFamily,
-    fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-    fontWeight: styles.fontWeight === "default" ? undefined : styles.fontWeight,
-    fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-    textTransform:
-      styles.textTransform === "default" ? undefined : styles.textTransform,
-    letterSpacing:
-      styles.letterSpacing === "default" ? undefined : styles.letterSpacing,
-  };
 };
 
 const getTranslatableSummary = (
@@ -258,7 +218,16 @@ const SharedHeaderDefaultUtilityIcon = () => (
   </svg>
 );
 
-const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSectionProps> =
+type UpscaleRestaurantHeaderSectionRenderProps = WithId<
+  WithPuckProps<
+    YextTransformedProps<
+      UpscaleRestaurantHeaderSectionProps,
+      typeof UpscaleRestaurantHeaderSectionFields
+    >
+  >
+>;
+
+const UpscaleRestaurantHeaderSectionFields =
   {
     variant: {
       label: msg("fields.variant", "Variant"),
@@ -370,6 +339,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
         styles: {
           label: msg("fields.linkStyles", "Link Styles"),
           type: "styledLink",
+          transform: true,
           showIncludeCaretField: false,
         },
       },
@@ -417,6 +387,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
                 styles: {
                   label: msg("fields.imageStyles", "Image Styles"),
                   type: "styledImage",
+                  transform: true,
                 },
               },
             },
@@ -508,7 +479,7 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
               },
               styles: {
                 variant: "primary",
-                color: defaultPrimaryCtaColor,
+                color: undefined,
                 button: defaultButtonStyles,
                 link: defaultLinkStyles,
               },
@@ -567,13 +538,14 @@ const UpscaleRestaurantHeaderSectionFields: YextFields<UpscaleRestaurantHeaderSe
         styles: {
           label: msg("fields.imageStyles", "Image Styles"),
           type: "styledImage",
+          transform: true,
         },
       },
     },
-  };
+  } satisfies YextFields<UpscaleRestaurantHeaderSectionProps>;
 
-const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
-  UpscaleRestaurantHeaderSectionProps
+const UpscaleRestaurantHeaderSectionComponent: React.FC<
+  UpscaleRestaurantHeaderSectionRenderProps
 > = (props) => {
   const { t, i18n } = useTranslation();
   const analytics = useAnalytics();
@@ -600,22 +572,18 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
   const showCta = props.cta.show;
   const showLogo = props.logoImage.show;
 
-  const navigationColor = hasExplicitThemeColor(props.navigation.fontColor)
+  const navigationColor = normalizeThemeColorToken(props.navigation.fontColor)
     ? props.navigation.fontColor
     : undefined;
-  const headerSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const dividerColorValue = getThemeColorCssValue(props.section.dividerColor);
   const dividerStyle = dividerColorValue
     ? ({ borderColor: dividerColorValue } as React.CSSProperties)
     : undefined;
 
-  const navigationTextStyles = getTextStyles({
-    color: navigationColor,
-    styles: props.navigation.styles,
-  });
+  const navigationTextStyles = {
+    ...props.navigation.styles,
+    color: getThemeColorCssValue(navigationColor),
+  };
 
   const logoWrapperStyle: React.CSSProperties = {
     height: "50px",
@@ -623,7 +591,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
       props.logoImage.aspectRatio > 0
         ? `${50 * props.logoImage.aspectRatio}px`
         : "50px",
-    borderRadius: resolveBorderRadius(props.logoImage.styles?.borderRadius),
+    borderRadius: props.logoImage.styles?.borderRadius,
     overflow: "hidden",
   };
 
@@ -632,6 +600,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     width: "100%",
     height: "100%",
     objectFit: props.logoImage.aspectRatio > 0 ? "cover" : "contain",
+    borderRadius: props.logoImage.styles?.borderRadius,
   };
 
   const navigationLinks = (props.navigation.links ?? [])
@@ -691,7 +660,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     iconImageProps,
   }: {
     iconImage?: ImageType | ComplexImageType | TranslatableAssetImage;
-    iconImageProps: SharedHeaderAction["iconImage"];
+    iconImageProps: UpscaleRestaurantHeaderSectionRenderProps["utilities"]["items"][number]["iconImage"];
   }) => {
     if (!hasImageSource(iconImage)) {
       return (
@@ -726,7 +695,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
     const wrapperStyle: React.CSSProperties = {
       width: `${iconHeight * iconAspectRatio}px`,
       height: `${iconHeight}px`,
-      borderRadius: resolveBorderRadius(iconImageProps.styles?.borderRadius),
+      borderRadius: iconImageProps.styles?.borderRadius,
       overflow: "hidden",
       flexShrink: 0,
     };
@@ -736,6 +705,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
       width: "100%",
       height: "100%",
       objectFit: "cover",
+      borderRadius: iconImageProps.styles?.borderRadius,
     };
 
     return (
@@ -891,7 +861,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
   const desktopVariantContent = (() => {
     if (props.variant === "centerLogoSplitNav") {
       return (
-        <div className="grid min-h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 px-12 py-4">
+        <div className="grid min-h-[82px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-8 px-12">
           <div className="flex items-center justify-start">
             {renderNavigationLinks("row")}
           </div>
@@ -903,7 +873,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
 
     if (props.variant === "logoLeftInlineNav") {
       return (
-        <div className="flex min-h-[82px] items-center gap-8 px-12 py-4">
+        <div className="flex min-h-[82px] items-center gap-8 px-12">
           <div className="shrink-0">{renderLogo()}</div>
           <div className="min-w-0 flex-1">{renderNavigationLinks("row")}</div>
           <div className="min-w-0 w-full max-w-[calc((100%-theme(spacing.32))/2)]">
@@ -915,7 +885,7 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
 
     if (props.variant === "stackedNavBelow") {
       return (
-        <div className="py-4">
+        <div>
           <div className="flex items-center justify-between gap-8 pb-4">
             <div className="shrink-0 px-12">{renderLogo()}</div>
             <div className="min-w-0 w-full max-w-[calc((100%-theme(spacing.16))/2)] px-12">
@@ -956,17 +926,12 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
       <Background
         as="header"
         background={props.section.backgroundColor}
-        className="relative"
-        style={{
-          ...headerSurfaceStyle,
-          ...(getThemeColorCssValue(navigationColor)
-            ? { color: getThemeColorCssValue(navigationColor) }
-            : {}),
-        }}
+        className="relative py-pageSection-verticalPadding"
+        style={{ color: getThemeColorCssValue(navigationColor) }}
       >
-        <div className="hidden lg:block">{desktopVariantContent}</div>
+        <div className="mx-auto hidden max-w-pageSection-contentWidth lg:block">{desktopVariantContent}</div>
 
-        <div className="flex min-h-[82px] items-center gap-4 px-6 md:px-8 lg:hidden">
+        <div className="mx-auto flex min-h-[82px] max-w-pageSection-contentWidth items-center gap-4 px-6 md:px-8 lg:hidden">
           <div className="min-w-0 flex-1">{renderLogo()}</div>
           {showCta && topBarCtaItem ? (
             <div className="hidden items-center gap-3 md:flex">
@@ -1029,11 +994,9 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
         </div>
 
         {menuOpen ? (
-          <div
+          <Background
+            background={props.section.backgroundColor}
             className="absolute inset-x-0 top-full z-20 max-h-[calc(100vh-82px)] overflow-y-auto px-6 py-6 md:px-8 lg:hidden"
-            style={{
-              ...headerSurfaceStyle,
-            }}
           >
             <div className="space-y-6">
               {navigationLinks.length > 0
@@ -1136,14 +1099,17 @@ const UpscaleRestaurantHeaderSectionComponent: PuckComponent<
                 </div>
               )}
             </div>
-          </div>
+          </Background>
         ) : null}
       </Background>
     </VisibilityWrapper>
   );
 };
 
-export const UpscaleRestaurantHeaderSection: YextComponentConfig<UpscaleRestaurantHeaderSectionProps> =
+export const UpscaleRestaurantHeaderSection: YextComponentConfig<
+  UpscaleRestaurantHeaderSectionProps,
+  typeof UpscaleRestaurantHeaderSectionFields
+> =
   {
     label: msg("components.sharedHeader", "Header"),
     fields: UpscaleRestaurantHeaderSectionFields,
@@ -1276,7 +1242,7 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<UpscaleRestaura
               },
               styles: {
                 variant: "primary",
-                color: defaultPrimaryCtaColor,
+                color: undefined,
                 button: defaultButtonStyles,
                 link: defaultLinkStyles,
               },
@@ -1311,7 +1277,9 @@ export const UpscaleRestaurantHeaderSection: YextComponentConfig<UpscaleRestaura
       <AnalyticsScopeProvider
         name={`UpscaleRestaurantHeaderSection${getAnalyticsScopeHash(props.id)}`}
       >
-        <UpscaleRestaurantHeaderSectionComponent {...props} />
+        <UpscaleRestaurantHeaderSectionComponent
+          {...props}
+        />
       </AnalyticsScopeProvider>
     ),
   };

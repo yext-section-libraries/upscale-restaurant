@@ -238,7 +238,10 @@
       "showDistanceOptions": "Kaasa kaugusvalikud",
       "url": "URL",
       "width": "Laius",
-      "yes": "Jah"
+      "yes": "Jah",
+      "lowercase": "Väiketähed",
+      "uppercase": "Suurtähed",
+      "titlecase": "Suured algustähed"
     },
     "otherDetails": "Muud üksikasjad",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kui tõsi",
     "whereToFindUs": "Where To Find Us",
     "yes": "Jah",
-    "zoom": "Suum"
+    "zoom": "Suum",
+    "textTransform": "Teksti teisendus"
   },
   "filter": "Filter",
   "findALocation": "Leidke asukoht",

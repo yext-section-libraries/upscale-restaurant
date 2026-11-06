@@ -238,7 +238,10 @@
       "showDistanceOptions": "Zahrnout možnosti vzdálenosti",
       "url": "URL",
       "width": "Šířka",
-      "yes": "Ano"
+      "yes": "Ano",
+      "lowercase": "Malá písmena",
+      "uppercase": "Velká písmena",
+      "titlecase": "Velká počáteční písmena"
     },
     "otherDetails": "Další podrobnosti",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Když je to pravda",
     "whereToFindUs": "Where To Find Us",
     "yes": "Ano",
-    "zoom": "Přiblížení"
+    "zoom": "Přiblížení",
+    "textTransform": "Transformace textu"
   },
   "filter": "Filtr",
   "findALocation": "Najděte polohu",

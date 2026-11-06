@@ -238,7 +238,10 @@
       "showDistanceOptions": "Inclure les options de distance",
       "url": "URL",
       "width": "Largeur",
-      "yes": "Oui"
+      "yes": "Oui",
+      "lowercase": "Minuscules",
+      "uppercase": "Majuscules",
+      "titlecase": "Initiales en majuscules"
     },
     "otherDetails": "Autres détails",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Quand c'est vrai",
     "whereToFindUs": "Where To Find Us",
     "yes": "Oui",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "textTransform": "Transformation du texte"
   },
   "filter": "Filtre",
   "findALocation": "Trouver un emplacement",

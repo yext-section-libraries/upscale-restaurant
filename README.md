@@ -6,6 +6,7 @@ layout, and one Locator layout.
 ## Development commands
 
 - `npm run dev`: Runs a local development server using example data from the account. See the Local Editor details below.
+- `npm test`: Runs render-transform regression tests, including saved-data compatibility checks.
 - `npm run build`: Generates the same files that will be built in-platform. Outputs to `dist`.
 - `npm run i18n:prepare`: Extracts keys and reports missing platform translations. See Internationalization below.
 - `npm run i18n:finalize`: Validates and propagates completed translations, then lints them. See Internationalization below.

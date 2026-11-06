@@ -1,5 +1,12 @@
+import "../shared/typography.css";
+import {
+  makeCta,
+  makeText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -7,20 +14,13 @@ import {
   ComprehensiveCTA,
   EntityField,
   VisibilityWrapper,
-  getDefaultForegroundColor,
-  getThemeColorCssValue,
   type ComprehensiveCTAValue,
   type ThemeColor,
   type YextComponentConfig,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
 import { resolveComponentData, useDocument } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type DeliveryPartnersSectionProps = {
@@ -37,62 +37,53 @@ type DeliveryPartnersSectionProps = {
   }[];
 };
 
-type DeliveryPartnersStyle = React.CSSProperties &
-  Record<`--${string}`, string>;
-
-const makeCta = (
-  label: string,
-  link: string,
-  variant: "primary" | "secondary" | "link",
-): ComprehensiveCTAValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        openInNewTab: false,
-        normalizeLink: false,
-        ctaType: "presetImage",
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    presetImage: label.includes("DoorDash")
-      ? label.includes("Uber")
-        ? "uber-eats"
-        : "grubhub"
-      : "doordash",
-    variant,
-    color:
-      variant === "primary"
-        ? makeThemeColor("palette-primary", "palette-primary-contrast")
-        : variant === "secondary"
-          ? makeThemeColor("palette-secondary", "palette-secondary-contrast")
-          : undefined,
-  },
-});
-
 const defaultProps: DeliveryPartnersSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-tertiary",
-      "palette-tertiary-contrast",
-    ),
+    backgroundColor: { selectedColor: "palette-tertiary", contrastingColor: "palette-tertiary-contrast" },
   },
   heading: makeText("Order delivery from our delivery partners"),
   ctas: [
-    { cta: makeCta("Order on DoorDash", "#", "primary") },
-    { cta: makeCta("Order on Uber Eats", "#", "secondary") },
-    { cta: makeCta("Order on Grubhub", "#", "link") },
+    {
+      cta: makeCta(
+        "Order on DoorDash",
+        "#",
+        {
+          variant: "primary",
+          presetImage: "doordash",
+          color: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
+        },
+        "presetImage",
+      ),
+    },
+    {
+      cta: makeCta(
+        "Order on Uber Eats",
+        "#",
+        {
+          variant: "secondary",
+          presetImage: "uber-eats",
+          color: { selectedColor: "palette-secondary", contrastingColor: "palette-secondary-contrast" },
+        },
+        "presetImage",
+      ),
+    },
+    {
+      cta: makeCta(
+        "Order on Grubhub",
+        "#",
+        { variant: "link", presetImage: "grubhub" },
+        "presetImage",
+      ),
+    },
   ],
 };
 
-const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
+type DeliveryPartnersSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<DeliveryPartnersSectionProps, typeof deliveryPartnersFields>>
+>;
+
+const deliveryPartnersFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -124,6 +115,7 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -139,85 +131,34 @@ const deliveryPartnersFields: YextFields<DeliveryPartnersSectionProps> = {
       cta: {
         label: msg("fields.callToAction", "Call To Action"),
         type: "comprehensiveCTA",
+        transform: true,
       },
     },
     defaultItemProps: {
-      cta: makeCta("Order", "#", "primary"),
+      cta: makeCta(
+        "Order",
+        "#",
+        {
+          variant: "primary",
+          presetImage: "doordash",
+          color: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
+        },
+        "presetImage",
+      ),
     },
     getItemSummary: () => "CTA",
   },
-};
+} satisfies YextFields<DeliveryPartnersSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-page {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-page * { box-sizing: border-box; }
-.fb-page p,
-.fb-page li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
+.fb-page .fb-section {
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-page h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-page h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-page h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-page h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-page h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-page h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
-  padding: 64px 0;
-}
-.fb-container {
-  width: min(1200px, calc(100% - 48px));
+.fb-page .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-actions {
@@ -234,9 +175,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
-  props,
-) => {
+const DeliveryPartnersSection: React.FC<DeliveryPartnersSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -245,21 +184,6 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
     locale,
     streamDocument,
   );
-  const sectionForegroundColor =
-    getThemeColorCssValue(
-      getDefaultForegroundColor(props.section.backgroundColor, streamDocument),
-    ) ?? "currentColor";
-  const pageStyle: DeliveryPartnersStyle = {
-    "--fb-text": sectionForegroundColor,
-    "--fb-muted": sectionForegroundColor,
-    "--fb-white-bg":
-      getThemeColorCssValue(makeThemeColor("white", "black")) ?? "currentColor",
-    "--fb-card-bg":
-      getThemeColorCssValue(makeThemeColor("white", "black")) ?? "currentColor",
-    "--fb-primary": "var(--colors-palette-primary)",
-    "--fb-secondary": "var(--colors-palette-secondary)",
-    "--fb-tertiary": "var(--colors-palette-tertiary)",
-  };
 
   return (
     <VisibilityWrapper
@@ -268,7 +192,6 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
     >
       <Background
         className="fb-page"
-        style={pageStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>
@@ -282,43 +205,17 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
               <h2
                 style={{
                   textAlign: "center",
-                  fontFamily:
-                    props.heading.styles.fontFamily === "default"
-                      ? undefined
-                      : props.heading.styles.fontFamily,
-                  fontSize:
-                    props.heading.styles.fontSize === "default"
-                      ? undefined
-                      : props.heading.styles.fontSize,
-                  fontWeight:
-                    props.heading.styles.fontWeight === "default"
-                      ? undefined
-                      : props.heading.styles.fontWeight,
-                  fontStyle:
-                    props.heading.styles.fontStyle === "default"
-                      ? undefined
-                      : props.heading.styles.fontStyle,
-                  textTransform:
-                    props.heading.styles.textTransform === "default"
-                      ? undefined
-                      : props.heading.styles.textTransform,
-                  color:
-                    getThemeColorCssValue(props.heading.fontColor) ??
-                    sectionForegroundColor,
+                  ...props.heading.styles,
+                  color: getThemeColorCssValue(props.heading.fontColor),
                 }}
               >
                 {heading}
               </h2>
             </EntityField>
             <div className="fb-actions">
-              {props.ctas.map((item, index) => {
-                const ctaValue: Partial<ComprehensiveCTAValue> = {
-                  data: item.cta.data,
-                  styles: item.cta.styles,
-                };
-
-                return <ComprehensiveCTA key={index} value={ctaValue} />;
-              })}
+              {props.ctas.map((item, index) => (
+                <ComprehensiveCTA key={index} value={item.cta} />
+              ))}
             </div>
           </div>
         </section>
@@ -327,12 +224,15 @@ const DeliveryPartnersSection: PuckComponent<DeliveryPartnersSectionProps> = (
   );
 };
 
-export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<DeliveryPartnersSectionProps> =
+export const UpscaleRestaurantDeliveryPartnersSection: YextComponentConfig<
+  DeliveryPartnersSectionProps,
+  typeof deliveryPartnersFields
+> =
   {
     label: msg("components.deliveryPartnersLabel", "Delivery Partners"),
     fields: deliveryPartnersFields,
     defaultProps,
-    render: DeliveryPartnersSection,
+    render: (props) => <DeliveryPartnersSection {...props} />,
   };
 
 export const config: SectionConfig = {

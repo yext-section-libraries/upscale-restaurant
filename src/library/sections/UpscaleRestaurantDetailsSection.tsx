@@ -1,3 +1,11 @@
+import "../shared/typography.css";
+import {
+  defaultTextStyles,
+  makeCta,
+  makeText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
 
 import * as React from "react";
@@ -11,32 +19,25 @@ import {
 } from "@yext/pages-components";
 import { useTranslation } from "react-i18next";
 import {
+  getThemeColorCssValue,
   Background,
   CTA,
   ComprehensiveCTA,
-  ComprehensiveCTAValue,
   EntityField,
   VisibilityWrapper,
-  getSurfaceColorStyle,
   resolveComponentData,
   useDocument,
+  type ComprehensiveCTAValue,
   type StyledTextValue,
   type ThemeColor,
   type TranslatableString,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   msg,
   pt,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  defaultTextStyles,
-  getTextStyle,
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type LinkItemProps = {
   cta: ComprehensiveCTAValue;
@@ -111,38 +112,11 @@ const makeTextList = (items: string[]): TextListProps => ({
   fontColor: undefined,
 });
 
-const makeTextStyle = (text: StyledTextProps): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor);
-
-const makeTextListStyle = (text: TextListProps): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor);
-
-const makeCta = (label: string, link: string): ComprehensiveCTAValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        normalizeLink: false,
-        openInNewTab: false,
-        ctaType: label === "Get Directions" ? "getDirections" : "textAndLink",
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    variant: "link",
-  },
-});
-
 const defaultProps: DetailsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
-    cardBackgroundColor: makeThemeColor("[#f6f4ef]", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
+    cardBackgroundColor: { selectedColor: "[#f6f4ef]", contrastingColor: "black" },
   },
   details: {
     heading: makeText("Restaurant Details"),
@@ -185,9 +159,11 @@ const defaultProps: DetailsSectionProps = {
     ]),
     links: [
       {
-        cta: makeCta("Website", "#"),
+        cta: makeCta("Website", "#", { variant: "link" }),
       },
-      { cta: makeCta("Get Directions", "#") },
+      {
+        cta: makeCta("Get Directions", "#", { variant: "link" }, "getDirections"),
+      },
     ],
     hoursHeading: makeText("Dining Hours"),
     hours: {
@@ -203,7 +179,11 @@ const defaultProps: DetailsSectionProps = {
   },
 };
 
-const detailsFields: YextFields<DetailsSectionProps> = {
+type DetailsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<DetailsSectionProps, typeof detailsFields>>
+>;
+
+const detailsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -244,6 +224,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -264,6 +245,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -307,6 +289,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -331,6 +314,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
               label: {
                 label: msg("fields.label", "Label"),
                 type: "translatableString",
+                transform: true,
               },
             },
             defaultItemProps: {
@@ -379,6 +363,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -410,6 +395,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -428,7 +414,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           },
         },
         defaultItemProps: {
-          cta: makeCta("Link", "#"),
+          cta: makeCta("Link", "#", { variant: "link" }),
         },
         getItemSummary: () => "CTA",
       },
@@ -444,6 +430,7 @@ const detailsFields: YextFields<DetailsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -502,79 +489,17 @@ const detailsFields: YextFields<DetailsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<DetailsSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-details-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-details-shell * { box-sizing: border-box; }
-.fb-details-shell p,
-.fb-details-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-details-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-details-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-details-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-details-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-details-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-details-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-details-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(var(--fb-content-width, var(--maxWidth-pageSection-contentWidth)), calc(100% - 48px));
-  max-width: 1200px;
+.fb-details-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-details-grid {
@@ -582,17 +507,16 @@ const UpscaleRestaurantCss = `
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 28px;
 }
-.fb-panel {
+.fb-details-shell .fb-panel {
   border-radius: 8px;
   min-width: 0;
   padding: 26px 24px;
 }
-.fb-panel h3 {
+.fb-details-shell .fb-panel h3 {
   margin: 28px 0 16px;
-  font-size: var(--fontSize-h3-fontSize);
 }
-.fb-panel h3:first-child { margin-top: 0; }
-.fb-panel p {
+.fb-details-shell .fb-panel h3:first-child { margin-top: 0; }
+.fb-details-shell .fb-panel p {
   margin: 3px 0 0;
   opacity: 0.82;
 }
@@ -643,9 +567,6 @@ const UpscaleRestaurantCss = `
   margin-top: 14px;
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-details-grid {
     grid-template-columns: 1fr;
   }
@@ -668,7 +589,7 @@ const formatPhoneForDisplay = (
     : parsedPhoneNumber.number.national || phoneNumber;
 };
 
-const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
+const DetailsSectionComponent: React.FC<DetailsSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const dayOfWeekNames = React.useMemo<DayOfWeekNames>(() => {
     const formatter = new Intl.DateTimeFormat(i18n.language, {
@@ -701,36 +622,50 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
-  const sectionHeadingStyle = makeTextStyle(props.details.heading);
+  const sectionHeadingStyle = {
+    ...props.details.heading.styles,
+    color: getThemeColorCssValue(props.details.heading.fontColor),
+  };
   const addressHeading = resolveComponentData(
     props.details.addressHeading.text,
     locale,
     streamDocument,
   );
-  const addressHeadingStyle = makeTextStyle(props.details.addressHeading);
+  const addressHeadingStyle = {
+    ...props.details.addressHeading.styles,
+    color: getThemeColorCssValue(props.details.addressHeading.fontColor),
+  };
   const phoneHeading = resolveComponentData(
     props.details.phoneHeading.text,
     locale,
     streamDocument,
   );
-  const phoneHeadingStyle = makeTextStyle(props.details.phoneHeading);
+  const phoneHeadingStyle = {
+    ...props.details.phoneHeading.styles,
+    color: getThemeColorCssValue(props.details.phoneHeading.fontColor),
+  };
   const otherHeading = resolveComponentData(
     props.details.otherHeading.text,
     locale,
     streamDocument,
   );
-  const otherHeadingStyle = makeTextStyle(props.details.otherHeading);
-  const otherDetailsStyle = makeTextListStyle(props.details.otherDetails);
+  const otherHeadingStyle = {
+    ...props.details.otherHeading.styles,
+    color: getThemeColorCssValue(props.details.otherHeading.fontColor),
+  };
+  const otherDetailsStyle = {
+    ...props.details.otherDetails.styles,
+    color: getThemeColorCssValue(props.details.otherDetails.fontColor),
+  };
   const hoursHeading = resolveComponentData(
     props.details.hoursHeading.text,
     locale,
     streamDocument,
   );
-  const hoursHeadingStyle = makeTextStyle(props.details.hoursHeading);
+  const hoursHeadingStyle = {
+    ...props.details.hoursHeading.styles,
+    color: getThemeColorCssValue(props.details.hoursHeading.fontColor),
+  };
   const resolvedAddress = resolveComponentData(
     props.details.address,
     locale,
@@ -754,7 +689,6 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
     >
       <Background
         className="fb-details-shell"
-        style={sectionSurfaceStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>
@@ -821,16 +755,7 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
                       locale,
                       streamDocument,
                     );
-                    const phoneLabel =
-                      typeof phone.label === "string"
-                        ? phone.label
-                        : phone.label
-                          ? resolveComponentData(
-                              phone.label,
-                              locale,
-                              streamDocument,
-                            )
-                          : "";
+                    const phoneLabel = phone.label ?? "";
                     const normalizedNumber = (phoneNumber ?? "").trim();
                     const phoneText = formatPhoneForDisplay(
                       normalizedNumber,
@@ -977,12 +902,15 @@ const DetailsSectionComponent: PuckComponent<DetailsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantDetailsSection: YextComponentConfig<DetailsSectionProps> =
+export const UpscaleRestaurantDetailsSection: YextComponentConfig<
+  DetailsSectionProps,
+  typeof detailsFields
+> =
   {
     label: msg("components.detailsLabel", "Details"),
     fields: detailsFields,
     defaultProps,
-    render: DetailsSectionComponent,
+    render: (props) => <DetailsSectionComponent {...props} />,
   };
 
 export const config: SectionConfig = {

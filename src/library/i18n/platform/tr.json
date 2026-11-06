@@ -238,7 +238,10 @@
       "showDistanceOptions": "Mesafe Seçeneklerini Dahil Et",
       "url": "URL",
       "width": "Genişlik",
-      "yes": "Evet"
+      "yes": "Evet",
+      "lowercase": "Küçük Harf",
+      "uppercase": "Büyük Harf",
+      "titlecase": "Baş Harfleri Büyük"
     },
     "otherDetails": "Diğer Ayrıntılar",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Doğru olduğunda",
     "whereToFindUs": "Where To Find Us",
     "yes": "Evet",
-    "zoom": "Yakınlaştırma"
+    "zoom": "Yakınlaştırma",
+    "textTransform": "Metin Dönüşümü"
   },
   "filter": "Filtre",
   "findALocation": "Bir Konum Bul",

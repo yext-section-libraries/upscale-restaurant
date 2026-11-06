@@ -3,8 +3,7 @@ import type { ComplexImageType, ImageType } from "@yext/pages-components";
 import {
   MaybeRTF,
   getDefaultRTF,
-  getThemeColorCssValue,
-  type MaybeRTFProps,
+  type ComprehensiveCTAValue,
   type RichText,
   type StyledTextValue,
   type ThemeColor,
@@ -34,11 +33,6 @@ export const defaultTextStyles: StyledTextValue = {
   textTransform: "default",
 };
 
-export const makeThemeColor = (
-  selectedColor: string,
-  contrastingColor: string,
-): ThemeColor => ({ selectedColor, contrastingColor });
-
 export const makeText = (
   text: string,
   field = "",
@@ -66,28 +60,30 @@ export const makeRtf = (text: string): StyledRtfProps => ({
   fontColor: undefined,
 });
 
-export const getTextStyle = (
-  styles: StyledTextValue,
-  color?: ThemeColor | string,
-  fallbackColor?: string,
-): React.CSSProperties => ({
-  fontFamily:
-    styles.fontFamily === "default" ? undefined : styles.fontFamily,
-  fontSize: styles.fontSize === "default" ? undefined : styles.fontSize,
-  fontWeight:
-    styles.fontWeight === "default" ? undefined : styles.fontWeight,
-  fontStyle: styles.fontStyle === "default" ? undefined : styles.fontStyle,
-  textTransform:
-    styles.textTransform === "default" ? undefined : styles.textTransform,
-  color: getThemeColorCssValue(color) ?? fallbackColor,
+// Builds authored editor defaults; field transforms resolve these for rendering.
+export const makeCta = (
+  label: string,
+  link: string,
+  styles: ComprehensiveCTAValue["styles"],
+  ctaType: ComprehensiveCTAValue["data"]["cta"]["constantValue"]["ctaType"] = "textAndLink",
+): ComprehensiveCTAValue => ({
+  data: {
+    actionType: "link",
+    cta: {
+      field: "",
+      constantValue: {
+        label,
+        link,
+        openInNewTab: false,
+        normalizeLink: false,
+        ctaType,
+      },
+      constantValueEnabled: true,
+    },
+    openInNewTab: false,
+  },
+  styles,
 });
-
-export const resolveSelectedColor = (
-  color?: ThemeColor,
-): string | undefined =>
-  !color?.selectedColor || color.selectedColor === "default"
-    ? undefined
-    : getThemeColorCssValue(color);
 
 export const hasImageSource = (
   image: unknown,
@@ -110,28 +106,21 @@ export const hasImageSource = (
   );
 };
 
-export const isRichTextEmpty = (value: unknown): boolean => {
-  if (!value) {
-    return true;
-  }
-
-  if (typeof value === "string") {
-    return value.trim() === "";
-  }
-
-  if (typeof value === "object" && "html" in value) {
-    const html = (value as { html?: unknown }).html;
-    return typeof html !== "string" || html.trim() === "";
-  }
-
-  return false;
-};
-
 export const renderRichText = (
   value: unknown,
-  richTextStyleOverrides?: MaybeRTFProps["richTextStyleOverrides"],
+  richTextStyleOverrides?: React.CSSProperties,
   className?: string,
 ): React.ReactNode => {
+  const styleOverrides = richTextStyleOverrides ?? {};
+  const typographyVariables = Object.fromEntries(
+    Object.entries(styleOverrides)
+      .filter(([property, setting]) => property !== "color" && setting !== undefined)
+      .flatMap(([property, setting]) => [
+        [`--${property}-body-${property}`, setting],
+        [`--upscale-restaurant-body-${property}`, setting],
+      ]),
+  );
+
   if (React.isValidElement(value)) {
     if (!richTextStyleOverrides && !className) {
       return value;
@@ -141,16 +130,6 @@ export const renderRichText = (
       className?: string;
       style?: React.CSSProperties;
     }>;
-    const { color, ...typography } = richTextStyleOverrides ?? {};
-    const styleOverrides = getTextStyle(
-      { ...defaultTextStyles, ...typography },
-      color,
-    );
-    const typographyVariables = Object.fromEntries(
-      Object.entries(styleOverrides)
-        .filter(([property, setting]) => property !== "color" && setting !== undefined)
-        .map(([property, setting]) => [`--${property}-body-${property}`, setting]),
-    );
 
     // RTF descendants read typography variables rather than inheriting styles.
     // Leave default variables unset so the current theme remains authoritative.
@@ -175,7 +154,7 @@ export const renderRichText = (
     <MaybeRTF
       className={className}
       data={data}
-      richTextStyleOverrides={richTextStyleOverrides}
+      style={{ ...styleOverrides, ...typographyVariables }}
     />
   );
 };

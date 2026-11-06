@@ -238,7 +238,10 @@
       "showDistanceOptions": "Inclusief afstandsopties",
       "url": "URL",
       "width": "Breedte",
-      "yes": "Ja"
+      "yes": "Ja",
+      "lowercase": "Kleine letters",
+      "uppercase": "Hoofdletters",
+      "titlecase": "Beginhoofdletters"
     },
     "otherDetails": "Overige details",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Wanneer waar",
     "whereToFindUs": "Where To Find Us",
     "yes": "Ja",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "textTransform": "Teksttransformatie"
   },
   "filter": "Filter",
   "findALocation": "Vind een locatie",

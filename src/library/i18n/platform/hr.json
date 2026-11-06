@@ -238,7 +238,10 @@
       "showDistanceOptions": "Uključite opcije udaljenosti",
       "url": "URL",
       "width": "Širina",
-      "yes": "Da"
+      "yes": "Da",
+      "lowercase": "Mala slova",
+      "uppercase": "Velika slova",
+      "titlecase": "Velika početna slova"
     },
     "otherDetails": "Ostale pojedinosti",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kada je istina",
     "whereToFindUs": "Where To Find Us",
     "yes": "Da",
-    "zoom": "Zumiranje"
+    "zoom": "Zumiranje",
+    "textTransform": "Pretvorba teksta"
   },
   "filter": "Filter",
   "findALocation": "Pronađite lokaciju",

@@ -1,5 +1,16 @@
+import "../shared/typography.css";
+import {
+  hasImageSource,
+  makeCta,
+  makeRtf,
+  makeText,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -15,51 +26,20 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
+  type ComprehensiveCTAValue,
   type StyledImageValue,
   type ThemeColor,
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  getTextStyle,
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type StyledImageProps = {
   image: YextEntityField<ImageType>;
   styles: StyledImageValue;
-};
-
-type HeroCtaValue = {
-  data: {
-    actionType: "link";
-    cta: {
-      field: string;
-      constantValue: {
-        label: string;
-        link: string;
-        openInNewTab: boolean;
-        normalizeLink: boolean;
-      };
-      constantValueEnabled: boolean;
-    };
-    openInNewTab: boolean;
-  };
-  styles: {
-    variant: "primary" | "secondary" | "link";
-    color: ThemeColor | undefined;
-  };
 };
 
 type HeroSectionProps = {
@@ -76,7 +56,7 @@ type HeroSectionProps = {
     heading: StyledTextProps;
     description: StyledRtfProps;
     ctas: {
-      cta: HeroCtaValue;
+      cta: ComprehensiveCTAValue;
     }[];
   };
   hours: YextEntityField<HoursType>;
@@ -105,31 +85,6 @@ const makeImage = (
   },
   styles: {
     borderRadius: "default",
-  },
-});
-
-const makeCta = (
-  label: string,
-  link: string,
-  variant: "primary" | "secondary" | "link",
-): HeroCtaValue => ({
-  data: {
-    actionType: "link",
-    cta: {
-      field: "",
-      constantValue: {
-        label,
-        link,
-        openInNewTab: false,
-        normalizeLink: false,
-      },
-      constantValueEnabled: true,
-    },
-    openInNewTab: false,
-  },
-  styles: {
-    variant,
-    color: undefined,
   },
 });
 
@@ -185,8 +140,8 @@ const defaultSeparatorTemplate = (params: StatusParams): React.ReactNode => {
 const defaultProps: HeroSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("palette-primary-dark", "white"),
-    cardBackgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "palette-primary-dark", contrastingColor: "white" },
+    cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   hero: {
     image: makeImage(
@@ -200,9 +155,9 @@ const defaultProps: HeroSectionProps = {
       "[[name]] is an upscale burger restaurant located in [[address.city]], [[address.region]]. They offer dine-in, takeout, delivery, and curbside pickup options. The location serves lunch, dinner, and brunch, with happy hour available on weekdays.",
     ),
     ctas: [
-      { cta: makeCta("Call Ahead", "#", "primary") },
-      { cta: makeCta("Order Online", "#", "secondary") },
-      { cta: makeCta("View Menu", "#", "link") },
+      { cta: makeCta("Call Ahead", "#", { variant: "primary" }) },
+      { cta: makeCta("Order Online", "#", { variant: "secondary" }) },
+      { cta: makeCta("View Menu", "#", { variant: "link" }) },
     ],
   },
   hours: {
@@ -217,7 +172,11 @@ const defaultProps: HeroSectionProps = {
   },
 };
 
-const heroFields: YextFields<HeroSectionProps> = {
+type HeroSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<HeroSectionProps, typeof heroFields>>
+>;
+
+const heroFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -258,6 +217,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            transform: true,
           },
         },
       },
@@ -273,6 +233,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -293,6 +254,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -311,7 +273,7 @@ const heroFields: YextFields<HeroSectionProps> = {
           },
         },
         defaultItemProps: {
-          cta: makeCta("CTA", "#", "primary"),
+          cta: makeCta("CTA", "#", { variant: "primary" }),
         },
         getItemSummary: () => "CTA",
       },
@@ -353,73 +315,10 @@ const heroFields: YextFields<HeroSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<HeroSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-hero-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-hero-shell * { box-sizing: border-box; }
-.fb-hero-shell p,
-.fb-hero-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-hero-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-hero-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-hero-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-hero-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-hero-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-hero-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-hero {
   min-height: 660px;
   position: relative;
@@ -443,8 +342,8 @@ const UpscaleRestaurantCss = `
   left: 0;
   bottom: 50px;
   z-index: 5;
-  width: min(720px, calc(100% - 56px));
-  padding: 24px 26px;
+  width: min(var(--maxWidth-pageSection-contentWidth), calc(100% - 56px));
+  padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   border-radius: 0 8px 8px 0;
 }
 .fb-hero-card h1 {
@@ -460,7 +359,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-open-now {
   color: var(--fb-open-now);
-  font-weight: 700;
 }
 .fb-hero-actions {
   display: flex;
@@ -472,7 +370,6 @@ const UpscaleRestaurantCss = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 10px 18px;
 }
 @media (max-width: 760px) {
   .fb-hero,
@@ -499,7 +396,7 @@ const UpscaleRestaurantCss = `
     bottom: auto;
     z-index: 5;
     width: 100%;
-    padding: 16px;
+    padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
     border-radius: 0;
   }
   .fb-hero-actions .fb-pill {
@@ -519,7 +416,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
+const HeroSection: React.FC<HeroSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const streamDocument = useDocument();
   const locale = i18n.language;
@@ -529,11 +426,10 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const headingStyle = getTextStyle(
-    props.hero.heading.styles,
-    props.hero.heading.fontColor,
-    "currentColor",
-  );
+  const headingStyle = {
+    ...props.hero.heading.styles,
+    color: getThemeColorCssValue(props.hero.heading.fontColor) ?? "currentColor",
+  };
   const descriptionStyles = {
     ...props.hero.description.styles,
     color: getThemeColorCssValue(props.hero.description.fontColor),
@@ -542,6 +438,7 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
     props.hero.description.text,
     locale,
     streamDocument,
+    { color: props.hero.description.fontColor },
   );
   const image = resolveComponentData(
     props.hero.image.image,
@@ -578,11 +475,15 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
                   props.hero.image.image.constantValueEnabled
                 }
               >
-                <div className="fb-hero-image-frame">
+                <div
+                  className="fb-hero-image-frame"
+                  style={{ ...props.hero.image.styles, overflow: "hidden" }}
+                >
                   <Image
                     image={image}
                     className="fb-hero-image"
                     style={{
+                      ...props.hero.image.styles,
                       width: "100%",
                       height: "100%",
                       objectFit: "cover",
@@ -716,12 +617,15 @@ const HeroSection: PuckComponent<HeroSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantHeroSection: YextComponentConfig<HeroSectionProps> =
+export const UpscaleRestaurantHeroSection: YextComponentConfig<
+  HeroSectionProps,
+  typeof heroFields
+> =
   {
     label: msg("components.heroLabel", "Hero"),
     fields: heroFields,
     defaultProps,
-    render: HeroSection,
+    render: (props) => <HeroSection {...props} />,
   };
 
 export const config: SectionConfig = {

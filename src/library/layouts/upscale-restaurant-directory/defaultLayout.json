@@ -15,7 +15,8 @@
           "defaultValue": "PLACEHOLDER"
         },
         "constantValueEnabled": true
-      }
+      },
+      "sectionLibraryMigrationVersion": 1
     },
     "type": "root"
   },

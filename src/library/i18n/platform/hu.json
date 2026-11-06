@@ -238,7 +238,10 @@
       "showDistanceOptions": "Tartalmazza a Távolság opciókat",
       "url": "URL",
       "width": "Szélesség",
-      "yes": "Igen"
+      "yes": "Igen",
+      "lowercase": "Kisbetűk",
+      "uppercase": "Nagybetűk",
+      "titlecase": "Nagy kezdőbetűk"
     },
     "otherDetails": "Egyéb részletek",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Amikor igaz",
     "whereToFindUs": "Where To Find Us",
     "yes": "Igen",
-    "zoom": "Nagyítás"
+    "zoom": "Nagyítás",
+    "textTransform": "Szöveg átalakítása"
   },
   "filter": "Szűrő",
   "findALocation": "Keressen egy helyet",
