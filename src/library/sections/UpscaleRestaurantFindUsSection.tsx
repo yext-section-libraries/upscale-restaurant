@@ -1,5 +1,11 @@
+import "../shared/typography.css";
+import {
+  makeText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +20,6 @@ import {
   EntityField,
   VisibilityWrapper,
   CTA,
-  getThemeColorCssValue,
   mergeMeta,
   resolveComponentData,
   resolveUrlTemplate,
@@ -26,14 +31,9 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   Background,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 
 type NearbyLocationCardStyles = {
   cardBackgroundColor: string | ThemeColor;
@@ -81,8 +81,8 @@ type StreamDocumentWithLocation = {
   yextDisplayCoordinate?: { latitude?: number; longitude?: number };
 };
 
-const makeNearbyLocationCardStyles = (): NearbyLocationCardStyles => ({
-  cardBackgroundColor: makeThemeColor("white", "black"),
+const defaultNearbyLocationCardStyles: NearbyLocationCardStyles = {
+  cardBackgroundColor: { selectedColor: "white", contrastingColor: "black" },
   cardTitleColor: undefined,
   showHours: true,
   showPhone: true,
@@ -101,15 +101,15 @@ const makeNearbyLocationCardStyles = (): NearbyLocationCardStyles => ({
     showRegion: true,
     showCountry: false,
   },
-});
+};
 
 const defaultProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   findUs: {
-    nearbyLocationCardStyles: makeNearbyLocationCardStyles(),
+    nearbyLocationCardStyles: defaultNearbyLocationCardStyles,
     heading: makeText("Where To Find Us"),
     map: {
       coordinate: {
@@ -126,7 +126,11 @@ const defaultProps = {
   },
 } satisfies FindUsSectionProps;
 
-const findUsFields: YextFields<FindUsSectionProps> = {
+type FindUsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FindUsSectionProps, typeof findUsFields>>
+>;
+
+const findUsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -295,6 +299,7 @@ const findUsFields: YextFields<FindUsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -329,87 +334,25 @@ const findUsFields: YextFields<FindUsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FindUsSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-find-us-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-find-us-shell * { box-sizing: border-box; }
-.fb-find-us-shell p,
-.fb-find-us-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-find-us-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-find-us-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-find-us-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-find-us-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-find-us-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-find-us-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-find-us-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(1540px, calc(100% - 48px));
+.fb-find-us-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-find-section h2 {
   margin-bottom: 28px;
   text-align: center;
-  font-size: var(--fontSize-h2-fontSize);
   line-height: 1.25;
 }
-.fb-panel {
+.fb-find-us-shell .fb-panel {
   border-radius: 8px;
   min-width: 0;
   padding: 26px 24px;
@@ -441,7 +384,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-location-grid h3 {
   margin-bottom: 10px;
-  font-size: 24px;
   line-height: 1.2;
 }
 .fb-location-grid p {
@@ -449,7 +391,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-location-grid a {
   color: var(--fb-text);
-  font-weight: 600;
   text-underline-offset: 4px;
 }
 .fb-location-hours {
@@ -465,9 +406,6 @@ const UpscaleRestaurantCss = `
   }
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-location-grid {
     grid-template-columns: 1fr;
   }
@@ -757,7 +695,7 @@ const renderNearbyLocationCard = (
   );
 };
 
-const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
+const FindUsSection: React.FC<FindUsSectionRenderProps> = (props) => {
   const { t, i18n } = useTranslation();
   const streamDocument = useDocument<StreamDocumentWithLocation>();
   const locale = i18n.language;
@@ -828,6 +766,7 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
             >
               <h2
                 style={{
+                  ...props.findUs.heading.styles,
                   marginBottom: 28,
                   color: getThemeColorCssValue(props.findUs.heading.fontColor),
                 }}
@@ -942,12 +881,15 @@ const FindUsSection: PuckComponent<FindUsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFindUsSection: YextComponentConfig<FindUsSectionProps> =
+export const UpscaleRestaurantFindUsSection: YextComponentConfig<
+  FindUsSectionProps,
+  typeof findUsFields
+> =
   {
     label: msg("components.findUsLabel", "Find Us"),
     fields: findUsFields,
     defaultProps,
-    render: FindUsSection,
+    render: (props) => <FindUsSection {...props} />,
   };
 
 export const config: SectionConfig = {

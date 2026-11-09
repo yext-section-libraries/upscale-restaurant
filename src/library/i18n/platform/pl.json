@@ -238,7 +238,10 @@
       "showDistanceOptions": "Uwzględnij opcje odległości",
       "url": "URL",
       "width": "Szerokość",
-      "yes": "Tak"
+      "yes": "Tak",
+      "lowercase": "Małe litery",
+      "uppercase": "Wielkie litery",
+      "titlecase": "Wielkie litery na początku wyrazów"
     },
     "otherDetails": "Inne szczegóły",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kiedy prawda",
     "whereToFindUs": "Where To Find Us",
     "yes": "Tak",
-    "zoom": "Powiększenie"
+    "zoom": "Powiększenie",
+    "textTransform": "Przekształcenie tekstu"
   },
   "filter": "Filtr",
   "findALocation": "Znajdź lokalizację",

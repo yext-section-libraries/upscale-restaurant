@@ -1,5 +1,14 @@
+import "../shared/typography.css";
+import {
+  defaultTextStyles,
+  makeRtfField,
+  makeText,
+  renderRichText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import {
@@ -7,8 +16,6 @@ import {
   EntityField,
   VisibilityWrapper,
   createItemSource,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledTextValue,
@@ -18,25 +25,14 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  defaultTextStyles,
-  getTextStyle,
-  makeRtfField,
-  makeText,
-  renderRichText,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type FaqItemProps = {
   question: YextEntityField<TranslatableString>;
   answer: YextEntityField<TranslatableRichText>;
 };
-
-const toCssColor = (color?: ThemeColor): string | undefined =>
-  getThemeColorCssValue(color);
 
 const faqItemsSource = createItemSource<FaqItemProps>({
   label: msg("fields.faqItems", "FAQ Items"),
@@ -163,7 +159,11 @@ const defaultProps: FaqSectionProps = {
   },
 };
 
-const faqFields: YextFields<FaqSectionProps> = {
+type FaqSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FaqSectionProps, typeof faqFields>>
+>;
+
+const faqFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -197,6 +197,7 @@ const faqFields: YextFields<FaqSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -221,6 +222,7 @@ const faqFields: YextFields<FaqSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -236,6 +238,7 @@ const faqFields: YextFields<FaqSectionProps> = {
               styles: {
                 label: msg("fields.textStyles", "Text Styles"),
                 type: "styledText",
+                transform: true,
               },
               fontColor: {
                 label: msg("fields.fontColor", "Font Color"),
@@ -248,78 +251,17 @@ const faqFields: YextFields<FaqSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FaqSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-faq-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-faq-shell * { box-sizing: border-box; }
-.fb-faq-shell p,
-.fb-faq-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-faq-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-faq-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-faq-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-faq-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-faq-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-faq-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-faq-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(980px, calc(100% - 48px));
+.fb-faq-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-faq-list {
@@ -335,8 +277,6 @@ const UpscaleRestaurantCss = `
   cursor: pointer;
   list-style: none;
   padding: 18px 48px 18px 20px;
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: 19px;
   position: relative;
 }
 .fb-faq-item summary::-webkit-details-marker {
@@ -354,29 +294,20 @@ const UpscaleRestaurantCss = `
   margin: 0;
   padding: 0 20px 18px;
 }
-@media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
-}
 `;
 
-const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
+const FaqSection: React.FC<FaqSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const resolvedHeading = resolveComponentData(
     props.heading.text,
     locale,
     streamDocument,
   );
-  const headingColor = toCssColor(props.heading.fontColor);
+  const headingColor = getThemeColorCssValue(props.heading.fontColor);
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.heading.styles),
+    ...props.heading.styles,
     marginBottom: "28px",
     color: headingColor,
   };
@@ -385,12 +316,12 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
     streamDocument,
   );
   const questionStyle: React.CSSProperties = {
-    ...getTextStyle(props.faqs.styles.question.styles),
-    color: toCssColor(props.faqs.styles.question.fontColor),
+    ...props.faqs.styles.question.styles,
+    color: getThemeColorCssValue(props.faqs.styles.question.fontColor),
   };
   const answerRichTextStyles = {
     ...props.faqs.styles.answer.styles,
-    color: toCssColor(props.faqs.styles.answer.fontColor),
+    color: getThemeColorCssValue(props.faqs.styles.answer.fontColor),
   };
 
   return (
@@ -401,7 +332,6 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
       <Background
         background={props.section.backgroundColor}
         className="fb-faq-shell"
-        style={sectionSurfaceStyle}
       >
         <style>{UpscaleRestaurantCss}</style>
         <section className="fb-section">
@@ -432,6 +362,7 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
                     item.answer,
                     locale,
                     streamDocument,
+                    { color: props.faqs.styles.answer.fontColor },
                   );
 
                   return (
@@ -457,12 +388,15 @@ const FaqSection: PuckComponent<FaqSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFaqSection: YextComponentConfig<FaqSectionProps> =
+export const UpscaleRestaurantFaqSection: YextComponentConfig<
+  FaqSectionProps,
+  typeof faqFields
+> =
   {
     label: msg("components.faqLabel", "FAQ"),
     fields: faqFields,
     defaultProps,
-    render: FaqSection,
+    render: (props) => <FaqSection {...props} />,
   };
 
 export const config: SectionConfig = {

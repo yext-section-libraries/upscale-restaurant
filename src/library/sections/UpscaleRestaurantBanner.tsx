@@ -1,7 +1,9 @@
+import "../shared/typography.css";
+import { renderRichText } from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
-import { PuckComponent } from "@puckeditor/core";
 import { CircleSlash2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import {
@@ -15,13 +17,13 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   backgroundColors,
   getDefaultRTF,
   resolveComponentData,
   resolveYextEntityField,
   useDocument,
 } from "@yext/visual-editor";
-import { isRichTextEmpty, renderRichText } from "../shared/sectionHelpers";
 
 type UpscaleRestaurantBannerProps = {
   data: {
@@ -38,7 +40,11 @@ type UpscaleRestaurantBannerProps = {
   };
 };
 
-const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
+type UpscaleRestaurantBannerRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<UpscaleRestaurantBannerProps, typeof UpscaleRestaurantBannerFields>>
+>;
+
+const UpscaleRestaurantBannerFields =
   {
     data: {
       label: msg("fields.bannerText", "Banner Text"),
@@ -54,6 +60,7 @@ const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
         styles: {
           label: msg("fields.textStyles", "Text Styles"),
           type: "styledText",
+          transform: true,
         },
         fontColor: {
           label: msg("fields.textColor", "Text Color"),
@@ -96,11 +103,28 @@ const UpscaleRestaurantBannerFields: YextFields<UpscaleRestaurantBannerProps> =
         },
       },
     },
-  };
+  } satisfies YextFields<UpscaleRestaurantBannerProps>;
 
-const UpscaleRestaurantBannerComponent: PuckComponent<
-  UpscaleRestaurantBannerProps
-> = ({ data, styles, section, puck }) => {
+const isRichTextEmpty = (value: unknown): boolean => {
+  if (!value) {
+    return true;
+  }
+
+  if (typeof value === "string") {
+    return value.trim() === "";
+  }
+
+  if (typeof value === "object" && "html" in value) {
+    const html = (value as { html?: unknown }).html;
+    return typeof html !== "string" || html.trim() === "";
+  }
+
+  return false;
+};
+
+const UpscaleRestaurantBannerComponent: React.FC<UpscaleRestaurantBannerRenderProps> = (
+  { data, styles, section, puck },
+) => {
   const { i18n } = useTranslation();
   const streamDocument = useDocument();
   const isMappedField =
@@ -120,7 +144,6 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
       <PageSection
         background={section.backgroundColor}
         className="flex items-center justify-center"
-        verticalPadding="sm"
       >
         <div className="relative flex h-20 w-full flex-row items-center justify-center gap-3 rounded-lg border border-gray-200 bg-gray-100 px-4">
           <CircleSlash2 className="h-10 w-10 flex-shrink-0 text-gray-400" />
@@ -139,12 +162,14 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
 
   const richTextStyleOverrides = {
     ...data.styles,
-    color: data.fontColor ?? section.backgroundColor.contrastingColor,
+    color:
+      getThemeColorCssValue(data.fontColor),
   };
   const resolvedText = resolveComponentData(
     data.text,
     i18n.language,
     streamDocument,
+    { color: data.fontColor },
   );
 
   if (!resolvedText) {
@@ -161,7 +186,6 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
           right: "justify-end text-right",
         }[styles.textAlignment]
       }`}
-      verticalPadding="sm"
     >
       <EntityField
         constantValueEnabled={data.text.constantValueEnabled}
@@ -177,7 +201,10 @@ const UpscaleRestaurantBannerComponent: PuckComponent<
 /**
  * Displays a full-width, editor-configurable rich-text banner.
  */
-export const UpscaleRestaurantBanner: YextComponentConfig<UpscaleRestaurantBannerProps> =
+export const UpscaleRestaurantBanner: YextComponentConfig<
+  UpscaleRestaurantBannerProps,
+  typeof UpscaleRestaurantBannerFields
+> =
   {
     label: msg("components.bannerLabel", "Banner"),
     fields: UpscaleRestaurantBannerFields,

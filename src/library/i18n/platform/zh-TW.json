@@ -238,7 +238,10 @@
       "showDistanceOptions": "包括距離選項",
       "url": "URL",
       "width": "寬度",
-      "yes": "是的"
+      "yes": "是的",
+      "lowercase": "小寫",
+      "uppercase": "大寫",
+      "titlecase": "首字母大寫"
     },
     "otherDetails": "其他詳細資訊",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "當為真時",
     "whereToFindUs": "Where To Find Us",
     "yes": "是的",
-    "zoom": "縮放"
+    "zoom": "縮放",
+    "textTransform": "文字轉換"
   },
   "filter": "篩選",
   "findALocation": "找到一個位置",

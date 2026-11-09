@@ -1,5 +1,15 @@
+import "../shared/typography.css";
+import {
+  hasImageSource,
+  makeRtf,
+  makeText,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -8,8 +18,6 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   type StyledImageValue,
@@ -17,19 +25,8 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  aspectRatioOptions,
-  getTextStyle,
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type AboutSectionProps = {
@@ -42,55 +39,20 @@ type AboutSectionProps = {
     content: StyledRtfProps;
     image: {
       image: YextEntityField<ImageType>;
-      aspectRatio: number;
       styles: StyledImageValue;
     };
   };
 };
 
-type ResponsiveImageStyle = React.CSSProperties & {
-  "--fb-mobile-image-width"?: string;
-};
-
 const defaultImageStyles: StyledImageValue = {
   borderRadius: "default",
-};
-
-const makeImageStyle = (
-  image: AboutSectionProps["about"]["image"],
-): {
-  wrapper: ResponsiveImageStyle;
-  image: React.CSSProperties;
-} => {
-  const hasCustomRadius = image.styles.borderRadius !== "default";
-  const aspectRatio = image.aspectRatio > 0 ? image.aspectRatio : undefined;
-  const borderRadius = hasCustomRadius ? image.styles.borderRadius : undefined;
-
-  return {
-    wrapper: {
-      aspectRatio,
-      borderRadius,
-      overflow: hasCustomRadius ? "hidden" : undefined,
-      width: "100%",
-      "--fb-mobile-image-width":
-        aspectRatio !== undefined ? `${360 * aspectRatio}px` : undefined,
-    },
-    image: {
-      display: "block",
-      aspectRatio,
-      width: "100%",
-      height: "auto",
-      borderRadius,
-      objectFit: "cover",
-      objectPosition: "center",
-    },
-  };
+  aspectRatio: 1,
 };
 
 const defaultProps: AboutSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "palette-quaternary"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "palette-quaternary" },
   },
   about: {
     heading: makeText("What is [[name]]?"),
@@ -108,13 +70,16 @@ const defaultProps: AboutSectionProps = {
         },
         constantValueEnabled: true,
       },
-      aspectRatio: 1,
       styles: defaultImageStyles,
     },
   },
 };
 
-const aboutSectionFields: YextFields<AboutSectionProps> = {
+type AboutSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<AboutSectionProps, typeof aboutSectionFields>>
+>;
+
+const aboutSectionFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -150,6 +115,7 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -170,6 +136,7 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -187,95 +154,30 @@ const aboutSectionFields: YextFields<AboutSectionProps> = {
             type: "entityField",
             filter: { types: ["type.image"] },
           },
-          aspectRatio: {
-            type: "basicSelector",
-            label: msg("fields.aspectRatio", "Aspect Ratio"),
-            options: aspectRatioOptions,
-          },
           styles: {
             label: msg("fields.imageStyles", "Image Styles"),
             type: "styledImage",
+            includeAspectRatio: true,
+            transform: true,
           },
         },
       },
     },
   },
-};
+} satisfies YextFields<AboutSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-about-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-about-shell * { box-sizing: border-box; }
-.fb-about-shell p,
-.fb-about-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-about-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-about-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-about-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-about-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-about-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-about-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
-.fb-section {
+.fb-about-shell .fb-section {
   padding-block: var(--padding-pageSection-verticalPadding);
 }
 .fb-about-section {
-  padding-block: 0;
-  padding-inline: var(--padding-pageSection-horizontalPadding);
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
-  width: min(1540px, 100%);
+.fb-about-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-about-grid {
@@ -289,14 +191,12 @@ const UpscaleRestaurantCss = `
   align-self: center;
 }
 .fb-about-text h2 {
-  font-size: clamp(34px, 4vw, 54px);
   line-height: 1.08;
   margin-bottom: 14px;
   text-align: left;
 }
 .fb-about-text p {
   color: currentColor;
-  font-size: 16px;
   line-height: 1.5;
   margin: 14px 0 16px;
 }
@@ -322,11 +222,8 @@ const UpscaleRestaurantCss = `
   }
 }
 @media (max-width: 760px) {
-  .fb-section {
-    padding-block: 72px;
-  }
   .fb-about-section {
-    padding-inline: var(--padding-pageSection-horizontalPadding);
+    padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   }
   .fb-about-text {
     max-width: none;
@@ -344,7 +241,7 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
+const AboutSection: React.FC<AboutSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -353,12 +250,8 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.about.heading.styles, props.about.heading.fontColor),
+    ...props.about.heading.styles,
     textAlign: "left",
     marginBottom: "14px",
     color: getThemeColorCssValue(props.about.heading.fontColor),
@@ -371,6 +264,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     props.about.content.text,
     locale,
     streamDocument,
+    { color: props.about.content.fontColor },
   );
   const image = resolveComponentData(
     props.about.image.image,
@@ -379,7 +273,7 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
   );
   const currentImage = image ?? props.about.image.image.constantValue;
   const hasImage = hasImageSource(currentImage);
-  const imageStyles = makeImageStyle(props.about.image);
+  const imageStyle = props.about.image.styles;
 
   return (
     <VisibilityWrapper
@@ -388,7 +282,6 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
     >
       <Background
         className="fb-about-shell"
-        style={sectionSurfaceStyle}
         background={props.section.backgroundColor}
       >
         <style>{UpscaleRestaurantCss}</style>
@@ -429,8 +322,24 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
                     props.about.image.image.constantValueEnabled
                   }
                 >
-                  <div className="fb-about-image" style={imageStyles.wrapper}>
-                    <Image image={currentImage} style={imageStyles.image} />
+                  <div
+                    className="fb-about-image"
+                    style={{
+                      ...imageStyle,
+                      overflow: imageStyle.borderRadius ? "hidden" : undefined,
+                    }}
+                  >
+                    <Image
+                      image={currentImage}
+                      style={{
+                        ...imageStyle,
+                        display: "block",
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "cover",
+                        objectPosition: "center",
+                      }}
+                    />
                   </div>
                 </EntityField>
               </div>
@@ -442,12 +351,15 @@ const AboutSection: PuckComponent<AboutSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantAboutSection: YextComponentConfig<AboutSectionProps> =
+export const UpscaleRestaurantAboutSection: YextComponentConfig<
+  AboutSectionProps,
+  typeof aboutSectionFields
+> =
   {
     label: msg("components.aboutLabel", "About"),
     fields: aboutSectionFields,
     defaultProps,
-    render: AboutSection,
+    render: (props) => <AboutSection {...props} />,
   };
 
 export const config: SectionConfig = {

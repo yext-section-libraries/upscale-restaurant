@@ -238,7 +238,10 @@
       "showDistanceOptions": "Įtraukite atstumo parinktis",
       "url": "URL",
       "width": "Plotis",
-      "yes": "Taip"
+      "yes": "Taip",
+      "lowercase": "Mažosios raidės",
+      "uppercase": "Didžiosios raidės",
+      "titlecase": "Didžiosios pirmosios raidės"
     },
     "otherDetails": "Kita informacija",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kai tiesa",
     "whereToFindUs": "Where To Find Us",
     "yes": "Taip",
-    "zoom": "Mastelis"
+    "zoom": "Mastelis",
+    "textTransform": "Teksto transformavimas"
   },
   "filter": "Filtruoti",
   "findALocation": "Raskite vietą",

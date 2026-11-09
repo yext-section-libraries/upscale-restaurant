@@ -238,7 +238,10 @@
       "showDistanceOptions": "Iekļaut attāluma opcijas",
       "url": "URL",
       "width": "Platums",
-      "yes": "Jā"
+      "yes": "Jā",
+      "lowercase": "Mazie burti",
+      "uppercase": "Lielie burti",
+      "titlecase": "Lieli sākumburti"
     },
     "otherDetails": "Cita informācija",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kad patiesība",
     "whereToFindUs": "Where To Find Us",
     "yes": "Jā",
-    "zoom": "Tālummaiņa"
+    "zoom": "Tālummaiņa",
+    "textTransform": "Teksta pārveidošana"
   },
   "filter": "Filtrs",
   "findALocation": "Atrodiet atrašanās vietu",

@@ -1,5 +1,13 @@
+import "../shared/typography.css";
+import {
+  defaultTextStyles,
+  hasImageSource,
+  makeRtfField,
+  makeText,
+  renderRichText,
+} from "../shared/sectionHelpers";
 import type { SectionConfig } from "@yext/visual-editor";
-import { pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link, type ImageType } from "@yext/pages-components";
@@ -7,8 +15,6 @@ import {
   EntityField,
   Image,
   VisibilityWrapper,
-  getSurfaceColorStyle,
-  getThemeColorCssValue,
   resolveComponentData,
   useDocument,
   msg,
@@ -21,18 +27,10 @@ import {
   type YextArrayField,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
   Background,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  defaultTextStyles,
-  getTextStyle,
-  hasImageSource,
-  makeRtfField,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import { useTranslation } from "react-i18next";
 
 type StyledTextProps = {
@@ -89,12 +87,7 @@ type FooterSectionProps = {
 
 type FooterStyle = React.CSSProperties & Record<`--${string}`, string>;
 
-const makeTextStyle = (): StyledTextStyleProps => ({
-  styles: defaultTextStyles,
-  fontColor: undefined,
-});
-
-const linkTypeOptions = () => [
+const linkTypeOptions = [
   { label: msg("fields.options.url", "URL"), value: "URL" },
   { label: msg("fields.options.email", "Email"), value: "Email" },
   { label: msg("fields.options.phone", "Phone"), value: "Phone" },
@@ -132,7 +125,7 @@ const defaultLink: LinkItemProps = {
   openInNewTab: false,
 };
 
-const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
+const linkFieldConfig = {
   type: "array",
   arrayFields: {
     label: {
@@ -147,7 +140,7 @@ const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
     linkType: {
       type: "basicSelector",
       label: msg("fields.linkType", "Link Type"),
-      options: linkTypeOptions(),
+      options: linkTypeOptions,
     },
     normalizeLink: {
       label: msg("fields.normalizeLink", "Normalize Link"),
@@ -165,11 +158,11 @@ const linkFieldConfig: YextArrayField<TranslatableCTA[]> = {
         { label: msg("fields.options.no", "No"), value: false },
       ],
     },
-  },
+  } satisfies YextFields<TranslatableCTA>,
   defaultItemProps: defaultLink satisfies TranslatableCTA,
   getItemSummary: (item) =>
     typeof item.label === "string" ? item.label : "Link",
-};
+} satisfies YextArrayField<TranslatableCTA[]>;
 
 const makeRtf = (text: string): StyledRtfProps => ({
   text: makeRtfField(text),
@@ -195,10 +188,7 @@ const makeImage = (url: string, alternateText: string): StyledImageProps => ({
 const defaultProps: FooterSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor(
-      "palette-primary",
-      "palette-primary-contrast",
-    ),
+    backgroundColor: { selectedColor: "palette-primary", contrastingColor: "palette-primary-contrast" },
   },
   brandName: makeText("[[name]]", "name"),
   socialLinks: [
@@ -232,7 +222,7 @@ const defaultProps: FooterSectionProps = {
       "Neighborhood burgers, cocktails, and brunch in [[address.city]].",
     ),
     quickLinksHeading: makeText("Quick links"),
-    linkStyles: makeTextStyle(),
+    linkStyles: { styles: defaultTextStyles, fontColor: undefined },
     quickLinks: [
       { ...defaultLink, label: createTranslatableString("Menu") },
       { ...defaultLink, label: createTranslatableString("Order Online") },
@@ -261,7 +251,11 @@ const defaultProps: FooterSectionProps = {
   },
 };
 
-const footerFields: YextFields<FooterSectionProps> = {
+type FooterSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<FooterSectionProps, typeof footerFields>>
+>;
+
+const footerFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -295,6 +289,7 @@ const footerFields: YextFields<FooterSectionProps> = {
       styles: {
         label: msg("fields.textStyles", "Text Styles"),
         type: "styledText",
+        transform: true,
       },
       fontColor: {
         label: msg("fields.fontColor", "Font Color"),
@@ -370,6 +365,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -385,6 +381,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -411,6 +408,7 @@ const footerFields: YextFields<FooterSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -425,82 +423,13 @@ const footerFields: YextFields<FooterSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<FooterSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-footer-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-footer-shell * { box-sizing: border-box; }
-.fb-footer-shell p,
-.fb-footer-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-footer-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-footer-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-footer-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-footer-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-footer-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-footer-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-footer-links-grid a,
 .fb-footer-bottom a {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
   line-height: 1.5;
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
 }
 .fb-footer-shell h2,
 .fb-footer-shell h3,
@@ -510,11 +439,13 @@ const UpscaleRestaurantCss = `
 .fb-footer {
   background: var(--fb-footer-bg);
   color: var(--fb-footer-text);
-  padding: 64px 0 22px;
+  padding-block: var(--padding-pageSection-verticalPadding);
   overflow-x: clip;
 }
-.fb-container {
-  width: min(1540px, calc(100% - 32px));
+.fb-footer-shell .fb-container {
+  width: 100%;
+  max-width: var(--maxWidth-pageSection-contentWidth);
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   margin: 0 auto;
 }
 .fb-footer-grid {
@@ -531,10 +462,6 @@ const UpscaleRestaurantCss = `
   margin-bottom: 28px;
 }
 .fb-footer-brand {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: 24px;
-  font-weight: 500;
-  letter-spacing: 0.07em;
   line-height: 1;
   margin-bottom: 14px;
 }
@@ -567,7 +494,6 @@ const UpscaleRestaurantCss = `
 }
 .fb-footer-links-grid a,
 .fb-footer-bottom a {
-  font-size: 13px;
   margin-bottom: 10px;
   overflow-wrap: anywhere;
 }
@@ -611,7 +537,7 @@ const UpscaleRestaurantCss = `
 }
 @media (max-width: 760px) {
   .fb-footer {
-    padding-top: 52px;
+    padding-block: var(--padding-pageSection-verticalPadding);
   }
   .fb-footer-grid {
     grid-template-columns: 1fr;
@@ -623,14 +549,10 @@ const UpscaleRestaurantCss = `
 }
 `;
 
-const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
+const FooterSection: React.FC<FooterSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const descriptionRichTextStyleOverrides = {
     color: resolveTextColor(props.footer.description.fontColor),
   };
@@ -643,6 +565,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     props.footer.description.text,
     locale,
     streamDocument,
+    { color: props.footer.description.fontColor },
   );
   const quickLinksHeading = resolveComponentData(
     props.footer.quickLinksHeading.text,
@@ -654,11 +577,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const footerLinkTextStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.linkStyles.styles),
-  };
   const pageStyle: FooterStyle = {
-    ...sectionSurfaceStyle,
     "--fb-footer-text": "currentColor",
     "--fb-footer-border": "currentColor",
     "--fb-footer-link-color": resolveTextColor(
@@ -667,15 +586,15 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
     "--fb-footer-link-hover": "currentColor",
   };
   const brandNameStyle: React.CSSProperties = {
-    ...getTextStyle(props.brandName.styles),
+    ...props.brandName.styles,
     color: resolveTextColor(props.brandName.fontColor),
   };
   const quickLinksHeadingStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.quickLinksHeading.styles),
+    ...props.footer.quickLinksHeading.styles,
     color: resolveTextColor(props.footer.quickLinksHeading.fontColor),
   };
   const copyrightTextStyle: React.CSSProperties = {
-    ...getTextStyle(props.footer.copyrightText.styles),
+    ...props.footer.copyrightText.styles,
     color: resolveTextColor(props.footer.copyrightText.fontColor),
   };
   const renderLink = (
@@ -708,7 +627,7 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
         eventName={eventName}
         className="fb-footer-link"
       >
-        <span style={footerLinkTextStyle}>{label}</span>
+        <span style={props.footer.linkStyles.styles}>{label}</span>
       </Link>
     );
   };
@@ -830,12 +749,15 @@ const FooterSection: PuckComponent<FooterSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantFooterSection: YextComponentConfig<FooterSectionProps> =
+export const UpscaleRestaurantFooterSection: YextComponentConfig<
+  FooterSectionProps,
+  typeof footerFields
+> =
   {
     label: msg("components.footer", "Footer"),
     fields: footerFields,
     defaultProps,
-    render: FooterSection,
+    render: (props) => <FooterSection {...props} />,
   };
 
 export const config: SectionConfig = {

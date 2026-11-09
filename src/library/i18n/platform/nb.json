@@ -238,7 +238,10 @@
       "showDistanceOptions": "Inkluder avstandsalternativer",
       "url": "URL",
       "width": "Bredde",
-      "yes": "Ja"
+      "yes": "Ja",
+      "lowercase": "Små bokstaver",
+      "uppercase": "Store bokstaver",
+      "titlecase": "Store forbokstaver"
     },
     "otherDetails": "Andre detaljer",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Når sant",
     "whereToFindUs": "Where To Find Us",
     "yes": "Ja",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "textTransform": "Teksttransformasjon"
   },
   "filter": "Filter",
   "findALocation": "Finn et sted",

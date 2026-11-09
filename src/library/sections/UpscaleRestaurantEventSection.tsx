@@ -1,5 +1,15 @@
+import "../shared/typography.css";
+import {
+  hasImageSource,
+  makeRtf,
+  makeText,
+  renderRichText,
+  type StyledRtfProps,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import type { ImageType } from "@yext/pages-components";
@@ -7,7 +17,6 @@ import {
   Background,
   ComprehensiveCTA,
   EntityField,
-  getSurfaceColorStyle,
   Image,
   VisibilityWrapper,
   resolveComponentData,
@@ -16,19 +25,8 @@ import {
   type YextComponentConfig,
   type YextEntityField,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  getTextStyle,
-  hasImageSource,
-  makeRtf,
-  makeText,
-  makeThemeColor,
-  renderRichText,
-  resolveSelectedColor,
-  type StyledRtfProps,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type StyledImageProps = {
@@ -50,10 +48,7 @@ type EventSectionProps = {
   };
 };
 
-const eventOverlayBackground = makeThemeColor(
-  "palette-quaternary",
-  "palette-quaternary-contrast",
-);
+const eventOverlayBackground = { selectedColor: "palette-quaternary", contrastingColor: "palette-quaternary-contrast" };
 
 const makeImage = (
   url: string,
@@ -105,13 +100,17 @@ const defaultProps: EventSectionProps = {
       },
       styles: {
         variant: "primary",
-        color: makeThemeColor("palette-primary", "palette-primary-contrast"),
+        color: undefined,
       },
     },
   },
 };
 
-const eventFields: YextFields<EventSectionProps> = {
+type EventSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<EventSectionProps, typeof eventFields>>
+>;
+
+const eventFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -153,6 +152,7 @@ const eventFields: YextFields<EventSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -173,6 +173,7 @@ const eventFields: YextFields<EventSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -187,73 +188,10 @@ const eventFields: YextFields<EventSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<EventSectionProps>;
 
 const UpscaleRestaurantCss = `
-.fb-event-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-event-shell * { box-sizing: border-box; }
-.fb-event-shell p,
-.fb-event-shell li {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  line-height: 1.5;
-  font-weight: var(--fontWeight-body-fontWeight);
-  font-style: var(--fontStyle-body-fontStyle);
-  text-transform: var(--textTransform-body-textTransform);
-}
-.fb-event-shell h1 {
-  font-family: var(--fontFamily-h1-fontFamily);
-  font-size: var(--fontSize-h1-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h1-fontWeight);
-  font-style: var(--fontStyle-h1-fontStyle);
-  text-transform: var(--textTransform-h1-textTransform);
-}
-.fb-event-shell h2 {
-  font-family: var(--fontFamily-h2-fontFamily);
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h2-fontWeight);
-  font-style: var(--fontStyle-h2-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-event-shell h3 {
-  font-family: var(--fontFamily-h3-fontFamily);
-  font-size: var(--fontSize-h3-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h3-fontWeight);
-  font-style: var(--fontStyle-h3-fontStyle);
-  text-transform: var(--textTransform-h3-textTransform);
-}
-.fb-event-shell h4 {
-  font-family: var(--fontFamily-h4-fontFamily);
-  font-size: var(--fontSize-h4-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h4-fontWeight);
-  font-style: var(--fontStyle-h4-fontStyle);
-  text-transform: var(--textTransform-h4-textTransform);
-}
-.fb-event-shell h5 {
-  font-family: var(--fontFamily-h5-fontFamily);
-  font-size: var(--fontSize-h5-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h5-fontWeight);
-  font-style: var(--fontStyle-h5-fontStyle);
-  text-transform: var(--textTransform-h5-textTransform);
-}
-.fb-event-shell h6 {
-  font-family: var(--fontFamily-h6-fontFamily);
-  font-size: var(--fontSize-h6-fontSize);
-  line-height: 1.2;
-  font-weight: var(--fontWeight-h6-fontWeight);
-  font-style: var(--fontStyle-h6-fontStyle);
-  text-transform: var(--textTransform-h6-textTransform);
-}
 .fb-event-banner {
   position: relative;
   height: 560px;
@@ -280,20 +218,13 @@ const UpscaleRestaurantCss = `
   right: 0;
   bottom: 64px;
   z-index: 1;
-  width: min(760px, calc(100% - 48px));
+  width: min(var(--maxWidth-pageSection-contentWidth), calc(100% - 48px));
   margin: 0 auto;
-  padding: 24px 32px;
+  padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 18px;
-}
-.fb-event-overlay h2 {
-  font-size: var(--fontSize-h2-fontSize);
-  line-height: 1.2;
-}
-.fb-event-description {
-  font-size: 16px;
 }
 .fb-event-cta {
   display: flex;
@@ -322,12 +253,12 @@ const UpscaleRestaurantCss = `
     z-index: 1;
     width: 100%;
     box-sizing: border-box;
-    padding: 72px 16px;
+    padding: var(--padding-pageSection-verticalPadding) var(--padding-pageSection-horizontalPadding, 24px);
   }
 }
 `;
 
-const EventSection: PuckComponent<EventSectionProps> = (props) => {
+const EventSection: React.FC<EventSectionRenderProps> = (props) => {
   const streamDocument = useDocument();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -337,19 +268,20 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
     streamDocument,
   );
   const headingColor =
-    resolveSelectedColor(props.event.heading.fontColor) ?? "currentColor";
+    getThemeColorCssValue(props.event.heading.fontColor) ?? "currentColor";
   const headingStyle: React.CSSProperties = {
-    ...getTextStyle(props.event.heading.styles),
+    ...props.event.heading.styles,
     color: headingColor,
   };
   const descriptionStyles = {
     ...props.event.description.styles,
-    color: resolveSelectedColor(props.event.description.fontColor),
+    color: getThemeColorCssValue(props.event.description.fontColor),
   };
   const description = resolveComponentData(
     props.event.description.text,
     locale,
     streamDocument,
+    { color: props.event.description.fontColor },
   );
   const image = resolveComponentData(
     props.event.image.image,
@@ -360,10 +292,6 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
     data: props.event.cta.data,
     styles: props.event.cta.styles,
   };
-  const overlaySurfaceStyle = getSurfaceColorStyle(
-    eventOverlayBackground,
-    streamDocument,
-  );
 
   return (
     <VisibilityWrapper
@@ -390,7 +318,6 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
           <Background
             background={eventOverlayBackground}
             className="fb-event-overlay"
-            style={overlaySurfaceStyle}
           >
             <EntityField
               displayName={pt("heading", "Heading")}
@@ -413,7 +340,8 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
               </div>
             </EntityField>
             <div className="fb-event-cta">
-              <Background background={eventOverlayBackground}>
+              <Background background={eventOverlayBackground}
+              >
                 <EntityField
                   displayName={pt("callToAction", "Call To Action")}
                   fieldId={props.event.cta.data.cta.field}
@@ -432,12 +360,15 @@ const EventSection: PuckComponent<EventSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantEventSection: YextComponentConfig<EventSectionProps> =
+export const UpscaleRestaurantEventSection: YextComponentConfig<
+  EventSectionProps,
+  typeof eventFields
+> =
   {
     label: msg("components.eventLabel", "Event"),
     fields: eventFields,
     defaultProps,
-    render: EventSection,
+    render: (props) => <EventSection {...props} />,
   };
 
 export const config: SectionConfig = {

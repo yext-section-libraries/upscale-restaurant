@@ -238,7 +238,10 @@
       "showDistanceOptions": "Includeți opțiuni de distanță",
       "url": "URL",
       "width": "Lăţime",
-      "yes": "Da"
+      "yes": "Da",
+      "lowercase": "Litere mici",
+      "uppercase": "Litere mari",
+      "titlecase": "Inițiale majuscule"
     },
     "otherDetails": "Alte detalii",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Când adevărat",
     "whereToFindUs": "Where To Find Us",
     "yes": "Da",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "textTransform": "Transformarea textului"
   },
   "filter": "Filtra",
   "findALocation": "Găsiți o locație",

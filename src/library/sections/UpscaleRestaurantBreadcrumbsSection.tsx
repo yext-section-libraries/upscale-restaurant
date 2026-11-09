@@ -1,5 +1,11 @@
+import "../shared/typography.css";
+import {
+  makeText,
+  type StyledTextProps,
+} from "../shared/sectionHelpers";
+import type { WithId, WithPuckProps } from "@puckeditor/core";
 import type { SectionConfig } from "@yext/visual-editor";
-import { msg, pt } from "@yext/visual-editor";
+import { getThemeColorCssValue, msg, pt } from "@yext/visual-editor";
 
 import * as React from "react";
 import { Link } from "@yext/pages-components";
@@ -7,7 +13,6 @@ import {
   Background,
   EntityField,
   VisibilityWrapper,
-  getSurfaceColorStyle,
   resolveBreadcrumbs,
   resolveComponentData,
   useDocument,
@@ -15,14 +20,8 @@ import {
   type ThemeColor,
   type YextComponentConfig,
   type YextFields,
+  type YextTransformedProps,
 } from "@yext/visual-editor";
-import { PuckComponent } from "@puckeditor/core";
-import {
-  getTextStyle,
-  makeText,
-  makeThemeColor,
-  type StyledTextProps,
-} from "../shared/sectionHelpers";
 import { useTranslation } from "react-i18next";
 
 type BreadcrumbsSectionProps = {
@@ -60,33 +59,17 @@ type BreadcrumbsStyle = React.CSSProperties & {
 };
 
 const UpscaleRestaurantBreadcrumbsCss = `
-.fb-breadcrumbs-shell {
-  font-family: var(--fontFamily-body-fontFamily);
-  font-size: var(--fontSize-body-fontSize);
-  font-weight: var(--fontWeight-body-fontWeight);
-  line-height: 1.5;
-}
 .fb-breadcrumbs-shell * { box-sizing: border-box; }
-.fb-breadcrumbs-shell a,
-.fb-breadcrumbs-shell span,
-.fb-breadcrumbs-shell li {
-  font-family: var(--fontFamily-link-fontFamily);
-  font-size: var(--fontSize-link-fontSize);
-  font-weight: var(--fontWeight-link-fontWeight);
-  font-style: var(--fontStyle-link-fontStyle);
-  text-transform: var(--textTransform-link-textTransform);
-  letter-spacing: var(--letterSpacing-link-letterSpacing);
-}
 .fb-breadcrumbs-shell {
   border-bottom: 1px solid var(--fb-breadcrumb-border-color);
 }
-.fb-section {
-  padding: 18px 0;
+.fb-breadcrumbs-shell .fb-section {
+  padding-block: var(--padding-pageSection-verticalPadding);
 }
-.fb-container {
+.fb-breadcrumbs-shell .fb-container {
   width: min(100%, var(--maxWidth-pageSection-contentWidth, 1200px));
   margin: 0 auto;
-  padding: 0 24px;
+  padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
 }
 .fb-breadcrumbs-list {
   list-style: none;
@@ -115,9 +98,6 @@ const UpscaleRestaurantBreadcrumbsCss = `
 .fb-breadcrumb-link:hover {
   color: var(--fb-breadcrumb-color);
 }
-.fb-breadcrumb-current {
-  font-weight: 600;
-}
 .fb-breadcrumb-separator {
   display: inline-flex;
   align-items: center;
@@ -125,29 +105,17 @@ const UpscaleRestaurantBreadcrumbsCss = `
   color: var(--fb-breadcrumb-color);
 }
 @media (max-width: 767px) {
-  .fb-section {
-    padding: 14px 0;
+  .fb-breadcrumbs-shell .fb-container {
+    padding-inline: var(--padding-pageSection-horizontalPadding, 24px);
   }
-
-  .fb-container {
-    padding: 0 16px;
-  }
-
   .fb-breadcrumbs-list {
     row-gap: 8px;
   }
-
   .fb-breadcrumb-separator {
     margin: 0 8px;
   }
 }
 `;
-
-const getTextStyles = (
-  text: StyledTextProps,
-  fallbackColor: string,
-): React.CSSProperties =>
-  getTextStyle(text.styles, text.fontColor, fallbackColor);
 
 const resolveCurrentPageLabel = (
   currentPage: StyledTextProps["text"],
@@ -165,21 +133,10 @@ const resolveCurrentPageLabel = (
   );
 };
 
-const getPrefixedHref = (
-  slug: string | undefined,
-  relativePrefixToRoot?: string,
-): string => {
-  const resolvedSlug = slug ?? "";
-
-  return relativePrefixToRoot
-    ? `${relativePrefixToRoot}${resolvedSlug}`
-    : resolvedSlug;
-};
-
 const defaultProps: BreadcrumbsSectionProps = {
   section: {
     visibleOnLivePage: true,
-    backgroundColor: makeThemeColor("white", "black"),
+    backgroundColor: { selectedColor: "white", contrastingColor: "black" },
   },
   breadcrumbs: {
     rootLabel: makeText("All Locations"),
@@ -188,7 +145,11 @@ const defaultProps: BreadcrumbsSectionProps = {
   },
 };
 
-const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
+type BreadcrumbsSectionRenderProps = WithId<
+  WithPuckProps<YextTransformedProps<BreadcrumbsSectionProps, typeof breadcrumbsFields>>
+>;
+
+const breadcrumbsFields = {
   section: {
     label: msg("fields.section", "Section"),
     type: "object",
@@ -224,6 +185,7 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -244,6 +206,7 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
           styles: {
             label: msg("fields.textStyles", "Text Styles"),
             type: "styledText",
+            transform: true,
           },
           fontColor: {
             label: msg("fields.fontColor", "Font Color"),
@@ -262,9 +225,9 @@ const breadcrumbsFields: YextFields<BreadcrumbsSectionProps> = {
       },
     },
   },
-};
+} satisfies YextFields<BreadcrumbsSectionProps>;
 
-const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
+const BreadcrumbsSection: React.FC<BreadcrumbsSectionRenderProps> = (props) => {
   const streamDocument = useDocument<StreamDocumentWithBreadcrumbs>();
   const { i18n } = useTranslation();
   const locale = i18n.language;
@@ -282,7 +245,6 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
     return props.puck.isEditing ? (
       <p
         style={{
-          fontFamily: "Arial, Helvetica, sans-serif",
           padding: "18px 24px",
         }}
       >
@@ -296,12 +258,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
     );
   }
 
-  const sectionSurfaceStyle = getSurfaceColorStyle(
-    props.section.backgroundColor,
-    streamDocument,
-  );
   const pageStyle: BreadcrumbsStyle = {
-    ...sectionSurfaceStyle,
     "--fb-breadcrumb-color": "currentColor",
     "--fb-breadcrumb-muted-color": "currentColor",
     "--fb-breadcrumb-border-color": "currentColor",
@@ -319,16 +276,13 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
     locale,
     streamDocument,
   );
-  const rootTextStyles = getTextStyles(
-    props.breadcrumbs.rootLabel,
-    "currentColor",
-  );
+  const rootTextStyles = {
+    ...props.breadcrumbs.rootLabel.styles,
+    color: getThemeColorCssValue(props.breadcrumbs.rootLabel.fontColor) ?? "currentColor",
+  };
   const currentPageStyles = {
-    ...getTextStyles(props.breadcrumbs.currentPage, "currentColor"),
-    fontWeight:
-      props.breadcrumbs.currentPage.styles.fontWeight === "default"
-        ? 600
-        : props.breadcrumbs.currentPage.styles.fontWeight,
+    ...props.breadcrumbs.currentPage.styles,
+    color: getThemeColorCssValue(props.breadcrumbs.currentPage.fontColor) ?? "currentColor",
   } satisfies React.CSSProperties;
 
   return (
@@ -355,10 +309,7 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
                   : isCurrentPage
                     ? currentPageLabel || breadcrumb.name || ""
                     : breadcrumb.name || "";
-                const href = getPrefixedHref(
-                  breadcrumb.slug,
-                  relativePrefixToRoot,
-                );
+                const href = `${relativePrefixToRoot ?? ""}${breadcrumb.slug ?? ""}`;
 
                 let crumbNode: React.ReactNode;
                 if (isCurrentPage && !isRoot) {
@@ -438,12 +389,15 @@ const BreadcrumbsSection: PuckComponent<BreadcrumbsSectionProps> = (props) => {
   );
 };
 
-export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<BreadcrumbsSectionProps> =
+export const UpscaleRestaurantBreadcrumbsSection: YextComponentConfig<
+  BreadcrumbsSectionProps,
+  typeof breadcrumbsFields
+> =
   {
     label: msg("components.breadcrumbsLabel", "Breadcrumbs"),
     fields: breadcrumbsFields,
     defaultProps,
-    render: BreadcrumbsSection,
+    render: (props) => <BreadcrumbsSection {...props} />,
   };
 
 export const config: SectionConfig = {

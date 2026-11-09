@@ -238,7 +238,10 @@
       "showDistanceOptions": "Inkludera avståndsalternativ",
       "url": "URL",
       "width": "Bredd",
-      "yes": "Ja"
+      "yes": "Ja",
+      "lowercase": "Gemener",
+      "uppercase": "Versaler",
+      "titlecase": "Inledande versaler"
     },
     "otherDetails": "Andra detaljer",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "När det är sant",
     "whereToFindUs": "Where To Find Us",
     "yes": "Ja",
-    "zoom": "Zoom"
+    "zoom": "Zoom",
+    "textTransform": "Textomvandling"
   },
   "filter": "Filtrera",
   "findALocation": "Hitta en plats",

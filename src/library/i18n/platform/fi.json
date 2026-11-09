@@ -238,7 +238,10 @@
       "showDistanceOptions": "Sisällytä etäisyysasetukset",
       "url": "URL",
       "width": "Leveys",
-      "yes": "Kyllä"
+      "yes": "Kyllä",
+      "lowercase": "Pienet kirjaimet",
+      "uppercase": "Isot kirjaimet",
+      "titlecase": "Isot alkukirjaimet"
     },
     "otherDetails": "Muut tiedot",
     "otherHeading": "Other Heading",
@@ -318,7 +321,8 @@
     "whenTrue": "Kun totta",
     "whereToFindUs": "Where To Find Us",
     "yes": "Kyllä",
-    "zoom": "Zoomaus"
+    "zoom": "Zoomaus",
+    "textTransform": "Tekstin muunnos"
   },
   "filter": "Suodata",
   "findALocation": "Etsi sijainti",
