@@ -65,6 +65,7 @@
     "analytics": "Analys",
     "answer": "Svar",
     "aspectRatio": "Bildförhållande",
+    "autoSearchOnMapMove": "Sök automatiskt på kartrörelse",
     "backgroundColor": "Bakgrundsfärg",
     "bannerText": "Bannertext",
     "brandName": "Varumärkesnamn",

@@ -65,6 +65,7 @@
     "analytics": "Analytique",
     "answer": "Réponse",
     "aspectRatio": "Rapport d'aspect",
+    "autoSearchOnMapMove": "Recherche automatique sur le mouvement de la carte",
     "backgroundColor": "Couleur de fond",
     "bannerText": "Texte de bannière",
     "brandName": "Nom de la marque",
