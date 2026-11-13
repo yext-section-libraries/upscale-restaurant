@@ -65,6 +65,7 @@
     "analytics": "Analytiikka",
     "answer": "Vastaus",
     "aspectRatio": "Kuvasuhde",
+    "autoSearchOnMapMove": "Hae automaattisesti kartan liikkeestä",
     "backgroundColor": "Taustaväri",
     "bannerText": "Banneriteksti",
     "brandName": "Brändin nimi",
